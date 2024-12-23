@@ -1,35 +1,54 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import HomePage from './Pages/LandingPage/HomePage';
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+    useEffect(() => {
+        const handleScroll = () => {
+            const element = document.getElementById("about");
+            if (element) {
+                element.scrollIntoView({ behavior: "smooth" });
+            }
+        };
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+        const aboutLink = document.querySelector('a[href="#about"]');
+        if (aboutLink) {
+            aboutLink.addEventListener("click", (event) => {
+                event.preventDefault();
+                handleScroll();
+            });
+        }
+
+        return () => {
+            if (aboutLink) {
+                aboutLink.removeEventListener("click", handleScroll);
+            }
+        };
+    }, []);
+
+    return (
+        <Router>
+            <div>
+                <nav className='flex items-center justify-between h-14 3xl:h-28'>
+                    <div className='sm:ml-10 3xl:ml-32 2xl:ml-32'>
+                        <h1 className='3xl:text-4xl'>VoteHub</h1>
+                    </div>
+                    <ul className='flex items-end justify-center gap-6 2xl:mr-32 sm:mr-10 3xl:text-4xl 3xl:mr-32'>
+                        <li><Link className='rounded-lg hover:bg-blue-200 h-80' to="#homepage">Home</Link></li>
+                        <li><Link to="#about">About</Link></li>
+                        <li><Link to="#contact">Contact</Link></li>
+                    </ul>
+                </nav>
+
+                <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    {/* <Route path="/about" element={<About />} />
+                    <Route path="/contact" element={<Contact />} />
+                 <Route path="*" element={<NotFound />} /> */}
+                </Routes>
+            </div>
+        </Router>
+    );
+};
 
 export default App
