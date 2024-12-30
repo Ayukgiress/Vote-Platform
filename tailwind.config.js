@@ -5,6 +5,7 @@ export default {
     extend: {
       screens: {
         '3xl': '2560px',
+        "screen": "1920px",
       },
       colors: {
         'custom-blue': '#083143', // Define a custom name for the color

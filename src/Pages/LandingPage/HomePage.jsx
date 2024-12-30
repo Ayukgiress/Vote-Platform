@@ -12,13 +12,9 @@ import { BiGame, BiSupport } from "react-icons/bi";
 import image from "/src/assets/images/pexels-max-fischer-5211432.jpg"
 import teacherImage from "/src/assets/images/pexels-nappy-935943.jpg"
 import instImage from "/src/assets/images/pexels-cruz-in-portugal-20843082.jpg"
-import { MdLocationOn } from "react-icons/md";
-import { MdMarkEmailRead } from "react-icons/md";
-import { FaPhoneVolume } from "react-icons/fa6";
-import { BsFacebook } from "react-icons/bs";
-import { FaLinkedin } from "react-icons/fa";
-import { FaTwitter } from "react-icons/fa";
 import { BsBoxArrowUpRight } from "react-icons/bs";
+import { Link } from 'react-router-dom';
+import Footer from '../../Components/Footer';
 
 
 
@@ -44,7 +40,8 @@ const HomePage = () => {
                         it's a chance to stand for what you believe in and make a lasting impact. Together, we create the change <br />
                         we wish to see, one decision, one choice, one vote at a time."
                     </p>
-                    <button className="bg-button-c h-12 w-72 text-2xl rounded-md 3xl:w-[40rem]  3xl:h-20  3xl:text-5xl">Get Started</button>
+                    <Link to="/register" >                     <button className="bg-button-c h-12 w-72 text-2xl rounded-md 3xl:w-[40rem]  3xl:h-20  3xl:text-5xl">Get Started</button>
+                    </Link>
                 </div>
             </section>
 
@@ -83,7 +80,7 @@ const HomePage = () => {
                 </div>
             </section>
 
-            <section>
+            <section id='contacts'>
                 <section id='about' className="bg-white w-full absolute lg:h-[20rem] 3xl:h-[35rem]">
                     <div className="w-64 h-64 lg:w-80 lg:h-96 3xl:h-[45rem]   bg-button-c rounded-full border-5 border-white relative top-40 lg:top-71 xl:top-96 3xl:top-[45rem] right-14 lg:right-36 2xl:w-[30rem] 2xl:h-[27rem] 2xl:right-80 ">
                         <div className="w-44 h-44 lg:w-52 lg:h-64 3xl:h-[30rem] 2xl:w-80 2xl:h-80  bg-white rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
@@ -127,7 +124,7 @@ const HomePage = () => {
                                 The power of youth, the power of choice.</p>
                         </div>
                         <div className='w-full shadow-md bg-button-c h-96 gap-7 rounded-md  text-custom-blue lg:w-96 md:w-72 xl:w-[38rem] xl:h-[35rem] 2xl:w-[35rem] 3xl:w-[45rem] 3xl:h-[49rem]'>
-                            <BsBoxArrowUpRight className='w-40 h-40 flex items-center justify-center ml-9 mt-24'/>
+                            <BsBoxArrowUpRight className='w-40 h-40 flex items-center justify-center ml-9 mt-24' />
 
                             <h1 className='text-2xl 2xl:text-5xl text-start m-5 xl:text-4xl 3xl:text-7xl'>Teachers Voting</h1>
                             <p className='text-start 2xl:text-2xl 2xl:m-5 font-light m-5 xl:text-2xl 3xl:text-4xl'>
@@ -259,30 +256,12 @@ const HomePage = () => {
                 <div className='absolute flex items-center justify-center flex-col text-center text-white'>
                     <h1 className='text-3xl font-bold mb-2 xl:text-5xl  3xl:text-7xl'>Do You Have Any Contest?</h1>
                     <p className='text-lg mb-4 font-thin 3xl:text-4xl'>Register with Our Virtual Voting Platform</p>
-                    <button className='px-4 py-2 bg-custom-blue text-white rounded-md w-36 h-10 3xl:w-[25rem] 3xl:h-16 3xl:text-3xl 2xl:w-[20rem] 2xl:text-2xl 2xl:h-14'>Contact Us</button>
+                    <a href="https://www.linkedin.com/in/ayuk-giress-077734294/?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base%3BjucQuBkgSmOUVQxCm%2B4d3Q%3D%3D">  <button className='px-4 py-2 bg-custom-blue text-white rounded-md w-36 h-10 3xl:w-[25rem] 3xl:h-16 3xl:text-3xl 2xl:w-[20rem] 2xl:text-2xl 2xl:h-14'>Contact Us</button></a>                    
                 </div>
             </section>
 
-            <section className="flex flex-col md:flex-row items-center justify-around bg-custom-blue text-white p-5 3xl:h-[25rem] 2xl:gap-96">
-                <div className="flex flex-col justify-center gap-5 items-start">
-                    <h1 className="text-xl md:text-2xl  3xl:text-5xl">VoteHub</h1>
-                    <p className="text-sm md:text-base 3xl:text-2xl"> the only securedhcgsydg <br /> rvgyru ufihf uhgfiewhgf <br /> and user-friendly platform that makes your vote count </p>
-                </div>
-                <div className="flex flex-col items-start justify-center gap-5">
-                    <h1 className="text-xl md:text-2xl 3xl:text-5xl">Contacts</h1>
-                    <div className="flex items-center justify-center gap-2 3xl:text-2xl"> <MdLocationOn /> <span>VoteHub jouvence, Yaounde</span> </div>
-                    <div className="flex items-center justify-center gap-2 3xl:text-2xl"> <MdMarkEmailRead /> <h1>VoteHub@gmail.com</h1> </div>
-                    <div className="flex items-center justify-center gap-2 3xl:text-2xl"> <FaPhoneVolume /> <span>+237676184440</span> </div>
-                </div> <div className="flex flex-col items-center justify-center gap-5"> <h1 className="text-xl md:text-2xl 3xl:text-5xl">Follow us on</h1>
-                    <div className="flex items-center justify-center gap-2"> <a href="#"><BsFacebook className="w-8 h-8  3xl:w-14 3xl:h-14" /></a>
-                        <a href="#"><FaLinkedin className="w-8 h-8 3xl:w-14 3xl:h-14" /></a> <a href="#"><FaTwitter className="w-8 h-8  3xl:w-14 3xl:h-14" /></a> </div> </div>
-            </section>
-            <section className=' w-full bg-custom-blue h-14 flex items-center justify-start '>
-                <div className='text-start ml-16 text-white'>
-                    copy right since 2024
-                </div>
-            </section>
-
+           
+           <Footer/>
         </>
     );
 };

@@ -1,10 +1,13 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
-import { API_URL } from "../../constants";
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext();
 
 export const useAuth = () => {
-  return useContext(AuthContext);
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
 };
 
 export const AuthProvider = ({ children }) => {
@@ -18,84 +21,46 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("token");
     localStorage.removeItem("refreshToken");
     setCurrentUser(null);
+    setCurrentUserLoading(true);
   };
 
   const fetchCurrentUser = async (token) => {
     try {
-      console.log('Fetching Current User with Token:', token);
-      const response = await fetch(`http://localhost:5000/users/current-user`, {
+      const response = await fetch("http://localhost:5000/users/current-user", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-  
-      console.log('Fetch Current User Response Status:', response.status);
-  
+
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Fetch Current User Error Response:', errorText);
-        throw new Error(`Failed to fetch current user: ${errorText}`);
+        throw new Error("Failed to fetch current user");
       }
-  
+
       const user = await response.json();
-      console.log('Fetched User:', user);
       setCurrentUser(user);
     } catch (error) {
-      console.error("Comprehensive Error fetching current user:", error);
       logout();
-    }
-  };
-
-  const refreshToken = async () => {
-    const refreshToken = localStorage.getItem("refreshToken");
-    try {
-      const response = await fetch(`http://localhost:5000/users/refresh-token`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ refreshToken }),
-      });
-
-      if (!response.ok) throw new Error("Failed to refresh token");
-
-      const { accessToken } = await response.json();
-      localStorage.setItem("token", accessToken);
-      return accessToken;
-    } catch (error) {
-      console.error("Token refresh error:", error);
-      logout(); 
-      return null;
+    } finally {
+      setCurrentUserLoading(false);
     }
   };
 
   useEffect(() => {
-    setCurrentUserLoading(true);
     const token = localStorage.getItem("token");
-
-    if (!token) {
-      setCurrentUserLoading(false); 
-      return;
+    if (token) {
+      fetchCurrentUser(token);
     }
-
-    fetchCurrentUser(token).finally(() => {
-      setCurrentUserLoading(false); 
-    });
-  }, [refetchCurrentUser]); 
+  }, [refetchCurrentUser]);
 
   return (
-    <AuthContext.Provider
-      value={{
-        isAuthenticated,
-        logout,
-        currentUser,
-        setCurrentUser,
-        currentUserLoading,
-        setCurrentUserLoading,
-        setRefetchCurrentUser,
-        refreshToken,
-      }}
-    >
+    <AuthContext.Provider value={{
+      isAuthenticated,
+      logout,
+      currentUser,
+      setCurrentUser,
+      currentUserLoading,
+      setRefetchCurrentUser
+    }}>
       {children}
     </AuthContext.Provider>
   );
