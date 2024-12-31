@@ -1,10 +1,17 @@
 import React, { useState } from "react";
-import { FaEnvelope, FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import { useAuth } from "../Contexts/AuthContext";
 import { Link } from "react-router-dom";
+import Footer from "../../Components/Footer";
 
 const Login = () => {
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [passwordVisible, setPasswordVisible] = useState(false);  
+  const navigate = useNavigate();
+  const { setRefetchCurrentUser } = useAuth();
 
   const {
     register,
@@ -12,126 +19,131 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  const { setRefetchCurrentUser } = useAuth();
-  const navigate = useNavigate();
-
-  const handleFormSubmit = async ({ email, password }) => {
+  const onSubmit = async (data) => {
     setLoading(true);
-  
+    console.log("Submitted data:", data);
     try {
-      const response = await fetch(`http://localhost:5000/users/login`, {
+      const response = await fetch("http://localhost:5000/users/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify(data),
       });
-  
-      if (!response.ok) {
+
+      setLoading(false);
+
+      if (response.ok) {
+        const { accessToken, refreshToken } = await response.json();
+        localStorage.setItem("token", accessToken);
+        localStorage.setItem("refreshToken", refreshToken);
+        setRefetchCurrentUser((prev) => !prev);
+        toast.success("Login Successfull")
+        navigate("/dashboard");
+      } else {
         const errorData = await response.json();
-        toast.error(errorData.error || "Invalid email or password.");
-        return;
+        console.error("Login failed:", errorData);
+        toast.error(errorData.message || "Login failed");
       }
-  
-      const data = await response.json();
-      localStorage.setItem("token", data.accessToken); 
-      toast.success("Login successful");
-      navigate("/dashboard");
-      setRefetchCurrentUser(prev => !prev);
     } catch (error) {
-      console.error("Error logging in:", error);
-      toast.error("An unexpected error occurred.");
-    } finally {
+      console.error("Login error:", error);
+      toast.error("An error occurred during login. Please try again later.");
       setLoading(false);
     }
   };
-  
 
   return (
-    <section className="bg-custom-first min-h-screen flex items-center justify-center">
-      <div className="flex flex-col lg:flex-row w-full max-w-7xl px-6 py-8 gap-12 lg:gap-24">
-        
-        {/* Left Content (Text Section) */}
-        <div className="flex flex-col justify-center items-start w-full lg:w-1/2">
-          <h1 className="text-4xl font-bold text-center lg:text-left text-white mb-4 t">
-            It's Your Voice to be Heard
-          </h1>
-          <p className="text-lg text-center lg:text-left text-white mb-8 md:px-8">
-            "Every vote is a voice, every voice is a choice. Empowering you to shape the future, one vote at a time. In a world where every voice matters, your vote is more than just a mark on a ballot—it’s a chance to stand for what you believe in and make a lasting impact."
-          </p>
-        </div>
+    <>
+      <section className="bg-custom-first min-h-screen flex items-center justify-center">
+        <div className="flex flex-col lg:flex-row w-full max-w-7xl px-6 py-8 gap-12 lg:gap-24 3xl:max-w-[120rem] 3xl:px-16">
+          <div className="flex flex-col justify-center items-start w-full lg:w-1/2">
+            <h1 className="text-4xl font-bold text-center lg:text-left text-white mb-4 3xl:text-6xl">
+              Welcome Back
+            </h1>
+            <p className="text-lg text-center lg:text-left text-white mb-8 3xl:text-2xl">
+              Log in to continue to your dashboard
+            </p>
+          </div>
 
-        {/* Right Content (Login Form) */}
-        <div className="w-full lg:w-1/2 bg-custom-second rounded-lg shadow-md p-6 space-y-4 sm:p-8 2xl:h-[38rem]">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white text-center mb-6">
-            Sign in to your account
-          </h2>
-          <form className="space-y-6">
-            {/* Email Input */}
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
-                Your email
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                className="bg-white border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="name@company.com"
-                required
-              />
-            </div>
+          <div className="w-full lg:w-1/2 bg-custom-second rounded-lg shadow-md p-6 space-y-4 sm:p-8 3xl:p-16">
+            <h2 className="text-2xl font-bolds text-center mb-6 3xl:text-4xl text-white">
+              Login
+            </h2>
 
-            {/* Password Input */}
-            <div>
-              <div className="flex items-center justify-between">
-                <label htmlFor="password" className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-900 mb-2 3xl:text-xl"
+                >
+                  Email
+                </label>
+                <input
+                  {...register("email", { required: "Email is required" })}
+                  type="email"
+                  className="bg-white border border-gray-300 w-full p-2.5 rounded-lg 3xl:h-24 3xl:w-[50rem] 3xl:text-3xl"
+                  placeholder="name@company.com"
+                />
+                {errors.email && (
+                  <p className="text-red-500 text-sm">{errors.email.message}</p>
+                )}
+              </div>
+
+              <div>
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-900 mb-2 3xl:text-xl"
+                >
                   Password
                 </label>
-                <Link to="#" className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">
-                  Forgot password?
-                </Link>
+                <div className="relative">
+                  <input
+                    {...register("password", {
+                      required: "Password is required",
+                    })}
+                    type={passwordVisible ? "text" : "password"}
+                    className="bg-white border border-gray-300 w-full p-2.5 rounded-lg 3xl:h-24 3xl:w-[50rem] 3xl:text-3xl"
+                    placeholder="••••••••"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setPasswordVisible(!passwordVisible)}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 3xl:text-3xl"
+                  >
+                    {passwordVisible ? <FaEyeSlash /> : <FaEye />}
+                  </button>
+                </div>
+
+                {errors.password && (
+                  <p className="text-red-500 text-sm">
+                    {errors.password.message}
+                  </p>
+                )}
               </div>
-              <div className="relative">
-                <input
-                  type={passwordVisible ? "text" : "password"}
-                  id="password"
-                  name="password"
-                  placeholder="••••••••"
-                  className="bg-white border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  required
-                />
+
+              <div className="mt-4">
                 <button
-                  type="button"
-                  onClick={() => setPasswordVisible(!passwordVisible)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 dark:text-white"
+                  type="submit"
+                  className="w-full bg-custom-blue text-white p-2.5 rounded-lg text-xl 3xl:text-3xl"
+                  disabled={loading}
                 >
-                  {passwordVisible ? <FaEyeSlash /> : <FaEye />}
+                  {loading ? "Logging in..." : "Log in"}
                 </button>
               </div>
-            </div>
 
-            {/* Submit Button */}
-            <div className="mt-4">
-              <button
-                type="submit"
-                className="w-full text-white bg-custom-blue hover:bg-custom-blue-dark focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-              >
-                Sign in
-              </button>
-            </div>
-
-            {/* Sign up link */}
-            <p className="text-sm font-light text-gray-500 dark:text-gray-400 mt-4 text-center">
-              Don’t have an account yet?{" "}
-              <Link to="/signup" className="font-medium text-primary-600 hover:underline dark:text-primary-500">
-                Sign up
-              </Link>
-            </p>
-          </form>
+              <p className="text-sm text-center mt-4 text-white 3xl:text-3xl">
+                Don't have an account?{" "}
+                <Link to="/register" className="text-primary-600">
+                  Sign up here
+                </Link>
+              </p>
+            </form>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+      <div className="bg-white h-3 w-full"></div>
+      <Footer />
+    </>
   );
 };
 
