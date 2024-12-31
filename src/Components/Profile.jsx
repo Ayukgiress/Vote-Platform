@@ -6,11 +6,10 @@ import { useAuth } from "../Pages/Contexts/AuthContext";
 
 const Profile = ({ isAuthenticated }) => {
   const { logout } = useAuth();
-  const [email, setEmail] = useState(null); // State to hold the email
+  const [email, setEmail] = useState(null); 
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  // Fetch email on component load
   useEffect(() => {
     const fetchEmail = async () => {
       const token = localStorage.getItem("token");
@@ -31,22 +30,10 @@ const Profile = ({ isAuthenticated }) => {
           toast.error(errorData.error || "Failed to fetch email.");
           return;
         }
-// Profile route to fetch only email
-router.get('/profile', auth, async (req, res) => {
-    try {
-      // Fetch user based on ID and only return the email
-      const user = await User.findById(req.user.id).select('email');
-      if (!user) {
-        return res.status(404).json({ error: 'User not found' });
-      }
-      res.json(user); // Only email will be returned due to .select('email')
-    } catch (error) {
-      res.status(500).json({ error: 'Server error' });
-    }
-  });
+
   
         const data = await response.json();
-        setEmail(data.email); // Only set the email in state
+        setEmail(data.email); 
       } catch (error) {
         console.error("Error fetching email:", error);
         toast.error("An unexpected error occurred.");
@@ -58,7 +45,6 @@ router.get('/profile', auth, async (req, res) => {
     fetchEmail();
   }, [isAuthenticated, navigate]);
 
-  // Handle Logout
   const handleLogout = () => {
     logout();
     navigate("/login");
@@ -70,13 +56,11 @@ router.get('/profile', auth, async (req, res) => {
   return (
     <div className="hidden lg:flex flex-col items-center justify-center bg-neutral-800 h-full p-4">
       <div className="bg-black w-full flex flex-col items-center p-6 shadow-lg rounded-lg profile">
-        {/* Display only the email */}
         <div className="text-center mt-4">
           <span className="text-lg font-bold text-white">{email}</span>
         </div>
       </div>
 
-      {/* Logout button */}
       <div className="flex items-center justify-center mt-10">
         <button
           onClick={handleLogout}

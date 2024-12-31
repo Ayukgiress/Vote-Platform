@@ -76,12 +76,12 @@ const ContestModal = ({ isOpen, onClose, onSubmit }) => {
         !isOpen ? 'hidden' : ''
       }`}
     >
-      <div className="bg-white rounded-lg p-6 w-full max-w-lg">
+      <div className="bg-black rounded-lg p-6 w-full max-w-lg text-slate-50">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-xl font-semibold">Create Contest</h1>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
+          {/* <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
             <X className="h-6 w-6" />
-          </button>
+          </button> */}
         </div>
 
         {error && (
@@ -115,7 +115,7 @@ const ContestModal = ({ isOpen, onClose, onSubmit }) => {
               name="description"
               value={formData.description}
               onChange={handleInputChange}
-              className="border border-gray-300 rounded-lg p-2 w-full"
+              className="border border-white rounded-lg p-2 w-full bg-white"
               rows="4"
               placeholder="Enter a short description for the contest"
             />
@@ -183,14 +183,14 @@ const ContestModal = ({ isOpen, onClose, onSubmit }) => {
             <button
               type="button"
               onClick={onClose}
-              className="text-gray-600 hover:text-gray-900 py-2 px-4 rounded-lg border"
+              className="text-white py-2 px-4 rounded-lg border"
               disabled={isSubmitting}
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="text-white bg-blue-600 hover:bg-blue-700 py-2 px-4 rounded-lg disabled:opacity-50"
+              className="text-white bg-custom-blue hover:bg-custom-blue py-2 px-4 rounded-lg disabled:opacity-50"
               disabled={isSubmitting}
             >
               {isSubmitting ? 'Creating...' : 'Create Contest'}

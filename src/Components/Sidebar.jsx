@@ -36,11 +36,11 @@ const Sidebar = () => {
         className={`
           fixed sm:static top-0 left-0 h-screen w-64 
           bg-custom-blue transform transition-transform duration-300 
-          flex flex-col z-50 sm:translate-x-0
+          flex flex-col z-50 sm:translate-x-0 
           ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}
         `}
       >
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-screen">
           <div className="p-4 flex items-center justify-between">
             <h1 className="text-white text-xl font-semibold">Dashboard</h1>
             {isMenuOpen && (
