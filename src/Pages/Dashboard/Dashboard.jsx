@@ -4,7 +4,7 @@ import Sidebar from '../../Components/Sidebar';
 
 const Dashboard = () => {
   return (
-    <div className="flex items-start justify-start min-h-screen bg-gray-100">
+    <div className="flex items-start justify-start h-screen bg-gray-100 fixed">
         <Sidebar />
       
 

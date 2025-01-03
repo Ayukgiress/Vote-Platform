@@ -18,7 +18,7 @@ import Footer from '../../Components/Footer';
 
 
 
-
+// Added contestants array
 
 
 
@@ -107,7 +107,6 @@ const HomePage = () => {
                 </section>
             </section>
 
-            {/* Awards section - moved down and adjusted positioning */}
             <section className='2xl:h-[84rem] 3xl:h-[134rem] xl:h-[140rem] flex items-center justify-center flex-col mt-[62rem] lg:mt-[39rem] xl:mt-[50rem] 2xl:mt-[55rem] 3xl:mt-[90rem] bg-custom-cyan'>
                 <div className='flex items-center justify-center flex-col'>
                     <div className='text-center mb-12'>
@@ -132,7 +131,7 @@ const HomePage = () => {
                                 A vote for teachers is a vote for education.
                                 In the classroom and at the ballot box, teachers lead.
                                 Every vote from a teacher is a vote for a better tomorrow.
-                            </p>
+                                // Added contestants array  </p>
                         </div>
                         <div className='w-full shadow-button-c shadow-md bg-white h-96 gap-7 rounded-md  text-custom-blue lg:w-96 md:w-72 xl:w-[38rem] xl:h-[35rem] 2xl:w-[35rem] 3xl:w-[45rem] 3xl:h-[49rem]'>
                             <img src={voteImage} alt="vtimg" className='w-full h-40 object-cover rounded-lg xl:w-[35rem] xl:h-[16rem] 3xl:w-[48rem] 3xl:h-[25rem]' />

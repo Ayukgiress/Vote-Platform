@@ -53,10 +53,8 @@ const App = () => {
               </button>
             </div>
 
-            <ul className="hidden sm:flex items-end justify-center gap-6 2xl:mr-32 sm:mr-10 3xl:text-4xl 3xl:mr-32">
+            <ul className="hidden sm:flex items-end justify-center gap-12 2xl:mr-32 sm:mr-10 3xl:text-4xl 3xl:mr-32">
               <li><Link  to="/">Home</Link></li>
-              <li><Link to="/about">About</Link></li>
-              <li><Link to="/contact">Contact</Link></li>
               <li><Link to="/login">Login</Link></li>
               <li><Link to="/register">Register</Link></li>
             </ul>

@@ -8,7 +8,7 @@ const ContestModal = ({ isOpen, onClose, onSubmit }) => {
     description: '',
     startDate: '',
     endDate: '',
-    contestants: [] // Added contestants array
+    contestants: [] 
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -38,7 +38,6 @@ const ContestModal = ({ isOpen, onClose, onSubmit }) => {
     setError(null);
 
     try {
-      // Validate required fields
       if (!formData.name || !formData.description || !formData.startDate || !formData.endDate) {
         throw new Error('Please fill in all required fields');
       }
@@ -47,10 +46,8 @@ const ContestModal = ({ isOpen, onClose, onSubmit }) => {
         throw new Error('Please select a cover photo');
       }
 
-      // Pass the formData directly to the parent's onSubmit
       await onSubmit(formData);
       
-      // Reset form
       setFormData({
         name: '',
         coverPhoto: null,
@@ -72,16 +69,14 @@ const ContestModal = ({ isOpen, onClose, onSubmit }) => {
 
   return (
     <div
-      className={`fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center ${
+      className={`fixed inset-0 bg-custom-blue bg-opacity-50 flex justify-center items-center ${
         !isOpen ? 'hidden' : ''
       }`}
     >
-      <div className="bg-black rounded-lg p-6 w-full max-w-lg text-slate-50">
+      <div className="bg-custom-blue rounded-lg p-6 w-full max-w-lg text-slate-50">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-xl font-semibold">Create Contest</h1>
-          {/* <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
-            <X className="h-6 w-6" />
-          </button> */}
+
         </div>
 
         {error && (
@@ -145,7 +140,6 @@ const ContestModal = ({ isOpen, onClose, onSubmit }) => {
             </div>
           </div>
 
-          {/* Start and End Date */}
           <div className="space-y-2">
             <div className="flex space-x-4">
               <div className="flex-1">

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { toast } from 'sonner';
 
 const AddContestantModal = ({ isOpen, onClose, contestId, onAddContestant }) => {
   const [formData, setFormData] = useState({
@@ -24,11 +25,13 @@ const AddContestantModal = ({ isOpen, onClose, contestId, onAddContestant }) => 
       );
 
       if (response.ok) {
+        toast.success("contestant added successfully")
         const result = await response.json();
-        onAddContestant(result.data); // Pass new contestant data back to parent
-        onClose(); // Close modal
+        onAddContestant(result.data); 
+        onClose(); 
       }
     } catch (error) {
+      toast.error("failure to add contestant")
       console.error('Error adding contestant:', error);
     }
   };
@@ -36,10 +39,10 @@ const AddContestantModal = ({ isOpen, onClose, contestId, onAddContestant }) => 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black bg-opacity-65 flex items-center justify-center z-50">
       <div className="bg-white shadow-lg rounded-lg w-96 p-6">
         <h2 className="text-xl font-semibold mb-4 text-center text-gray-800">Add New Contestant</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4 ">
           <div>
             <label className="block text-sm font-medium text-gray-700">Name</label>
             <input
@@ -59,7 +62,7 @@ const AddContestantModal = ({ isOpen, onClose, contestId, onAddContestant }) => 
               accept="image/*"
             />
           </div>
-          <div className="flex justify-center mt-4 space-x-4">
+          <div className="flex justify-between mt-4 space-x-4">
             <button
               type="button"
               onClick={onClose}

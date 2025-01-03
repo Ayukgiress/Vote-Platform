@@ -62,7 +62,6 @@ const Registration = () => {
     <>
       <section className="bg-custom-first min-h-screen flex items-center justify-center">
         <div className="flex flex-col lg:flex-row w-full max-w-7xl 3xl:max-w-[120rem] px-6 py-8 gap-12 lg:gap-24">
-          {/* Left Content */}
           <div className="flex flex-col justify-between items-start w-full lg:w-1/2">
             <div className="flex items-start justify-start text-3xl text-white">
               <img
@@ -92,7 +91,7 @@ const Registration = () => {
               <div>
                 <label
                   htmlFor="username"
-                  className="block text-sm font-medium text-gray-900 mb-2 3xl:text-xl"
+                  className="block text-sm font-medium text-white mb-2 3xl:text-xl"
                 >
                   Username
                 </label>
@@ -114,7 +113,7 @@ const Registration = () => {
               <div>
                 <label
                   htmlFor="email"
-                  className="block text-sm font-medium text-gray-900 mb-2 3xl:text-xl"
+                  className="block text-sm font-medium text-white mb-2 3xl:text-xl"
                 >
                   Your email
                 </label>
@@ -136,7 +135,7 @@ const Registration = () => {
                 <div className="flex items-center justify-between">
                   <label
                     htmlFor="password"
-                    className="block text-sm font-medium text-gray-900 mb-2 3xl:text-xl"
+                    className="block text-sm font-medium text-white mb-2 3xl:text-xl"
                   >
                     Password
                   </label>

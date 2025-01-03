@@ -5,7 +5,7 @@ import { Plus } from "lucide-react";
 import axios from "axios";
 import { toast } from "sonner";
 import { useAuth } from "../Contexts/AuthContext";
-import { CopyToClipboard } from "react-copy-to-clipboard"; // Importing the Clipboard package
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 const Overview = () => {
   const { currentUser, currentUserLoading, isAuthenticated } = useAuth();
@@ -15,7 +15,6 @@ const Overview = () => {
   const [selectedContestId, setSelectedContestId] = useState(null);
   const [publishedContests, setPublishedContests] = useState(new Set());
 
-  // Fetch contests when the component mounts or when authentication state changes
   const fetchContests = async () => {
     if (currentUserLoading || !isAuthenticated || !currentUser?._id) return;
 
@@ -27,7 +26,7 @@ const Overview = () => {
       }
 
       const response = await axios.get(
-        `http://localhost:5000/contests/${currentUser._id}`, // Updated to localhost
+        `http://localhost:5000/contests/${currentUser._id}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -37,8 +36,8 @@ const Overview = () => {
         setContests(response.data.data);
         const publishedSet = new Set(
           response.data.data
-            .filter(contest => contest.isPublished)
-            .map(contest => contest._id)
+            .filter((contest) => contest.isPublished)
+            .map((contest) => contest._id)
         );
         setPublishedContests(publishedSet);
       }
@@ -47,32 +46,38 @@ const Overview = () => {
     }
   };
 
-  // Handle publish/unpublish contest status
   const handlePublishToggle = async (contestId) => {
+    const contest = contests.find((c) => c._id === contestId);
+    if (!contest || contest.contestants.length === 0) {
+      toast.error("Contest must have at least one contestant to be published");
+      return;
+    }
+
     try {
       const token = localStorage.getItem("token");
       const isPublished = !publishedContests.has(contestId);
 
       const response = await axios.patch(
-        `http://localhost:5000/contests/${contestId}/publish`, // Updated to localhost
+        `http://localhost:5000/contests/${contestId}/publish`,
         { isPublished },
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
       if (response.data.success) {
-        setPublishedContests(prev => {
+        setPublishedContests((prev) => {
           const newSet = new Set(prev);
           isPublished ? newSet.add(contestId) : newSet.delete(contestId);
           return newSet;
         });
-        toast.success(isPublished ? "Contest published!" : "Contest unpublished");
+        toast.success(
+          isPublished ? "Contest published!" : "Contest unpublished"
+        );
       }
     } catch (error) {
       toast.error("Failed to update contest status");
     }
   };
 
-  // Create a new contest
   const handleCreateContest = async (contestData) => {
     if (currentUserLoading || !isAuthenticated) return;
     const token = localStorage.getItem("token");
@@ -91,7 +96,7 @@ const Overview = () => {
       }
 
       const response = await axios.post(
-        "http://localhost:5000/contests", // Updated to localhost
+        "http://localhost:5000/contests",
         formData,
         {
           headers: {
@@ -102,7 +107,7 @@ const Overview = () => {
       );
 
       if (response.data.success) {
-        setContests(prev => [...prev, response.data.data]);
+        setContests((prev) => [...prev, response.data.data]);
         setIsModalOpen(false);
         toast.success("Contest created successfully!");
       }
@@ -111,21 +116,20 @@ const Overview = () => {
     }
   };
 
-  // UseEffect hook to fetch contests on mount and when authentication changes
   useEffect(() => {
     fetchContests();
   }, [currentUser, currentUserLoading, isAuthenticated]);
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50 p-6 space-y-6 overflow-auto w-[102rem]">
-      <div className="flex items-center justify-between w-full">
-        <h1 className="text-2xl font-semibold text-gray-800">Overview</h1>
+    <div className="flex flex-col h-lvh bg-gray-50 p-6 space-y-6 overflow-auto w-full xl:w-[102rem] 3xl:w-[138rem]">
+      <div className="flex items-center justify-between w-full gap-3">
+        <h1 className="text-xl font-bold text-gray-800"> Overview</h1>
         <button
           onClick={() => setIsModalOpen(true)}
-          className="bg-custom-blue text-white py-2 px-6 rounded-md flex items-center gap-2 shadow-lg hover:bg-custom-first transition-all duration-200"
+          className="bg-custom-blue text-white py-3 px-8 rounded-md flex items-center gap-1 shadow-lg hover:bg-custom-blue transition-all duration-300"
         >
-          <Plus className="h-5 w-5" />
-          <span>Create Contest</span>
+          <Plus className="h-3 w-5" />
+          <span className="text-sm">Create Contest</span>
         </button>
       </div>
 
@@ -133,97 +137,137 @@ const Overview = () => {
         {contests.map((contest) => (
           <div
             key={contest._id}
-            className="bg-white p-6 rounded-xl shadow-lg transition-all duration-300 hover:shadow-2xl transform hover:scale-105 border border-gray-200"
+            className="bg-white p-6 lg:p-8 rounded-xl shadow-lg border border-gray-200"
           >
-            <div className="overflow-hidden rounded-xl mb-6">
-              <img
-                src={`http://localhost:5000/${contest.coverPhotoUrl}`} // Updated to localhost
-                alt="Cover"
-                className="w-full h-56 object-cover rounded-xl transform hover:scale-105 transition-all duration-500"
-              />
-            </div>
-
-            <div className="text-center space-y-3">
-              <h2 className="text-2xl font-semibold text-gray-900">{contest.name}</h2>
-              <p className="text-sm text-gray-600">{contest.description}</p>
-
-              <div className="flex justify-center gap-6 mt-6">
-                <div className="flex flex-col items-center bg-gray-200 p-4 rounded-lg shadow-md">
-                  <h1 className="text-xs font-medium text-gray-700">Start Date</h1>
-                  <p className="text-sm text-gray-500">{contest.startDate}</p>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div className="space-y-6">
+                <div className="overflow-hidden rounded-xl">
+                  <img
+                    src={`http://localhost:5000/${contest.coverPhotoUrl}`}
+                    alt="Cover"
+                    className="w-full h-72 object-cover rounded-xl transform hover:scale-105 transition-duration-300"
+                  />
                 </div>
-                <div className="flex flex-col items-center bg-gray-200 p-4 rounded-lg shadow-md">
-                  <h1 className="text-xs font-medium text-gray-700">End Date</h1>
-                  <p className="text-sm text-gray-500">{contest.endDate}</p>
+
+                <div className="flex items-start justify-start gap-5 flex-col">
+                  <div className="flex items-start justify-start flex-col">
+                    <h2 className="text-2xl font-semibold text-gray-900">
+                      {contest.name}
+                    </h2>
+                    <p className="mt-2 text-gray-600">{contest.description}</p>
+                  </div>
+
+                  <div className="flex items-center justify-center gap-4">
+                    <div className="bg-gray-100 p-4 rounded-lg">
+                      <h1 className="text-sm font-medium text-gray-700">
+                        Start Date
+                      </h1>
+                      <p className="text-gray-600">{contest.startDate}</p>
+                    </div>
+                    <div className="bg-gray-100 p-4 rounded-lg">
+                      <h1 className="text-sm font-medium text-gray-700">
+                        End Date
+                      </h1>
+                      <p className="text-gray-600">{contest.endDate}</p>
+                    </div>
+                  </div>
                 </div>
+
+                {publishedContests.has(contest._id) && (
+                  <div className="bg-blue-50 p-4 rounded-lg space-y-2">
+                    <p className="text-sm font-medium text-gray-700">
+                      Voting URL
+                    </p>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        readOnly
+                        value={`${window.location.origin}/vote/${contest._id}`}
+                        className="flex-1 text-sm bg-white p-2 rounded border"
+                      />
+                      <CopyToClipboard
+                        text={`${window.location.origin}/vote/${contest._id}`}
+                      >
+                        <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                          Copy
+                        </button>
+                      </CopyToClipboard>
+                    </div>
+                  </div>
+                )}
               </div>
-            </div>
 
-            {publishedContests.has(contest._id) && (
-              <div className="mt-4 p-4 bg-gray-100 rounded-lg flex justify-between items-center">
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-gray-700">Voting URL:</p>
-                  <p className="text-blue-600 break-all">
-                    {`${window.location.origin}/vote/${contest._id}`}
-                  </p>
+              <div className="space-y-6">
+                <div>
+                  <h3 className="font-semibold text-xl text-gray-800 mb-4">
+                    Contestants
+                  </h3>
+                  {contest.contestants?.length > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {contest.contestants.map((contestant, index) => (
+                        <div
+                          key={index}
+                          className="bg-gray-50 rounded-lg overflow-hidden flex"
+                        >
+                          {contestant.photoUrl && (
+                            <img
+                              src={
+                                contestant.photoUrl.startsWith("http")
+                                  ? contestant.photoUrl
+                                  : `http://localhost:5000${contestant.photoUrl}`
+                              }
+                              alt={contestant.name}
+                              className="w-24 h-24 object-cover"
+                            />
+                          )}
+                          <div className="p-4 flex-1">
+                            <h4 className="font-medium text-gray-900">
+                              {contestant.name}
+                            </h4>
+                            <div className="mt-1 flex justify-between text-sm">
+                              {contestant.votes && (
+                                <span className="text-blue-600">
+                                  {contestant.votes} votes
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-4 bg-gray-50 rounded-lg">
+                      <p className="text-gray-500">No contestants yet.</p>
+                    </div>
+                  )}
                 </div>
-                <CopyToClipboard text={`${window.location.origin}/vote/${contest._id}`}>
-                  <button className="ml-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-                    Copy URL
+
+                <div className="flex gap-4 mt-4">
+                  {!publishedContests.has(contest._id) && (
+                    <button
+                      onClick={() => {
+                        setSelectedContestId(contest._id);
+                        setIsContestantModalOpen(true);
+                      }}
+                      className="flex-1 bg-custom-blue text-white py-2 px-4 rounded-md hover:bg-custom-blue"
+                    >
+                      Add Contestant
+                    </button>
+                  )}
+                  <button
+                    onClick={() => handlePublishToggle(contest._id)}
+                    className={`flex-1 py-2 px-4 rounded-md ${
+                      publishedContests.has(contest._id)
+                        ? "bg-yellow-500 hover:bg-yellow-600"
+                        : "bg-green-500 hover:bg-green-600"
+                    } text-white`}
+                  >
+                    {publishedContests.has(contest._id)
+                      ? "Unpublish"
+                      : "Publish"}
                   </button>
-                </CopyToClipboard>
+                </div>
               </div>
-            )}
-
-            <div className="flex gap-4 mt-6">
-              {!publishedContests.has(contest._id) && (
-                <button
-                  onClick={() => {
-                    setSelectedContestId(contest._id);
-                    setIsContestantModalOpen(true);
-                  }}
-                  className="flex-1 bg-custom-second text-white py-2 px-6 rounded-md shadow-lg hover:bg-custom-fourth transition-all duration-200"
-                >
-                  Add Contestant
-                </button>
-              )}
-
-              <button
-                onClick={() => handlePublishToggle(contest._id)}
-                className={`flex-1 py-2 px-6 rounded-md shadow-lg transition-all duration-200 ${
-                  publishedContests.has(contest._id)
-                    ? "bg-yellow-500 hover:bg-yellow-600"
-                    : "bg-green-500 hover:bg-green-600"
-                } text-white`}
-              >
-                {publishedContests.has(contest._id) ? "Unpublish" : "Publish"}
-              </button>
-            </div>
-
-            <div className="mt-8">
-              <h3 className="font-semibold text-lg text-gray-800">Contestants</h3>
-              {contest.contestants?.length > 0 ? (
-                <ul className="space-y-3 mt-3">
-                  {contest.contestants.map((contestant, index) => (
-                    <li key={index} className="flex justify-between items-center space-x-4">
-                      <div className="flex items-center gap-3">
-                        {contestant.photoUrl && (
-                          <img
-                            src={contestant.photoUrl.startsWith("http")
-                              ? contestant.photoUrl
-                              : `http://localhost:5000${contestant.photoUrl}`} 
-                            alt={contestant.name}
-                            className="h-32 w-32 rounded-full border-4 border-white shadow-md"
-                          />
-                        )}
-                        <span className="text-gray-700 font-medium">{contestant.name}</span>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="text-sm text-gray-500 mt-2">No contestants yet.</p>
-              )}
             </div>
           </div>
         ))}
@@ -239,10 +283,13 @@ const Overview = () => {
         onClose={() => setIsContestantModalOpen(false)}
         contestId={selectedContestId}
         onAddContestant={(newContestant) => {
-          setContests(prevContests =>
-            prevContests.map(contest =>
+          setContests((prevContests) =>
+            prevContests.map((contest) =>
               contest._id === selectedContestId
-                ? { ...contest, contestants: [...contest.contestants, newContestant] }
+                ? {
+                    ...contest,
+                    contestants: [...contest.contestants, newContestant],
+                  }
                 : contest
             )
           );
