@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import Profile from './Profile';
+import { Home, Settings, Award, Users } from 'lucide-react'; 
 
 const NAVIGATION_ITEMS = [
-  { path: '/', label: 'Home' },
-  { path: '/dashboard', label: 'Overview' },
-  { path: '/dashboard/settings', label: 'Settings' },
-  { path: '/dashboard/contests', label: 'Contests' }
+  { path: '/', label: 'Home', icon: <Home className="h-5 w-5 text-white" /> },
+  { path: '/dashboard', label: 'Overview', icon: <Users className="h-5 w-5 text-white" /> },
+  { path: '/dashboard/settings', label: 'Settings', icon: <Settings className="h-5 w-5 text-white" /> },
+  { path: '/dashboard/contests', label: 'Contests', icon: <Award className="h-5 w-5 text-white" /> }
 ];
 
 const Sidebar = () => {
@@ -17,9 +18,10 @@ const Sidebar = () => {
 
   return (
     <>
+
       <button
         onClick={toggleMenu}
-        className="fixed top-4 left-4 z-50 p-2 rounded-lg  text-black sm:hidden"
+        className="fixed top-4 left-4 z-50 p-2 rounded-lg text-black sm:hidden"
         aria-label="Toggle menu"
       >
         <span className="text-2xl">☰</span>
@@ -36,11 +38,11 @@ const Sidebar = () => {
         className={`
           fixed sm:static top-0 left-0 h-screen w-64 
           bg-custom-blue transform transition-transform duration-300 
-          flex flex-col z-50 sm:translate-x-0
+          flex flex-col z-50 sm:translate-x-0 
           ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}
         `}
       >
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-screen">
           <div className="p-4 flex items-center justify-between">
             <h1 className="text-white text-xl font-semibold">Dashboard</h1>
             {isMenuOpen && (
@@ -55,8 +57,8 @@ const Sidebar = () => {
           </div>
 
           <nav className="flex-1 p-4">
-            <ul className="flex flex-col gap-2">
-              {NAVIGATION_ITEMS.map(({ path, label }) => (
+            <ul className="flex flex-col gap-8">
+              {NAVIGATION_ITEMS.map(({ path, label, icon }) => (
                 <li key={path}>
                   <Link
                     to={path}
@@ -67,6 +69,7 @@ const Sidebar = () => {
                       ${location.pathname === path ? 'bg-custom-third' : ''}
                     `}
                   >
+                    {icon}
                     <span className="text-white">{label}</span>
                   </Link>
                 </li>

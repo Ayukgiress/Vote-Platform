@@ -8,7 +8,7 @@ const ContestModal = ({ isOpen, onClose, onSubmit }) => {
     description: '',
     startDate: '',
     endDate: '',
-    contestants: [] // Added contestants array
+    contestants: [] 
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -38,7 +38,6 @@ const ContestModal = ({ isOpen, onClose, onSubmit }) => {
     setError(null);
 
     try {
-      // Validate required fields
       if (!formData.name || !formData.description || !formData.startDate || !formData.endDate) {
         throw new Error('Please fill in all required fields');
       }
@@ -47,10 +46,8 @@ const ContestModal = ({ isOpen, onClose, onSubmit }) => {
         throw new Error('Please select a cover photo');
       }
 
-      // Pass the formData directly to the parent's onSubmit
       await onSubmit(formData);
       
-      // Reset form
       setFormData({
         name: '',
         coverPhoto: null,
@@ -72,16 +69,14 @@ const ContestModal = ({ isOpen, onClose, onSubmit }) => {
 
   return (
     <div
-      className={`fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center ${
+      className={`fixed inset-0 bg-custom-blue bg-opacity-50 flex justify-center items-center ${
         !isOpen ? 'hidden' : ''
       }`}
     >
-      <div className="bg-white rounded-lg p-6 w-full max-w-lg">
+      <div className="bg-custom-blue rounded-lg p-6 w-full max-w-lg text-slate-50">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-xl font-semibold">Create Contest</h1>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
-            <X className="h-6 w-6" />
-          </button>
+
         </div>
 
         {error && (
@@ -115,7 +110,7 @@ const ContestModal = ({ isOpen, onClose, onSubmit }) => {
               name="description"
               value={formData.description}
               onChange={handleInputChange}
-              className="border border-gray-300 rounded-lg p-2 w-full"
+              className="border border-white rounded-lg p-2 w-full bg-white"
               rows="4"
               placeholder="Enter a short description for the contest"
             />
@@ -145,7 +140,6 @@ const ContestModal = ({ isOpen, onClose, onSubmit }) => {
             </div>
           </div>
 
-          {/* Start and End Date */}
           <div className="space-y-2">
             <div className="flex space-x-4">
               <div className="flex-1">
@@ -183,14 +177,14 @@ const ContestModal = ({ isOpen, onClose, onSubmit }) => {
             <button
               type="button"
               onClick={onClose}
-              className="text-gray-600 hover:text-gray-900 py-2 px-4 rounded-lg border"
+              className="text-white py-2 px-4 rounded-lg border"
               disabled={isSubmitting}
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="text-white bg-blue-600 hover:bg-blue-700 py-2 px-4 rounded-lg disabled:opacity-50"
+              className="text-white bg-custom-blue hover:bg-custom-blue py-2 px-4 rounded-lg disabled:opacity-50"
               disabled={isSubmitting}
             >
               {isSubmitting ? 'Creating...' : 'Create Contest'}
