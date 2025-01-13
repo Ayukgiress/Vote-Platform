@@ -11,7 +11,7 @@ import VerifyEmail from './Components/VerifyEmail';
 import Dashboard from './Pages/Dashboard/Dashboard';
 import Settings from './Pages/DashboardsOutlets/Settings';
 import Overview from './Pages/DashboardsOutlets/Overview';
-import Contests from './Pages/DashboardsOutlets/Contests';
+import Vote from './Pages/DashboardsOutlets/Vote';
 
 const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false); 
@@ -20,7 +20,7 @@ const App = () => {
   useEffect(() => {
     const handleScroll = (event) => {
       event.preventDefault();
-      const targetId = event.target.getAttribute('href').slice(1)
+      const targetId = event.target.getAttribute('href').slice(1);
       const element = document.getElementById(targetId);
       if (element) {
         element.scrollIntoView({ behavior: 'smooth' });
@@ -43,18 +43,18 @@ const App = () => {
       <div>
         {!isDashboardRoute && (
           <nav className="flex items-center justify-between h-14 3xl:h-28">
-            <div className="sm:ml-10  3xl:ml-16 2xl:ml-12">
+            <div className="sm:ml-10 3xl:ml-16 2xl:ml-12">
               <img src={LogoImage} alt="Logo" className="h-12 w-20 rounded-md ml-2 3xl:w-44 3xl:h-24 3xl:mr-2" />
             </div>
 
             <div className="sm:hidden flex items-center">
               <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-3xl">
-                &#9776; 
+                &#9776; {/* Consider using an icon library like react-icons */}
               </button>
             </div>
 
             <ul className="hidden sm:flex items-end justify-center gap-12 2xl:mr-32 sm:mr-10 3xl:text-4xl 3xl:mr-32">
-              <li><Link  to="/">Home</Link></li>
+              <li><Link to="/">Home</Link></li>
               <li><Link to="/login">Login</Link></li>
               <li><Link to="/register">Register</Link></li>
             </ul>
@@ -78,11 +78,11 @@ const App = () => {
           <Route path='/verify-email' element={<VerifyEmails />} />
           <Route path='/verify-email/:token' element={<VerifyEmail />} />
 
-          {/* Dashboard Routes */}
+          <Route path="/:contestId/vote" element={<Vote />} />  
+
           <Route path="/dashboard" element={<Dashboard />}>
             <Route index element={<Overview />} /> {/* Default route for /dashboard */}
             <Route path="settings" element={<Settings />} />
-            <Route path="contests" element={<Contests />} />
           </Route>
         </Routes>
       </div>

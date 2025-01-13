@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import Footer from "../../Components/Footer";
 import LogoImage from "/src/assets/images/2fa8fddc3b07465da808456a6a979854-free.png";
+import API_URL from "../Constants/Constants";
 
 const Registration = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -20,7 +21,7 @@ const Registration = () => {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:5000/users/register", {
+      const response = await fetch(`${API_URL}/users/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -124,7 +125,7 @@ const Registration = () => {
                   })}
                   type="email"
                   className="bg-white border border-gray-300 w-full p-2.5 rounded-lg 3xl:h-24 3xl:w-[50rem] 3xl:text-3xl"
-                  placeholder="name@company.com"
+                  placeholder="name@cgmail.com"
                 />
                 {errors.email && (
                   <p className="text-red-500 text-sm">{errors.email.message}</p>

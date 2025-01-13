@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { CiLogout } from "react-icons/ci";
 import { useAuth } from "../Pages/Contexts/AuthContext";
 import { UserCircle } from "lucide-react";
+import API_URL from "../Pages/Constants/Constants";
 
 const Profile = ({ isAuthenticated }) => {
   const { logout } = useAuth();
@@ -20,7 +21,7 @@ const Profile = ({ isAuthenticated }) => {
       }
 
       try {
-        const response = await fetch("http://localhost:5000/users/profile", {
+        const response = await fetch(`${API_URL}//users/profile`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

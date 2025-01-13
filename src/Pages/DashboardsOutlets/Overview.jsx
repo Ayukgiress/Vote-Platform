@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import ContestModal from "../../Components/Modals/ContestModal";
 import AddContestantModal from "../../Components/Modals/Contestants";
-import { Plus } from "lucide-react";
+import { Plus, Loader2 } from "lucide-react";
 import axios from "axios";
 import { toast } from "sonner";
 import { useAuth } from "../Contexts/AuthContext";
-import { CopyToClipboard } from "react-copy-to-clipboard";
+import ContestItem from "../../Components/ContestItem";
+import API_URL from '../../Pages/Constants/Constants';
+
 
 const Overview = () => {
   const { currentUser, currentUserLoading, isAuthenticated } = useAuth();
@@ -14,23 +16,22 @@ const Overview = () => {
   const [isContestantModalOpen, setIsContestantModalOpen] = useState(false);
   const [selectedContestId, setSelectedContestId] = useState(null);
   const [publishedContests, setPublishedContests] = useState(new Set());
+  const [loading, setLoading] = useState(true);
 
-  const fetchContests = async () => {
-    if (currentUserLoading || !isAuthenticated || !currentUser?._id) return;
+  const [editingContest, setEditingContest] = useState(null);
 
+  const getAuthHeaders = useCallback(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      throw new Error("Authentication token missing");
+    }
+    return { Authorization: `Bearer ${token}` };
+  }, []);
+
+  const fetchContests = useCallback(async () => {
     try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        toast.error("Authentication token missing");
-        return;
-      }
-
-      const response = await axios.get(
-        `http://localhost:5000/contests/${currentUser._id}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      setLoading(true);
+      const response = await axios.get(`${API_URL}/contests/all`);
 
       if (response.data?.success) {
         setContests(response.data.data);
@@ -42,258 +43,181 @@ const Overview = () => {
         setPublishedContests(publishedSet);
       }
     } catch (error) {
+      console.error("Fetch contests error:", error);
       toast.error(error.response?.data?.error || "Failed to fetch contests");
+    } finally {
+      setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchContests();
+  }, [fetchContests]);
 
   const handlePublishToggle = async (contestId) => {
     const contest = contests.find((c) => c._id === contestId);
-    if (!contest || contest.contestants.length === 0) {
+    if (!contest?.contestants?.length) {
       toast.error("Contest must have at least one contestant to be published");
       return;
     }
 
     try {
-      const token = localStorage.getItem("token");
+      const headers = getAuthHeaders();
       const isPublished = !publishedContests.has(contestId);
 
       const response = await axios.patch(
-        `http://localhost:5000/contests/${contestId}/publish`,
+        `${API_URL}/contests/${contestId}/publish`,
         { isPublished },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers }
       );
 
       if (response.data.success) {
         setPublishedContests((prev) => {
           const newSet = new Set(prev);
-          isPublished ? newSet.add(contestId) : newSet.delete(contestId);
+          if (isPublished) {
+            newSet.add(contestId);
+          } else {
+            newSet.delete(contestId);
+          }
           return newSet;
         });
-        toast.success(
-          isPublished ? "Contest published!" : "Contest unpublished"
+
+        setContests(prev =>
+          prev.map(c =>
+            c._id === contestId
+              ? { ...c, isPublished: isPublished }
+              : c
+          )
         );
+
+        toast.success(isPublished ? "Contest published!" : "Contest unpublished");
       }
     } catch (error) {
-      toast.error("Failed to update contest status");
+      console.error("Publish toggle error:", error);
+      toast.error(error.response?.data?.error || "Failed to update contest status");
     }
   };
 
-  const handleCreateContest = async (contestData) => {
-    if (currentUserLoading || !isAuthenticated) return;
-    const token = localStorage.getItem("token");
-    if (!token) return;
-
+  const handleVote = async (contestId, contestantId) => {
     try {
-      const formData = new FormData();
-      formData.append("name", contestData.name);
-      formData.append("description", contestData.description);
-      formData.append("startDate", contestData.startDate);
-      formData.append("endDate", contestData.endDate);
-      formData.append("userId", currentUser._id);
+      if (!contestId || !contestantId) {
+        toast.error("Invalid contest or contestant ID");
+        return;
+      }
 
-      if (contestData.coverPhoto) {
-        formData.append("coverPhoto", contestData.coverPhoto);
+      const formattedContestantId = contestantId.toString();
+      
+      const objectIdRegex = /^[0-9a-fA-F]{24}$/;
+      if (!objectIdRegex.test(formattedContestantId)) {
+        toast.error("Invalid contestant ID format");
+        return;
       }
 
       const response = await axios.post(
-        "http://localhost:5000/contests",
-        formData,
+        `http://localhost:5000/contests/${contestId}/vote`,
+        { contestantId: formattedContestantId },
         {
           headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
+            'Content-Type': 'application/json',
+            ...getAuthHeaders()  
+          }
         }
       );
 
       if (response.data.success) {
-        setContests((prev) => [...prev, response.data.data]);
-        setIsModalOpen(false);
-        toast.success("Contest created successfully!");
+        toast.success("Vote cast successfully!");
+        await fetchContests(); 
+      } else {
+        throw new Error(response.data.error || "Failed to cast vote");
       }
     } catch (error) {
-      toast.error("Failed to create contest");
+      console.error("Voting error:", error);
+      const errorMessage = error.response?.data?.error || error.message || "Failed to cast your vote";
+      toast.error(errorMessage);
+    }
+  };
+  
+  
+  
+  const handleDeleteContest = async (contestId) => {
+    try {
+      const headers = getAuthHeaders();
+      await axios.delete(`http://localhost:5000/contests/${contestId}`, { headers });
+      setContests((prev) => prev.filter((contest) => contest._id !== contestId));
+      toast.success("Contest deleted successfully");
+    } catch (error) {
+      console.error("Delete contest error:", error);
+      toast.error("Failed to delete contest");
     }
   };
 
-  useEffect(() => {
-    fetchContests();
-  }, [currentUser, currentUserLoading, isAuthenticated]);
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Loader2 className="h-8 w-8 animate-spin text-custom-blue" />
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col h-lvh bg-gray-50 p-6 space-y-6 overflow-auto w-full xl:w-[102rem] 3xl:w-[138rem]">
       <div className="flex items-center justify-between w-full gap-3">
-        <h1 className="text-xl font-bold text-gray-800"> Overview</h1>
+        <h1 className="text-xl font-bold text-gray-800">Overview</h1>
         <button
-          onClick={() => setIsModalOpen(true)}
-          className="bg-custom-blue text-white py-3 px-8 rounded-md flex items-center gap-1 shadow-lg hover:bg-custom-blue transition-all duration-300"
+          onClick={() => {
+            setEditingContest(null);
+            setIsModalOpen(true);
+          }}
+          className="bg-custom-blue hover:bg-custom-blue/90 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors duration-200"
         >
-          <Plus className="h-3 w-5" />
-          <span className="text-sm">Create Contest</span>
+          <Plus className="h-4 w-4" />
+          Create Contest
         </button>
       </div>
 
-      <div className="w-full space-y-8">
-        {contests.map((contest) => (
-          <div
-            key={contest._id}
-            className="bg-white p-6 lg:p-8 rounded-xl shadow-lg border border-gray-200"
-          >
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <div className="space-y-6">
-                <div className="overflow-hidden rounded-xl">
-                  <img
-                    src={`http://localhost:5000/${contest.coverPhotoUrl}`}
-                    alt="Cover"
-                    className="w-full h-72 object-cover rounded-xl transform hover:scale-105 transition-duration-300"
-                  />
-                </div>
-
-                <div className="flex items-start justify-start gap-5 flex-col">
-                  <div className="flex items-start justify-start flex-col">
-                    <h2 className="text-2xl font-semibold text-gray-900">
-                      {contest.name}
-                    </h2>
-                    <p className="mt-2 text-gray-600">{contest.description}</p>
-                  </div>
-
-                  <div className="flex items-center justify-center gap-4">
-                    <div className="bg-gray-100 p-4 rounded-lg">
-                      <h1 className="text-sm font-medium text-gray-700">
-                        Start Date
-                      </h1>
-                      <p className="text-gray-600">{contest.startDate}</p>
-                    </div>
-                    <div className="bg-gray-100 p-4 rounded-lg">
-                      <h1 className="text-sm font-medium text-gray-700">
-                        End Date
-                      </h1>
-                      <p className="text-gray-600">{contest.endDate}</p>
-                    </div>
-                  </div>
-                </div>
-
-                {publishedContests.has(contest._id) && (
-                  <div className="bg-blue-50 p-4 rounded-lg space-y-2">
-                    <p className="text-sm font-medium text-gray-700">
-                      Voting URL
-                    </p>
-                    <div className="flex gap-2">
-                      <input
-                        type="text"
-                        readOnly
-                        value={`${window.location.origin}/vote/${contest._id}`}
-                        className="flex-1 text-sm bg-white p-2 rounded border"
-                      />
-                      <CopyToClipboard
-                        text={`${window.location.origin}/vote/${contest._id}`}
-                      >
-                        <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-                          Copy
-                        </button>
-                      </CopyToClipboard>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              <div className="space-y-6">
-                <div>
-                  <h3 className="font-semibold text-xl text-gray-800 mb-4">
-                    Contestants
-                  </h3>
-                  {contest.contestants?.length > 0 ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {contest.contestants.map((contestant, index) => (
-                        <div
-                          key={index}
-                          className="bg-gray-50 rounded-lg overflow-hidden flex"
-                        >
-                          {contestant.photoUrl && (
-                            <img
-                              src={
-                                contestant.photoUrl.startsWith("http")
-                                  ? contestant.photoUrl
-                                  : `http://localhost:5000${contestant.photoUrl}`
-                              }
-                              alt={contestant.name}
-                              className="w-24 h-24 object-cover"
-                            />
-                          )}
-                          <div className="p-4 flex-1">
-                            <h4 className="font-medium text-gray-900">
-                              {contestant.name}
-                            </h4>
-                            <div className="mt-1 flex justify-between text-sm">
-                              {contestant.votes && (
-                                <span className="text-blue-600">
-                                  {contestant.votes} votes
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="text-center py-4 bg-gray-50 rounded-lg">
-                      <p className="text-gray-500">No contestants yet.</p>
-                    </div>
-                  )}
-                </div>
-
-                <div className="flex gap-4 mt-4">
-                  {!publishedContests.has(contest._id) && (
-                    <button
-                      onClick={() => {
-                        setSelectedContestId(contest._id);
-                        setIsContestantModalOpen(true);
-                      }}
-                      className="flex-1 bg-custom-blue text-white py-2 px-4 rounded-md hover:bg-custom-blue"
-                    >
-                      Add Contestant
-                    </button>
-                  )}
-                  <button
-                    onClick={() => handlePublishToggle(contest._id)}
-                    className={`flex-1 py-2 px-4 rounded-md ${
-                      publishedContests.has(contest._id)
-                        ? "bg-yellow-500 hover:bg-yellow-600"
-                        : "bg-green-500 hover:bg-green-600"
-                    } text-white`}
-                  >
-                    {publishedContests.has(contest._id)
-                      ? "Unpublish"
-                      : "Publish"}
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+      {contests.length === 0 ? (
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-blue-700">
+          No contests found. Create your first contest to get started!
+        </div>
+      ) : (
+        <div className="w-full space-y-8">
+          {contests.map((contest) => (
+            <ContestItem
+              key={contest._id}
+              contest={contest}
+              formatDate={formatDate}
+              handlePublishToggle={handlePublishToggle}
+              handleDeleteContest={handleDeleteContest}
+              publishedContests={publishedContests}
+              setIsContestantModalOpen={setIsContestantModalOpen}
+              setSelectedContestId={setSelectedContestId}
+              handleVote={handleVote}
+            />
+          ))}
+        </div>
+      )}
 
       <ContestModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onSubmit={handleCreateContest}
+        setContests={setContests}
+        editingContest={editingContest} 
       />
       <AddContestantModal
         isOpen={isContestantModalOpen}
         onClose={() => setIsContestantModalOpen(false)}
         contestId={selectedContestId}
-        onAddContestant={(newContestant) => {
-          setContests((prevContests) =>
-            prevContests.map((contest) =>
-              contest._id === selectedContestId
-                ? {
-                    ...contest,
-                    contestants: [...contest.contestants, newContestant],
-                  }
-                : contest
-            )
-          );
-        }}
+        setContests={setContests}
+        contestStatus={contests.isPublished ? 'Published' : 'Draft'}
+
       />
     </div>
   );
