@@ -12,7 +12,8 @@ const Footer = () => {
        <section className="flex flex-col md:flex-row items-center justify-around bg-custom-blue text-white p-5 3xl:h-[25rem] 2xl:gap-96">
                 <div className="flex flex-col justify-center gap-5 items-start">
                     <h1 className="text-xl md:text-2xl  3xl:text-5xl">VoteHub</h1>
-                    <p className="text-sm md:text-base 3xl:text-2xl"> the only securedhcgsydg <br /> rvgyru ufihf uhgfiewhgf <br /> and user-friendly platform that makes your vote count </p>
+                    <p className="text-sm md:text-base 3xl:text-2xl"> the only secured, safe <br /> and user-friendly platform that makes your vote count ,
+                     <br />remember to vote for your future leader</p>
                 </div>
                 <div className="flex flex-col items-start justify-center gap-5">
                     <h1 className="text-xl md:text-2xl 3xl:text-5xl">Contacts</h1>

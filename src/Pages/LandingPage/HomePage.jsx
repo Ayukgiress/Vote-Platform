@@ -130,8 +130,7 @@ const HomePage = () => {
                                 Teachers shape minds, and votes shape change,
                                 A vote for teachers is a vote for education.
                                 In the classroom and at the ballot box, teachers lead.
-                                Every vote from a teacher is a vote for a better tomorrow.
-                                // Added contestants array  </p>
+                                Every vote from a teacher is a vote for a better tomorrow. </p>
                         </div>
                         <div className='w-full shadow-button-c shadow-md bg-white h-96 gap-7 rounded-md  text-custom-blue lg:w-96 md:w-72 xl:w-[38rem] xl:h-[35rem] 2xl:w-[35rem] 3xl:w-[45rem] 3xl:h-[49rem]'>
                             <img src={voteImage} alt="vtimg" className='w-full h-40 object-cover rounded-lg xl:w-[35rem] xl:h-[16rem] 3xl:w-[48rem] 3xl:h-[25rem]' />

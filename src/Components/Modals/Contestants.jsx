@@ -1,82 +1,163 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { toast } from 'sonner';
+import API_URL from '../../Pages/Constants/Constants';
 
-const AddContestantModal = ({ isOpen, onClose, contestId, onAddContestant }) => {
-  const [formData, setFormData] = useState({
-    name: '',
-    photo: null,
-  });
+const AddContestantModal = ({ isOpen, onClose, contestId, setContests, contestStatus }) => {
+  const [contestants, setContestants] = useState([]);
+  const [name, setName] = useState('');
+  const [photo, setPhoto] = useState(null);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const isPublished = contestStatus === 'Published';
+
+  const handleFileChange = (e) => {
+    setPhoto(e.target.files[0]);
+  };
+
+  const handleAddContestant = () => {
+    if (!name || !photo) {
+      setError('Name and photo are required');
+      return;
+    }
+
+    if (isPublished) {
+      setError('Cannot add contestants. The contest is already published.');
+      return;
+    }
+
+    const newContestant = { name, photo };
+    setContestants((prev) => [...prev, newContestant]);
+
+    setLoading(true);
+    setName('');
+    setPhoto(null);
+    setError('');
+  };
+
+  const resetForm = () => {
+    setContestants([]);
+    setName('');
+    setPhoto(null);
+    setError('');
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = new FormData();
-    data.append('name', formData.name);
-    if (formData.photo) {
-      data.append('photo', formData.photo);
-    }
+
+    const formData = new FormData();
+    const token = localStorage.getItem('token');
+
+    contestants.forEach((contestant, index) => {
+      formData.append(`contestants[${index}]`, contestant.name);
+    });
+
+    contestants.forEach((contestant, index) => {
+      if (contestant.photo) {
+        formData.append('contestants', contestant.photo);
+      }
+    });
 
     try {
-      const response = await fetch(
-        `http://localhost:5000/contests/${contestId}/contestants`,
+      const response = await axios.post(
+        `${API_URL}/contests/${contestId}/contestants`,
+        formData,
         {
-          method: 'POST',
-          body: data,
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data',
+          },
         }
       );
 
-      if (response.ok) {
-        toast.success("contestant added successfully")
-        const result = await response.json();
-        onAddContestant(result.data); 
-        onClose(); 
+      if (response.data.success) {
+        toast.success('Contestants added successfully!');
+        resetForm();
+        onClose();
+
+        if (setContests) {
+          setContests((prev) => {
+            return [...prev];
+          });
+        }
       }
     } catch (error) {
-      toast.error("failure to add contestant")
-      console.error('Error adding contestant:', error);
+      console.error('Error adding contestants:', error);
+      toast.error('Failed to add contestants');
     }
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-65 flex items-center justify-center z-50">
-      <div className="bg-white shadow-lg rounded-lg w-96 p-6">
-        <h2 className="text-xl font-semibold mb-4 text-center text-gray-800">Add New Contestant</h2>
-        <form onSubmit={handleSubmit} className="space-y-4 ">
+    <div
+      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+      onClick={onClose}
+    >
+      <div
+        className="bg-white p-6 rounded-md w-96"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h2 className="text-xl font-bold mb-4">Add Contestant</h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {isPublished && (
+            <div className="bg-red-100 text-red-500 p-2 rounded mb-4">
+              <p>The contest is already published. Contestants cannot be added.</p>
+            </div>
+          )}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Name</label>
+            <label className="block">Contestant Name</label>
             <input
               type="text"
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              className="mt-1 block w-full rounded-md border border-gray-300 p-2 text-gray-900 focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border rounded"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              disabled={isPublished}
               required
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Photo</label>
+            <label className="block">Photo</label>
             <input
               type="file"
-              onChange={(e) => setFormData({ ...formData, photo: e.target.files[0] })}
-              className="mt-1 block w-full rounded-md border border-gray-300 p-2 text-black"
               accept="image/*"
+              className="w-full px-4 py-2 border rounded"
+              onChange={handleFileChange}
+              disabled={isPublished}
             />
           </div>
-          <div className="flex justify-between mt-4 space-x-4">
+          {error && <p className="text-red-500 text-sm">{error}</p>}
+          {!isPublished && (
             <button
               type="button"
-              onClick={onClose}
-              className="px-4 py-2 border rounded-md bg-gray-200 text-gray-700 hover:bg-gray-300 transition ease-in-out duration-200"
+              onClick={handleAddContestant}
+              className="w-full py-2 px-4 bg-custom-blue text-white rounded mt-4"
             >
-              Cancel
+              Add Contestant
             </button>
+          )}
+          {contestants.length > 0 && (
+            <div className="mt-4">
+              <h3 className="text-lg">Contestants List</h3>
+              <ul>
+                {contestants.map((contestant, index) => (
+                  <li key={index} className="flex justify-between">
+                    <span>{contestant.name}</span>
+                    <span>{contestant.photo ? 'Uploaded' : 'No photo'}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {!isPublished && (
             <button
               type="submit"
-              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition ease-in-out duration-200"
+              className="w-full py-2 px-4 bg-green-500 text-white rounded mt-4"
             >
-              Add
+              Submit Contestants
             </button>
-          </div>
+          )}
         </form>
       </div>
     </div>

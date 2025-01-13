@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { useAuth } from "../Contexts/AuthContext";
 import { Link } from "react-router-dom";
 import Footer from "../../Components/Footer";
+import API_URL from "../Constants/Constants";
 
 const Login = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -23,7 +24,7 @@ const Login = () => {
     setLoading(true);
     console.log("Submitted data:", data);
     try {
-      const response = await fetch("http://localhost:5000/users/login", {
+      const response = await fetch(`${API_URL}/users/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -82,7 +83,7 @@ const Login = () => {
                   {...register("email", { required: "Email is required" })}
                   type="email"
                   className="bg-white border border-gray-300 w-full p-2.5 rounded-lg 3xl:h-24 3xl:w-[50rem] 3xl:text-3xl"
-                  placeholder="name@company.com"
+                  placeholder="name@gmail.com"
                 />
                 {errors.email && (
                   <p className="text-red-500 text-sm">{errors.email.message}</p>

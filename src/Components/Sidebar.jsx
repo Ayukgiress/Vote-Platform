@@ -7,7 +7,7 @@ const NAVIGATION_ITEMS = [
   { path: '/', label: 'Home', icon: <Home className="h-5 w-5 text-white" /> },
   { path: '/dashboard', label: 'Overview', icon: <Users className="h-5 w-5 text-white" /> },
   { path: '/dashboard/settings', label: 'Settings', icon: <Settings className="h-5 w-5 text-white" /> },
-  { path: '/dashboard/contests', label: 'Contests', icon: <Award className="h-5 w-5 text-white" /> }
+  { path: '/dashboard/vote', label: 'Contests', icon: <Award className="h-5 w-5 text-white" /> }
 ];
 
 const Sidebar = () => {
