@@ -3,6 +3,7 @@ import { Loader2 } from 'lucide-react';
 import axios from 'axios';
 import { toast } from 'sonner';
 import API_URL from '../../Pages/Constants/Constants';
+import Footer from '../../Components/Footer'
 
 
 const Vote = () => {
@@ -90,8 +91,9 @@ const Vote = () => {
   }
 
   return (
+    <>
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-4xl mx-auto mt-16">
         <div className="bg-white rounded-xl shadow-lg overflow-hidden">
           <div className="p-6">
             <h1 className="text-3xl font-bold text-gray-900 mb-4">{contest.name}</h1>
@@ -100,7 +102,7 @@ const Vote = () => {
             {contest.coverPhotoUrl && (
               <div className="mb-8">
                 <img
-                  src={`http://localhost:5000/${contest.coverPhotoUrl.replace(/^\//, '')}`}
+                  src={`${API_URL}/${contest.coverPhotoUrl.replace(/^\//, '')}`}
                   alt={contest.name}
                   className="w-full h-64 object-cover rounded-lg"
                   onError={(e) => {
@@ -125,7 +127,7 @@ const Vote = () => {
                           <img
                             src={contestant.photoUrl.startsWith('http')
                               ? contestant.photoUrl
-                              : `http://localhost:5000/${contestant.photoUrl}`}
+                              : `${API_URL}/${contestant.photoUrl}`}
                             alt={contestant.name}
                             className="h-full w-full object-cover"
                             onError={(e) => {
@@ -171,6 +173,8 @@ const Vote = () => {
         </div>
       </div>
     </div>
+    <Footer/>
+    </>
   );
 };
 
