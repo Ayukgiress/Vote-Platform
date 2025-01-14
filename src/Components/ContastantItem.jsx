@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import API_URL from "../Pages/Constants/Constants";
 
 const ContestantItem = ({ contestant, handleVote }) => {
   const [loading, setLoading] = useState(false);
