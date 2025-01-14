@@ -114,7 +114,7 @@ const Overview = () => {
       }
 
       const response = await axios.post(
-        `http://localhost:5000/contests/${contestId}/vote`,
+        `${API_URL}/contests/${contestId}/vote`,
         { contestantId: formattedContestantId },
         {
           headers: {
@@ -142,7 +142,7 @@ const Overview = () => {
   const handleDeleteContest = async (contestId) => {
     try {
       const headers = getAuthHeaders();
-      await axios.delete(`http://localhost:5000/contests/${contestId}`, { headers });
+      await axios.delete(`${API_URL}/contests/${contestId}`, { headers });
       setContests((prev) => prev.filter((contest) => contest._id !== contestId));
       toast.success("Contest deleted successfully");
     } catch (error) {

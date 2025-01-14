@@ -81,7 +81,7 @@ const App = () => {
           <Route path="/:contestId/vote" element={<Vote />} />  
 
           <Route path="/dashboard" element={<Dashboard />}>
-            <Route index element={<Overview />} /> {/* Default route for /dashboard */}
+            <Route index element={<Overview />} />
             <Route path="settings" element={<Settings />} />
           </Route>
         </Routes>

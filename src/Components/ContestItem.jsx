@@ -75,7 +75,7 @@ const ContestItem = ({
             <div className="overflow-hidden rounded-xl">
               {contest?.coverPhotoUrl ? (
                 <img
-                  src={`http://localhost:5000/${contest.coverPhotoUrl.replace(
+                  src={`${API_URL}/${contest.coverPhotoUrl.replace(
                     /^\//,
                     ""
                   )}`}

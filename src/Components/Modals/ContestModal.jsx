@@ -70,7 +70,7 @@ const ContestModal = ({ isOpen, onClose, setContests }) => {
         throw new Error('Authentication token not found. Please login again.');
       }
 
-      const response = await axios.post('${API_URL}/contests', submitData, {
+      const response = await axios.post(`${API_URL}/contests`, submitData, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
