@@ -31,7 +31,7 @@ const ContestantItem = ({ contestant, handleVote, contest }) => {
           <div className="relative">
             <img
               src={
-                contestant.photoUrl.startsWith("http")
+                contestant.photoUrl.startsWith("https")
                   ? contestant.photoUrl
                   : `${API_URL}/${contestant.photoUrl}`
               }

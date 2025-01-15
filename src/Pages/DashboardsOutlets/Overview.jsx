@@ -73,7 +73,7 @@ const Overview = () => {
   const fetchContests = useCallback(async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${API_URL}/contests/all`);
+      const response = await axios.get(`${API_URL}/contests/all`, currentUser );
 
       if (response.data?.success) {
         const processedContests = calculateWinners(response.data.data);
