@@ -15,17 +15,22 @@ const Profile = ({ isAuthenticated }) => {
   useEffect(() => {
     const fetchEmail = async () => {
       const token = localStorage.getItem("token");
+      console.log("Token in fetchEmail:", token);  // Debugging the token
+
       if (!isAuthenticated || !token) {
+        console.log("No token or not authenticated");
         navigate("/dashboard");
         return;
       }
 
       try {
-        const response = await fetch(`${API_URL}//users/profile`, {
+        const response = await fetch(`${API_URL}/users/profile`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
+
+        console.log("Response status:", response.status);  // Debugging response status
 
         if (!response.ok) {
           const errorData = await response.json();
@@ -34,7 +39,13 @@ const Profile = ({ isAuthenticated }) => {
         }
 
         const data = await response.json();
-        setEmail(data.email);
+        console.log("Fetched profile data:", data);  // Debugging the data
+
+        if (data.email) {
+          setEmail(data.email);
+        } else {
+          toast.error("Email not found in the response.");
+        }
       } catch (error) {
         console.error("Error fetching email:", error);
         toast.error("An unexpected error occurred.");

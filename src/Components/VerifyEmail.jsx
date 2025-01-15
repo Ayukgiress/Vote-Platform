@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import API_URL from '../Pages/Constants/Constants';
+import Footer from './Footer';
 
 const VerifyEmail = () => {
   const { token } = useParams();
@@ -42,6 +43,7 @@ const VerifyEmail = () => {
   
 
   return (
+    <>
     <div className="flex flex-col justify-center items-center h-screen gap-4 bg-custom-first">
       {verificationStatus === 'pending' && (
         <>
@@ -71,6 +73,8 @@ const VerifyEmail = () => {
         </>
       )}
     </div>
+    <Footer/>
+    </>
   );
 };
 
