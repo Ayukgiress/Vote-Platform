@@ -6,7 +6,7 @@ import axios from "axios";
 import { toast } from "sonner";
 import { useAuth } from "../Contexts/AuthContext";
 import ContestItem from "../../Components/ContestItem";
-import API_URL from '../../Pages/Constants/Constants';
+import API_URL from "../../Pages/Constants/Constants";
 
 const Overview = () => {
   const { currentUser, currentUserLoading, isAuthenticated } = useAuth();
@@ -27,53 +27,63 @@ const Overview = () => {
   }, []);
 
   const calculateWinners = useCallback((contestsData) => {
-    return contestsData.map(contest => {
+    return contestsData.map((contest) => {
       const now = new Date();
       const endDate = new Date(contest.endDate);
-      
+
       if (endDate < now && contest.contestants?.length > 0) {
-        const sortedContestants = [...contest.contestants].sort((a, b) => 
-          (b.votes || 0) - (a.votes || 0)
+        const sortedContestants = [...contest.contestants].sort(
+          (a, b) => (b.votes || 0) - (a.votes || 0)
         );
-        
+
         const highestVotes = sortedContestants[0].votes || 0;
-        
+
         const winners = sortedContestants.filter(
-          contestant => (contestant.votes || 0) === highestVotes
+          (contestant) => (contestant.votes || 0) === highestVotes
         );
-        
-        const updatedContestants = contest.contestants.map(contestant => ({
+
+        const updatedContestants = contest.contestants.map((contestant) => ({
           ...contestant,
-          isWinner: winners.some(winner => winner._id === contestant._id)
+          isWinner: winners.some((winner) => winner._id === contestant._id),
         }));
 
-        const sortedUpdatedContestants = [...updatedContestants].sort((a, b) => {
-          if (a.isWinner && !b.isWinner) return -1;
-          if (!a.isWinner && b.isWinner) return 1;
-          return (b.votes || 0) - (a.votes || 0);
-        });
+        const sortedUpdatedContestants = [...updatedContestants].sort(
+          (a, b) => {
+            if (a.isWinner && !b.isWinner) return -1;
+            if (!a.isWinner && b.isWinner) return 1;
+            return (b.votes || 0) - (a.votes || 0);
+          }
+        );
 
         return {
           ...contest,
           contestants: sortedUpdatedContestants,
-          hasEnded: true
+          hasEnded: true,
         };
       }
 
       return {
         ...contest,
-        contestants: [...contest.contestants || []].sort((a, b) => 
-          (b.votes || 0) - (a.votes || 0)
+        contestants: [...(contest.contestants || [])].sort(
+          (a, b) => (b.votes || 0) - (a.votes || 0)
         ),
-        hasEnded: false
+        hasEnded: false,
       };
     });
   }, []);
 
   const fetchContests = useCallback(async () => {
     try {
+      if (!isAuthenticated) {
+        console.log("User not authenticated, skipping fetch");
+        return;
+      }
+
       setLoading(true);
-      const response = await axios.get(`${API_URL}/contests/all`, currentUser );
+      const headers = getAuthHeaders();
+
+      const response = await axios.get(`${API_URL}/contests/all`, { headers });
+      console.log("Received contests data:", response.data);
 
       if (response.data?.success) {
         const processedContests = calculateWinners(response.data.data);
@@ -91,11 +101,7 @@ const Overview = () => {
     } finally {
       setLoading(false);
     }
-  }, [calculateWinners]);
-
-  useEffect(() => {
-    fetchContests();
-  }, [fetchContests]);
+  }, [calculateWinners, getAuthHeaders, isAuthenticated]);
 
   const handlePublishToggle = async (contestId) => {
     const contest = contests.find((c) => c._id === contestId);
@@ -125,12 +131,16 @@ const Overview = () => {
           return newSet;
         });
 
-        await fetchContests(); 
-        toast.success(isPublished ? "Contest published!" : "Contest unpublished");
+        await fetchContests();
+        toast.success(
+          isPublished ? "Contest published!" : "Contest unpublished"
+        );
       }
     } catch (error) {
       console.error("Publish toggle error:", error);
-      toast.error(error.response?.data?.error || "Failed to update contest status");
+      toast.error(
+        error.response?.data?.error || "Failed to update contest status"
+      );
     }
   };
 
@@ -141,14 +151,14 @@ const Overview = () => {
         return;
       }
 
-      const contest = contests.find(c => c._id === contestId);
+      const contest = contests.find((c) => c._id === contestId);
       if (contest?.hasEnded) {
         toast.error("This contest has ended");
         return;
       }
 
       const formattedContestantId = contestantId.toString();
-      
+
       const objectIdRegex = /^[0-9a-fA-F]{24}$/;
       if (!objectIdRegex.test(formattedContestantId)) {
         toast.error("Invalid contestant ID format");
@@ -160,9 +170,9 @@ const Overview = () => {
         { contestantId: formattedContestantId },
         {
           headers: {
-            'Content-Type': 'application/json',
-            ...getAuthHeaders()  
-          }
+            "Content-Type": "application/json",
+            ...getAuthHeaders(),
+          },
         }
       );
 
@@ -174,7 +184,10 @@ const Overview = () => {
       }
     } catch (error) {
       console.error("Voting error:", error);
-      const errorMessage = error.response?.data?.error || error.message || "Failed to cast your vote";
+      const errorMessage =
+        error.response?.data?.error ||
+        error.message ||
+        "Failed to cast your vote";
       toast.error(errorMessage);
     }
   };
@@ -183,7 +196,9 @@ const Overview = () => {
     try {
       const headers = getAuthHeaders();
       await axios.delete(`${API_URL}/contests/${contestId}`, { headers });
-      setContests((prev) => prev.filter((contest) => contest._id !== contestId));
+      setContests((prev) =>
+        prev.filter((contest) => contest._id !== contestId)
+      );
       toast.success("Contest deleted successfully");
     } catch (error) {
       console.error("Delete contest error:", error);
@@ -198,6 +213,10 @@ const Overview = () => {
       day: "numeric",
     });
   };
+
+  useEffect(() => {
+    fetchContests();
+  }, [isAuthenticated]);
 
   if (loading) {
     return (
@@ -256,7 +275,11 @@ const Overview = () => {
         onClose={() => setIsContestantModalOpen(false)}
         contestId={selectedContestId}
         setContests={setContests}
-        contestStatus={contests.find(c => c._id === selectedContestId)?.isPublished ? 'Published' : 'Draft'}
+        contestStatus={
+          contests.find((c) => c._id === selectedContestId)?.isPublished
+            ? "Published"
+            : "Draft"
+        }
       />
     </div>
   );

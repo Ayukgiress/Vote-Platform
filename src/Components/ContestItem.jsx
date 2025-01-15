@@ -49,7 +49,6 @@ const ContestItem = ({
   const status = getContestStatus();
   const statusBadgeStyle = getStatusBadgeStyle(status);
   const statusText = getStatusText(status);
- 
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 space-y-4 sm:space-y-6">
@@ -103,20 +102,22 @@ const ContestItem = ({
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 rounded-lg p-4 sm:p-6">
-      <div className="relative rounded-lg overflow-hidden shadow-lg bg-gray-200">
-  <img
-    src={contest.coverPhotoUrl.startsWith('https') ? 
-      contest.coverPhotoUrl : 
-      `${API_URL}/${contest.coverPhotoUrl}`}
-    alt={contest.name}
-    className="w-full h-48 sm:h-64 object-cover"
-    onError={(e) => {
-      console.log('Image load failed:', e.target.src);
-      e.target.src = "/api/placeholder/400/320";
-      e.target.onerror = null;
-    }}
-  />
-</div>
+        <div className="relative rounded-lg overflow-hidden shadow-lg bg-gray-200">
+          <img
+            src={
+              contest.coverPhotoUrl.startsWith("https")
+                ? contest.coverPhotoUrl
+                : `${API_URL}/${contest.coverPhotoUrl}`
+            }
+            alt={contest.name}
+            className="w-full h-48 sm:h-64 object-cover"
+            onError={(e) => {
+              console.log("Image load failed:", e.target.src);
+              e.target.src = "/api/placeholder/400/320";
+              e.target.onerror = null;
+            }}
+          />
+        </div>
 
         <div className="space-y-4">
           <div className="flex flex-col gap-3">
