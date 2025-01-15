@@ -1,6 +1,7 @@
 import React from "react";
-import { Trash2, Users, Trophy } from "lucide-react";
+import { Trash2, Users, Trophy, Calendar, Info } from "lucide-react";
 import ContestantItem from "./ContastantItem";
+import API_URL from "../Pages/Constants/Constants";
 
 const ContestItem = ({
   contest,
@@ -55,7 +56,7 @@ const ContestItem = ({
         <div className="space-y-1">
           <div className="flex items-center gap-3">
             <h2 className="text-xl font-semibold text-gray-800">
-              {contest.title}
+              {contest.name}
             </h2>
             <span
               className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${statusBadgeStyle}`}
@@ -63,9 +64,6 @@ const ContestItem = ({
               {statusText}
             </span>
           </div>
-          <p className="text-gray-500 text-sm">
-            {formatDate(contest.startDate)} - {formatDate(contest.endDate)}
-          </p>
         </div>
 
         <div className="flex items-center gap-3">
@@ -101,6 +99,49 @@ const ContestItem = ({
         </div>
       </div>
 
+      {/* Contest Details Section */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-gray-50 rounded-lg p-4">
+        {/* Cover Photo */}
+        <div className="relative h-48 md:h-full rounded-lg overflow-hidden">
+          <img
+            src={
+              contest.coverPhotoUrl.startsWith("http")
+                ? contest.coverPhotoUrl
+                : `${API_URL}/${contest.coverPhotoUrl}`
+            }
+            alt={contest.name}
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              e.target.src = "/api/placeholder/400/320";
+              e.target.onerror = null;
+            }}
+          />
+        </div>
+        
+        {/* Contest Information */}
+        <div className="md:col-span-2 space-y-4">
+          <div className="flex items-start gap-2">
+            <Info className="h-5 w-5 text-gray-500 mt-1 flex-shrink-0" />
+            <div>
+              <h3 className="font-medium text-gray-900">Description</h3>
+              <p className="text-gray-600 mt-1">{contest.description}</p>
+            </div>
+          </div>
+          
+          <div className="flex items-start gap-2">
+            <Calendar className="h-5 w-5 text-gray-500 mt-1 flex-shrink-0" />
+            <div>
+              <h3 className="font-medium text-gray-900">Contest Period</h3>
+              <div className="text-gray-600 mt-1">
+                <p>Start Date: {formatDate(contest.startDate)}</p>
+                <p>End Date: {formatDate(contest.endDate)}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Contestants Section */}
       {contest.contestants && contest.contestants.length > 0 ? (
         <div className="space-y-4">
           {hasEnded && contest.contestants.some(c => c.isWinner) && (
