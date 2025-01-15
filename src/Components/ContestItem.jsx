@@ -1,6 +1,6 @@
 import React from "react";
 import { Trash2, Users, Trophy } from "lucide-react";
-import ContestantItem from "./ContestantItem";
+import ContestantItem from "./ContastantItem";
 
 const ContestItem = ({
   contest,
