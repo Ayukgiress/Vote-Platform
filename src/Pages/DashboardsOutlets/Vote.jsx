@@ -106,7 +106,7 @@ const Vote = () => {
                   alt={contest.name}
                   className="w-full h-64 object-cover rounded-lg"
                   onError={(e) => {
-                    e.target.src = "https://via.placeholder.com/800x400?text=Contest+Cover";
+                    // e.target.src = "https://via.placeholder.com/800x400?text=Contest+Cover";
                     e.target.onerror = null;
                   }}
                 />
@@ -131,7 +131,7 @@ const Vote = () => {
                             alt={contestant.name}
                             className="h-full w-full object-cover"
                             onError={(e) => {
-                              e.target.src = "https://via.placeholder.com/100?text=?";
+                              // e.target.src = "https://via.placeholder.com/100?text=?";
                               e.target.onerror = null;
                             }}
                           />

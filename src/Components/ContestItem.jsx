@@ -49,10 +49,10 @@ const ContestItem = ({
   const status = getContestStatus();
   const statusBadgeStyle = getStatusBadgeStyle(status);
   const statusText = getStatusText(status);
+ 
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 space-y-4 sm:space-y-6">
-      {/* Header Section */}
       <div className="flex flex-col sm:flex-row items-center justify-between">
         <div className="space-y-1">
           <div className="flex items-center gap-3">
@@ -102,28 +102,23 @@ const ContestItem = ({
         </div>
       </div>
 
-      {/* Contest Details Section */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 rounded-lg p-4 sm:p-6">
-        {/* Cover Photo Section */}
-        <div className="relative rounded-lg overflow-hidden shadow-lg bg-gray-200">
-          <img
-            src={
-              contest.coverPhotoUrl.startsWith("http")
-                ? contest.coverPhotoUrl
-                : `${API_URL}/${contest.coverPhotoUrl}`
-            }
-            alt={contest.name}
-            className="w-full h-48 sm:h-64 object-cover"
-            onError={(e) => {
-              e.target.src = "/api/placeholder/400/320";
-              e.target.onerror = null;
-            }}
-          />
-        </div>
+      <div className="relative rounded-lg overflow-hidden shadow-lg bg-gray-200">
+  <img
+    src={contest.coverPhotoUrl.startsWith('https') ? 
+      contest.coverPhotoUrl : 
+      `${API_URL}/${contest.coverPhotoUrl}`}
+    alt={contest.name}
+    className="w-full h-48 sm:h-64 object-cover"
+    onError={(e) => {
+      console.log('Image load failed:', e.target.src);
+      e.target.src = "/api/placeholder/400/320";
+      e.target.onerror = null;
+    }}
+  />
+</div>
 
-        {/* Contest Information */}
         <div className="space-y-4">
-          {/* Description Section */}
           <div className="flex flex-col gap-3">
             <div className="flex items-start gap-3">
               <Info className="h-6 w-6 text-gray-500 mt-1" />
@@ -150,18 +145,18 @@ const ContestItem = ({
             </div>
           </div>
           {isPublished && !hasEnded && (
-        <div className="mt-4 text-center sm:flex-col flex items-start justify-start bg-white border-gray-200 rounded-lg shadow-sm p-4 gap-5 ">
-          <h1>Voting url</h1>
-          <a
-            href={`/${contest._id}/vote`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-500 hover:underline break-all"
-          >
-            {`${window.location.origin}/${contest._id}/vote`}
-          </a>
-        </div>
-      )}
+            <div className="mt-4 text-center sm:flex-col flex items-start justify-start bg-white border-gray-200 rounded-lg shadow-sm p-4 gap-5 ">
+              <h1>Voting url</h1>
+              <a
+                href={`/${contest._id}/vote`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 hover:underline break-all"
+              >
+                {`${window.location.origin}/${contest._id}/vote`}
+              </a>
+            </div>
+          )}
         </div>
       </div>
 
@@ -196,8 +191,6 @@ const ContestItem = ({
           No contestants yet. Add contestants to get started!
         </div>
       )}
-
-      
     </div>
   );
 };
