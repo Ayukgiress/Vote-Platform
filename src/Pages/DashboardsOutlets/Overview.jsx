@@ -8,7 +8,6 @@ import { useAuth } from "../Contexts/AuthContext";
 import ContestItem from "../../Components/ContestItem";
 import API_URL from '../../Pages/Constants/Constants';
 
-
 const Overview = () => {
   const { currentUser, currentUserLoading, isAuthenticated } = useAuth();
   const [contests, setContests] = useState([]);
@@ -17,7 +16,6 @@ const Overview = () => {
   const [selectedContestId, setSelectedContestId] = useState(null);
   const [publishedContests, setPublishedContests] = useState(new Set());
   const [loading, setLoading] = useState(true);
-
   const [editingContest, setEditingContest] = useState(null);
 
   const getAuthHeaders = useCallback(() => {
@@ -28,15 +26,60 @@ const Overview = () => {
     return { Authorization: `Bearer ${token}` };
   }, []);
 
+  const calculateWinners = useCallback((contestsData) => {
+    return contestsData.map(contest => {
+      const now = new Date();
+      const endDate = new Date(contest.endDate);
+      
+      if (endDate < now && contest.contestants?.length > 0) {
+        const sortedContestants = [...contest.contestants].sort((a, b) => 
+          (b.votes || 0) - (a.votes || 0)
+        );
+        
+        const highestVotes = sortedContestants[0].votes || 0;
+        
+        const winners = sortedContestants.filter(
+          contestant => (contestant.votes || 0) === highestVotes
+        );
+        
+        const updatedContestants = contest.contestants.map(contestant => ({
+          ...contestant,
+          isWinner: winners.some(winner => winner._id === contestant._id)
+        }));
+
+        const sortedUpdatedContestants = [...updatedContestants].sort((a, b) => {
+          if (a.isWinner && !b.isWinner) return -1;
+          if (!a.isWinner && b.isWinner) return 1;
+          return (b.votes || 0) - (a.votes || 0);
+        });
+
+        return {
+          ...contest,
+          contestants: sortedUpdatedContestants,
+          hasEnded: true
+        };
+      }
+
+      return {
+        ...contest,
+        contestants: [...contest.contestants || []].sort((a, b) => 
+          (b.votes || 0) - (a.votes || 0)
+        ),
+        hasEnded: false
+      };
+    });
+  }, []);
+
   const fetchContests = useCallback(async () => {
     try {
       setLoading(true);
       const response = await axios.get(`${API_URL}/contests/all`);
 
       if (response.data?.success) {
-        setContests(response.data.data);
+        const processedContests = calculateWinners(response.data.data);
+        setContests(processedContests);
         const publishedSet = new Set(
-          response.data.data
+          processedContests
             .filter((contest) => contest.isPublished)
             .map((contest) => contest._id)
         );
@@ -48,7 +91,7 @@ const Overview = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [calculateWinners]);
 
   useEffect(() => {
     fetchContests();
@@ -82,14 +125,7 @@ const Overview = () => {
           return newSet;
         });
 
-        setContests(prev =>
-          prev.map(c =>
-            c._id === contestId
-              ? { ...c, isPublished: isPublished }
-              : c
-          )
-        );
-
+        await fetchContests(); 
         toast.success(isPublished ? "Contest published!" : "Contest unpublished");
       }
     } catch (error) {
@@ -102,6 +138,12 @@ const Overview = () => {
     try {
       if (!contestId || !contestantId) {
         toast.error("Invalid contest or contestant ID");
+        return;
+      }
+
+      const contest = contests.find(c => c._id === contestId);
+      if (contest?.hasEnded) {
+        toast.error("This contest has ended");
         return;
       }
 
@@ -126,7 +168,7 @@ const Overview = () => {
 
       if (response.data.success) {
         toast.success("Vote cast successfully!");
-        await fetchContests(); 
+        await fetchContests();
       } else {
         throw new Error(response.data.error || "Failed to cast vote");
       }
@@ -136,9 +178,7 @@ const Overview = () => {
       toast.error(errorMessage);
     }
   };
-  
-  
-  
+
   const handleDeleteContest = async (contestId) => {
     try {
       const headers = getAuthHeaders();
@@ -209,15 +249,14 @@ const Overview = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         setContests={setContests}
-        editingContest={editingContest} 
+        editingContest={editingContest}
       />
       <AddContestantModal
         isOpen={isContestantModalOpen}
         onClose={() => setIsContestantModalOpen(false)}
         contestId={selectedContestId}
         setContests={setContests}
-        contestStatus={contests.isPublished ? 'Published' : 'Draft'}
-
+        contestStatus={contests.find(c => c._id === selectedContestId)?.isPublished ? 'Published' : 'Draft'}
       />
     </div>
   );

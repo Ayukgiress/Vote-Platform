@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from "react";
-import ContestantItem from "./ContastantItem";
-import axios from "axios";
-import API_URL from '../Pages/Constants/Constants';
-
+import React from "react";
+import { Trash2, Users, Trophy } from "lucide-react";
+import ContestantItem from "./ContestantItem";
 
 const ContestItem = ({
   contest,
@@ -12,182 +10,124 @@ const ContestItem = ({
   publishedContests,
   setIsContestantModalOpen,
   setSelectedContestId,
-  handleVote,
+  handleVote
 }) => {
-  const [contestants, setContestants] = useState([]);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [isPublished, setIsPublished] = useState(false);
+  const isPublished = publishedContests.has(contest._id);
+  const now = new Date();
+  const endDate = new Date(contest.endDate);
+  const hasEnded = endDate < now;
 
-  const fetchContestants = async () => {
-    if (!contest || !contest._id) return;
+  const getContestStatus = () => {
+    if (hasEnded) return "ended";
+    if (isPublished) return "active";
+    return "draft";
+  };
 
-    setLoading(true);
-    try {
-      const response = await axios.get(
-        `${API_URL}/contests/${contest._id}/contestants`
-      );
-      if (response.data.success) {
-        setContestants(response.data.data);
-      } else {
-        setError("Failed to load contestants.");
-      }
-    } catch (error) {
-      console.error("Error fetching contestants:", error);
-      setError("An error occurred while fetching contestants.");
-    } finally {
-      setLoading(false);
+  const getStatusBadgeStyle = (status) => {
+    switch (status) {
+      case "ended":
+        return "bg-gray-100 text-gray-800";
+      case "active":
+        return "bg-green-100 text-green-800";
+      default:
+        return "bg-yellow-100 text-yellow-800";
     }
   };
 
-  useEffect(() => {
-    const publishedState = localStorage.getItem(
-      `contest_${contest._id}_published`
-    );
-    if (publishedState) {
-      setIsPublished(JSON.parse(publishedState));
-    }
-    fetchContestants();
-  }, [contest?._id]);
-
-  const togglePublish = async () => {
-    try {
-      await handlePublishToggle(contest._id);
-      const newPublishedState = !isPublished;
-      setIsPublished(newPublishedState);
-      localStorage.setItem(
-        `contest_${contest._id}_published`,
-        JSON.stringify(newPublishedState)
-      );
-    } catch (error) {
-      console.error("Error toggling publish state", error);
+  const getStatusText = (status) => {
+    switch (status) {
+      case "ended":
+        return "Ended";
+      case "active":
+        return "Active";
+      default:
+        return "Draft";
     }
   };
+
+  const status = getContestStatus();
+  const statusBadgeStyle = getStatusBadgeStyle(status);
+  const statusText = getStatusText(status);
 
   return (
-    <div
-      key={contest?._id}
-      className="bg-white rounded-xl shadow-lg border border-gray-200"
-    >
-      <div className="p-6 lg:p-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="space-y-6">
-            <div className="overflow-hidden rounded-xl">
-              {contest?.coverPhotoUrl ? (
-                <img
-                  src={`${API_URL}/${contest.coverPhotoUrl.replace(
-                    /^\//,
-                    ""
-                  )}`}
-                  alt={contest.name}
-                  className="w-full h-72 object-cover rounded-xl transform hover:scale-105 transition-all"
-                />
-              ) : (
-                <div className="w-full h-72 bg-gray-200 rounded-xl flex items-center justify-center">
-                  <span className="text-gray-500 text-xl">No Cover Image</span>
-                </div>
-              )}
-            </div>
-
-            <div className="space-y-4">
-              <h2 className="text-2xl font-semibold text-gray-900">
-                {contest?.name}
-              </h2>
-              <p className="mt-2 text-gray-600">{contest?.description}</p>
-
-              <div className="flex flex-wrap gap-4">
-                <div className="bg-gray-100 p-4 rounded-lg flex-1">
-                  <h3 className="text-sm font-medium text-gray-700">
-                    Start Date
-                  </h3>
-                  <p className="text-gray-600">
-                    {formatDate(contest?.startDate)}
-                  </p>
-                </div>
-                <div className="bg-gray-100 p-4 rounded-lg flex-1">
-                  <h3 className="text-sm font-medium text-gray-700">
-                    End Date
-                  </h3>
-                  <p className="text-gray-600">
-                    {formatDate(contest?.endDate)}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-4 mt-4">
-                {isPublished && (
-                  <div className="bg-gray-100 p-4 rounded-lg shadow-sm">
-                    <p className="text-gray-700 font-medium mb-2">
-                      Voting URL:
-                    </p>
-                    <a
-                      href={`/${contest._id}/vote`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-500 hover:underline break-all"
-                    >
-                      {`${window.location.origin}/${contest._id}/vote`}
-                    </a>
-                  </div>
-                )}
-
-                <button
-                  onClick={togglePublish}
-                  className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
-                    isPublished
-                      ? "bg-gray-300 text-gray-600"
-                      : "bg-custom-blue hover:bg-custom-blue/90 text-white"
-                  }`}
-                >
-                  {isPublished ? "Unpublish Contest" : "Publish Contest"}
-                </button>
-
-                <button
-                  onClick={() => {
-                    setSelectedContestId(contest?._id);
-                    setIsContestantModalOpen(true);
-                  }}
-                  className="px-4 py-2 rounded-lg font-medium bg-gray-300 text-gray-600 hover:bg-gray-400 transition-all duration-200"
-                >
-                  Add Contestants
-                </button>
-
-                <button
-                  onClick={() => handleDeleteContest(contest?._id)}
-                  className="px-4 py-2 rounded-lg font-medium bg-red-500 hover:bg-red-600 text-white transition-all duration-200"
-                >
-                  Delete Contest
-                </button>
-              </div>
-            </div>
+    <div className="bg-white rounded-xl shadow-sm p-6 space-y-6">
+      <div className="flex items-center justify-between">
+        <div className="space-y-1">
+          <div className="flex items-center gap-3">
+            <h2 className="text-xl font-semibold text-gray-800">
+              {contest.title}
+            </h2>
+            <span
+              className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${statusBadgeStyle}`}
+            >
+              {statusText}
+            </span>
           </div>
+          <p className="text-gray-500 text-sm">
+            {formatDate(contest.startDate)} - {formatDate(contest.endDate)}
+          </p>
+        </div>
 
-          <div className="space-y-4">
-            <h3 className="text-xl font-semibold text-gray-900">Contestants</h3>
-            {loading ? (
-              <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg text-blue-700">
-                Loading contestants...
-              </div>
-            ) : error ? (
-              <div className="bg-red-50 border border-red-200 p-4 rounded-lg text-red-700">
-                {error}
-              </div>
-            ) : contestants.length === 0 ? (
-              <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg text-blue-700">
-                No contestants added yet.
-              </div>
-            ) : (
-              contestants.map((contestant) => (
-                <ContestantItem
-                  key={contestant._id}
-                  contestant={contestant}
-                  handleVote={handleVote}
-                />
-              ))
-            )}
-          </div>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => {
+              setSelectedContestId(contest._id);
+              setIsContestantModalOpen(true);
+            }}
+            className="bg-gray-100 hover:bg-gray-200 text-gray-600 px-4 py-2 rounded-lg flex items-center gap-2 transition-colors duration-200"
+            disabled={hasEnded}
+          >
+            <Users className="h-4 w-4" />
+            Add Contestant
+          </button>
+          {!hasEnded && (
+            <button
+              onClick={() => handlePublishToggle(contest._id)}
+              className={`px-4 py-2 rounded-lg transition-colors duration-200 ${
+                isPublished
+                  ? "bg-yellow-100 hover:bg-yellow-200 text-yellow-800"
+                  : "bg-green-100 hover:bg-green-200 text-green-800"
+              }`}
+            >
+              {isPublished ? "Unpublish" : "Publish"}
+            </button>
+          )}
+          <button
+            onClick={() => handleDeleteContest(contest._id)}
+            className="bg-red-100 hover:bg-red-200 text-red-600 p-2 rounded-lg transition-colors duration-200"
+          >
+            <Trash2 className="h-4 w-4" />
+          </button>
         </div>
       </div>
+
+      {contest.contestants && contest.contestants.length > 0 ? (
+        <div className="space-y-4">
+          {hasEnded && contest.contestants.some(c => c.isWinner) && (
+            <div className="flex items-center gap-2 bg-yellow-100 text-yellow-800 p-3 rounded-lg">
+              <Trophy className="h-5 w-5" />
+              <span className="font-medium">
+                Contest ended - Winner{contest.contestants.filter(c => c.isWinner).length > 1 ? 's' : ''} announced!
+              </span>
+            </div>
+          )}
+          
+          <div className="space-y-4">
+            {contest.contestants.map((contestant) => (
+              <ContestantItem
+                key={contestant._id}
+                contestant={contestant}
+                handleVote={handleVote}
+                contest={contest}
+              />
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 text-gray-600">
+          No contestants yet. Add contestants to get started!
+        </div>
+      )}
     </div>
   );
 };
