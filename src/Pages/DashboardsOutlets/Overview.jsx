@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import ContestModal from "../../Components/Modals/ContestModal";
 import AddContestantModal from "../../Components/Modals/Contestants";
-import { Plus, Loader2 } from "lucide-react";
+import { Plus, Loader2, Award, Users, BarChart3, Trophy } from "lucide-react";
 import axios from "axios";
 import { toast } from "sonner";
 import { useAuth } from "../Contexts/AuthContext";
@@ -17,6 +17,7 @@ const Overview = () => {
   const [publishedContests, setPublishedContests] = useState(new Set());
   const [loading, setLoading] = useState(true);
   const [editingContest, setEditingContest] = useState(null);
+  const [userIP, setUserIP] = useState(null);
 
   const getAuthHeaders = useCallback(() => {
     const token = localStorage.getItem("token");
@@ -24,6 +25,16 @@ const Overview = () => {
       throw new Error("Authentication token missing");
     }
     return { Authorization: `Bearer ${token}` };
+  }, []);
+
+  const fetchUserIP = useCallback(async () => {
+    try {
+      const response = await axios.get("https://api.ipify.org?format=json");
+      return response.data.ip;
+    } catch (error) {
+      console.error("Failed to get IP address:", error);
+      return btoa(navigator.userAgent + Date.now()).substring(0, 16);
+    }
   }, []);
 
   const calculateWinners = useCallback((contestsData) => {
@@ -72,6 +83,14 @@ const Overview = () => {
     });
   }, []);
 
+  useEffect(() => {
+    const initializeIP = async () => {
+      const ip = await fetchUserIP();
+      setUserIP(ip);
+    };
+    initializeIP();
+  }, [fetchUserIP]);
+
   const fetchContests = useCallback(async () => {
     try {
       if (!isAuthenticated) {
@@ -101,7 +120,7 @@ const Overview = () => {
     } finally {
       setLoading(false);
     }
-  }, [calculateWinners, getAuthHeaders, isAuthenticated]);
+  }, [calculateWinners, fetchUserIP, getAuthHeaders, isAuthenticated]);
 
   const handlePublishToggle = async (contestId) => {
     const contest = contests.find((c) => c._id === contestId);
@@ -157,6 +176,32 @@ const Overview = () => {
         return;
       }
 
+      const ip = userIP || (await fetchUserIP());
+      if (!ip) {
+        toast.error("Unable to verify device");
+        return;
+      }
+      if (!userIP) {
+        setUserIP(ip);
+      }
+
+      const ipVotesKey = `ipVotes_${ip}`;
+      const storedVotesRaw = localStorage.getItem(ipVotesKey);
+      let votedContests = [];
+      try {
+        const parsedVotes = JSON.parse(storedVotesRaw || "[]");
+        if (Array.isArray(parsedVotes)) {
+          votedContests = parsedVotes;
+        }
+      } catch (error) {
+        console.error("Failed to parse stored votes for IP:", error);
+      }
+
+      if (votedContests.includes(contestId)) {
+        toast.error("You have already voted in this contest from this device");
+        return;
+      }
+
       const formattedContestantId = contestantId.toString();
 
       const objectIdRegex = /^[0-9a-fA-F]{24}$/;
@@ -167,7 +212,7 @@ const Overview = () => {
 
       const response = await axios.post(
         `${API_URL}/contests/${contestId}/vote`,
-        { contestantId: formattedContestantId },
+        { contestantId: formattedContestantId, userIP: ip },
         {
           headers: {
             "Content-Type": "application/json",
@@ -177,6 +222,8 @@ const Overview = () => {
       );
 
       if (response.data.success) {
+        const updatedVotes = Array.from(new Set([...votedContests, contestId]));
+        localStorage.setItem(ipVotesKey, JSON.stringify(updatedVotes));
         toast.success("Vote cast successfully!");
         await fetchContests();
       } else {
@@ -227,42 +274,131 @@ const Overview = () => {
   }
 
   return (
-    <div className="flex flex-col h-lvh bg-gray-50 p-6 space-y-6 overflow-auto w-full xl:w-[102rem] 3xl:w-[138rem]">
-      <div className="flex items-center justify-between w-full gap-3">
-        <h1 className="text-xl font-bold text-gray-800">Overview</h1>
-        <button
-          onClick={() => {
-            setEditingContest(null);
-            setIsModalOpen(true);
-          }}
-          className="bg-custom-blue hover:bg-custom-blue/90 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors duration-200"
-        >
-          <Plus className="h-4 w-4" />
-          Create Contest
-        </button>
+    <div className="space-y-8">
+      {/* Header Section */}
+      <div className="bg-white rounded-2xl shadow-lg border border-slate-200/60 p-6">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+          <div>
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent">
+              Dashboard Overview
+            </h1>
+            <p className="text-slate-600 mt-2">Manage your contests and track performance</p>
+          </div>
+          <button
+            onClick={() => {
+              setEditingContest(null);
+              setIsModalOpen(true);
+            }}
+            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-xl flex items-center gap-3 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+          >
+            <Plus className="h-5 w-5" />
+            Create Contest
+          </button>
+        </div>
       </div>
 
-      {contests.length === 0 ? (
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-blue-700">
-          No contests found. Create your first contest to get started!
+      {/* Statistics Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="bg-white rounded-xl shadow-lg border border-slate-200/60 p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-slate-600 text-sm font-medium">Total Contests</p>
+              <p className="text-3xl font-bold text-slate-800">{contests.length}</p>
+            </div>
+            <div className="bg-blue-100 p-3 rounded-lg">
+              <Award className="h-6 w-6 text-blue-600" />
+            </div>
+          </div>
         </div>
-      ) : (
-        <div className="w-full space-y-8">
-          {contests.map((contest) => (
-            <ContestItem
-              key={contest._id}
-              contest={contest}
-              formatDate={formatDate}
-              handlePublishToggle={handlePublishToggle}
-              handleDeleteContest={handleDeleteContest}
-              publishedContests={publishedContests}
-              setIsContestantModalOpen={setIsContestantModalOpen}
-              setSelectedContestId={setSelectedContestId}
-              handleVote={handleVote}
-            />
-          ))}
+
+        <div className="bg-white rounded-xl shadow-lg border border-slate-200/60 p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-slate-600 text-sm font-medium">Active Contests</p>
+              <p className="text-3xl font-bold text-slate-800">
+                {contests.filter(c => !c.hasEnded && c.isPublished).length}
+              </p>
+            </div>
+            <div className="bg-green-100 p-3 rounded-lg">
+              <Users className="h-6 w-6 text-green-600" />
+            </div>
+          </div>
         </div>
-      )}
+
+        <div className="bg-white rounded-xl shadow-lg border border-slate-200/60 p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-slate-600 text-sm font-medium">Total Votes</p>
+              <p className="text-3xl font-bold text-slate-800">
+                {contests.reduce((total, contest) =>
+                  total + (contest.contestants?.reduce((sum, c) => sum + (c.votes || 0), 0) || 0), 0
+                )}
+              </p>
+            </div>
+            <div className="bg-purple-100 p-3 rounded-lg">
+              <BarChart3 className="h-6 w-6 text-purple-600" />
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-xl shadow-lg border border-slate-200/60 p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-slate-600 text-sm font-medium">Ended Contests</p>
+              <p className="text-3xl font-bold text-slate-800">
+                {contests.filter(c => c.hasEnded).length}
+              </p>
+            </div>
+            <div className="bg-orange-100 p-3 rounded-lg">
+              <Trophy className="h-6 w-6 text-orange-600" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Contests Section */}
+      <div className="bg-white rounded-2xl shadow-lg border border-slate-200/60 p-6">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold text-slate-800">Your Contests</h2>
+        </div>
+
+        {contests.length === 0 ? (
+          <div className="text-center py-12">
+            <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-full w-24 h-24 mx-auto flex items-center justify-center mb-4">
+              <Award className="h-12 w-12 text-blue-600" />
+            </div>
+            <h3 className="text-xl font-semibold text-slate-800 mb-2">No contests yet</h3>
+            <p className="text-slate-600 mb-6">Create your first contest to get started with voting</p>
+            <button
+              onClick={() => {
+                setEditingContest(null);
+                setIsModalOpen(true);
+              }}
+              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl"
+            >
+              Create Your First Contest
+            </button>
+          </div>
+        ) : (
+          <div className="space-y-6">
+            {contests.map((contest) => (
+              <ContestItem
+                key={contest._id}
+                contest={contest}
+                formatDate={formatDate}
+                handlePublishToggle={handlePublishToggle}
+                handleDeleteContest={handleDeleteContest}
+                publishedContests={publishedContests}
+                setIsContestantModalOpen={setIsContestantModalOpen}
+                setSelectedContestId={setSelectedContestId}
+                handleVote={handleVote}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+
+
 
       <ContestModal
         isOpen={isModalOpen}

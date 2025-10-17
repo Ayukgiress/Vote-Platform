@@ -107,7 +107,7 @@ const ContestItem = ({
             src={
               contest.coverPhotoUrl.startsWith("https")
                 ? contest.coverPhotoUrl
-                : `${API_URL}/${contest.coverPhotoUrl}`
+                : `${API_URL}/${contest.coverPhotoUrl.replace(/^\//, '')}`
             }
             alt={contest.name}
             className="w-full h-48 sm:h-64 object-cover"

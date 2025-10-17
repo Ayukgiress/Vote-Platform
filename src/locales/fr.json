@@ -1,0 +1,165 @@
+{
+  "home": {
+    "hero": {
+      "badge": "Suite électorale de niveau entreprise",
+      "isoCompliant": "Conforme ISO 27001",
+      "globalResidency": "Résidence de données mondiale",
+      "title": "Puisez chaque décision avec une expérience de vote numérique fiable.",
+      "subtitle": "Des conseils de campus aux reconnaissances d'entreprise, VoteHub allie conception centrée sur l'humain avec une sécurité sans compromis afin que chaque partie prenante puisse voter avec confiance.",
+      "launchElection": "Lancez votre élection",
+      "viewConsole": "Voir la console d'administration",
+      "biometric": "Vérification prête pour la biométrie",
+      "auditable": "Parcours entièrement audibles",
+      "sso": "S'intègre avec l'authentification unique d'entreprise",
+      "milestone": "Prochaine étape",
+      "awards": "Prix de l'Innovation Mondiale",
+      "description": "Opérations rationalisées, automatisation de l'engagement des électeurs et décomptes certifiés en moins d'une heure.",
+      "votingWindow": "Fenêtre de vote",
+      "live": "En direct",
+      "dates": "1 mai – 5 mai 2025",
+      "participants": "12 482 participants inscrits · 54 pays"
+    },
+    "stats": [
+      {
+        "label": "Organisations faisant confiance à VoteHub",
+        "value": "250+"
+      },
+      {
+        "label": "Électeurs vérifiés",
+        "value": "120K"
+      },
+      {
+        "label": "Élections hébergées",
+        "value": "5.4K"
+      },
+      {
+        "label": "Fiabilité de disponibilité",
+        "value": "99.9%"
+      }
+    ],
+    "features": {
+      "section": "Fonctionnalités de la plateforme",
+      "title": "Tout ce dont vous avez besoin pour organiser des élections fiables sans compromis.",
+      "subtitle": "De la vérification d'identité aux analyses, VoteHub apporte chaque flux de travail dans une suite unique et intuitive.",
+      "items": [
+        {
+          "title": "Sécurisé par conception",
+          "description": "Chiffrement multi-couches, pistes d'audit et contrôles basés sur les rôles gardent chaque bulletin à l'abri de la falsification."
+        },
+        {
+          "title": "Expérience native mobile",
+          "description": "Offrez un flux de vote fluide sur tous les appareils avec une UX intuitive et des confirmations instantanées."
+        },
+        {
+          "title": "Analyses perspicaces",
+          "description": "Tableaux de bord visuels mettent en évidence les tendances de participation, les entonnoirs d'engagement et les résultats en temps réel."
+        },
+        {
+          "title": "Support centré sur l'humain",
+          "description": "Spécialistes produits 24/7 assistent avec l'intégration, les révisions de conformité et les opérations de lancement."
+        }
+      ]
+    },
+    "categories": {
+      "section": "Cas d'utilisation",
+      "title": "Conçu spécifiquement pour chaque type de concours.",
+      "subtitle": "Adaptez l'expérience à votre public, que vous championniez le leadership étudiant, honoriez l'excellence du corps enseignant ou reconnaissiez l'innovation institutionnelle.",
+      "items": [
+        {
+          "title": "Leadership étudiant",
+          "description": "Permettez aux étudiants d'élire des préfets, des leaders de club et des ambassadeurs de campus avec une transparence totale."
+        },
+        {
+          "title": "Reconnaissance du corps enseignant et du personnel",
+          "description": "Célébrez les éducateurs et les équipes de soutien grâce à des nominations inclusives et à un vote basé sur le mérite."
+        },
+        {
+          "title": "Prix institutionnels",
+          "description": "Mettez en valeur les organisations créant un impact durable dans les communautés et les industries du monde entier."
+        }
+      ]
+    },
+    "roadmap": {
+      "section": "Comment ça marche",
+      "title": "Un voyage guidé de l'idée aux résultats certifiés.",
+      "items": [
+        {
+          "title": "Lancement en minutes",
+          "description": "Créez des concours, importez des électeurs et personnalisez les bulletins dans un assistant de configuration guidé pour être opérationnel rapidement."
+        },
+        {
+          "title": "Engagez chaque voix",
+          "description": "Envoyez des invitations automatisées, des rappels et des expériences multilingues qui rencontrent les électeurs là où ils sont."
+        },
+        {
+          "title": "Vérifiez et certifiez",
+          "description": "La vérification intégrée assure une personne, un vote, tout en générant des certificats téléchargeables."
+        },
+        {
+          "title": "Mesurez et améliorez",
+          "description": "Les analyses post-événement et les boucles de rétroaction vous aident à affiner les stratégies d'engagement à chaque cycle."
+        }
+      ]
+    },
+    "testimonials": {
+      "section": "Preuve sociale",
+      "title": "Fiable par des équipes avant-gardistes du monde entier.",
+      "items": [
+        {
+          "quote": "VoteHub nous a aidés à organiser l'élection la plus inclusive de l'histoire de notre université. La participation a augmenté de 42 % et les résultats ont été certifiés en minutes.",
+          "name": "Samantha I.",
+          "role": "Directrice des affaires étudiantes, Université BHS"
+        },
+        {
+          "quote": "De l'intégration au jour du lancement, la plateforme était sans effort. Nos électeurs ont fait confiance au processus et ont adoré l'expérience mobile-first.",
+          "name": "Lional M.",
+          "role": "Responsable des opérations, Prix Tech Central"
+        }
+      ]
+    },
+    "faq": {
+      "section": "FAQ",
+      "title": "Réponses aux questions courantes.",
+      "subtitle": "Besoin de plus de détails ? Notre équipe peut vous guider à travers la conformité, la résidence des données et les intégrations personnalisées.",
+      "items": [
+        {
+          "question": "La plateforme est-elle suffisamment sécurisée pour les élections officielles ?",
+          "answer": "Oui. VoteHub est construit avec un chiffrement de bout en bout, des contrôles d'accès granulaires, des audits tiers et la conformité aux normes GDPR."
+        },
+        {
+          "question": "À quelle vitesse pouvons-nous lancer notre premier concours ?",
+          "answer": "La plupart des organisations terminent la configuration en moins d'une heure en utilisant notre assistant étape par étape et nos modèles prêts à l'emploi."
+        },
+        {
+          "question": "Soutenez-vous les électeurs à distance et sur site ?",
+          "answer": "Absolument. Vos électeurs peuvent voter sur n'importe quel appareil tandis que les bureaux de vote sur site peuvent fonctionner avec des kiosques sécurisés."
+        }
+      ]
+    },
+    "cta": {
+      "section": "Prêt à lancer",
+      "title": "Apportez votre prochaine élection en ligne avec confiance.",
+      "subtitle": "Rejoignez les organisations qui font confiance à VoteHub pour collecter, sécuriser et valider chaque vote. Nous nous associerons avec vous de l'intégration à la certification.",
+      "createAccount": "Créer un compte gratuit",
+      "talkExpert": "Parlez à un expert"
+    }
+  },
+  "nav": {
+    "features": "Fonctionnalités",
+    "useCases": "Cas d'utilisation",
+    "howItWorks": "Comment ça marche",
+    "logIn": "Se connecter",
+    "getStarted": "Commencer",
+    "home": "Accueil"
+  },
+  "footer": {
+    "title": "VoteHub",
+    "description": "La seule plateforme sécurisée, sûre et conviviale qui fait compter votre vote. N'oubliez pas de voter pour votre futur leader.",
+    "contacts": "Contacts",
+    "location": "VoteHub Jouvence, Yaoundé",
+    "email": "VoteHub@gmail.com",
+    "phone": "+237 676 18 44 40",
+    "followUs": "Suivez-nous",
+    "copyright": "© 2025 VoteHub. Tous droits réservés."
+  }
+}

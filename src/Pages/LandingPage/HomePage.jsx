@@ -1,267 +1,681 @@
-import React from 'react';
-import homePageImage from "/src/assets/images/pexels-steve-29506613.jpg";
-import { MdOutlineEventNote } from "react-icons/md";
-import { IoPersonCircleOutline } from "react-icons/io5";
-import { TbCategory } from "react-icons/tb";
-import { LuMapPinned } from "react-icons/lu";
-import voteImage from "/src/assets/images/Screen Shot 2024-12-20 at 10.05.41 PM-fotor-202412202369.png"
-import { RiGraduationCapFill } from "react-icons/ri";
-import { AiFillSafetyCertificate } from "react-icons/ai";
-import { MdOutlineAccessible } from "react-icons/md";
-import { BiGame, BiSupport } from "react-icons/bi";
-import image from "/src/assets/images/pexels-max-fischer-5211432.jpg"
-import teacherImage from "/src/assets/images/pexels-nappy-935943.jpg"
-import instImage from "/src/assets/images/pexels-cruz-in-portugal-20843082.jpg"
-import { BsBoxArrowUpRight } from "react-icons/bs";
-import { Link } from 'react-router-dom';
-import Footer from '../../Components/Footer';
-
-
-
-// Added contestants array
-
+import React from "react";
+import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import {
+  FiArrowRight,
+  FiBarChart,
+  FiCalendar,
+  FiCheck,
+  FiGlobe,
+  FiShield,
+  FiSmartphone,
+  FiUsers,
+  FiSun,
+  FiMoon,
+} from "react-icons/fi";
+import { useTheme } from "../Contexts/ThemeContext";
+import heroImage from "/src/assets/images/pexels-steve-29506613.jpg";
+import voteImage from "/src/assets/images/Screen Shot 2024-12-20 at 10.05.41 PM-fotor-202412202369.png";
+import studentImage from "/src/assets/images/pexels-max-fischer-5211432.jpg";
+import teacherImage from "/src/assets/images/pexels-nappy-935943.jpg";
+import institutionImage from "/src/assets/images/pexels-cruz-in-portugal-20843082.jpg";
 
 
 const HomePage = () => {
-    return (
-        <>
-            <section id="homepage" className="relative h-[40rem] text-white 3xl:h-[70rem] 2xl:h-[47rem] xl:h-[45rem]">
-                <img
-                    src={homePageImage}
-                    alt="bgimage"
-                    className="absolute w-full h-full object-cover object-center filter brightness-50"
-                />
-                <div className="absolute w-full h-full bg-[#083143] opacity-75"></div>
-                <div className="relative z-10 flex items-center justify-center gap-8 flex-col 3xl:top-80 top-52 text-white">
-                    <h1 className="text-1xl sm:text-5xl lg:text-6xl xl:text-7xl 3xl:text-9xl 2xl:text-8xl text-white">Awarding <span className='text-button-c'>The </span>Next Generations</h1>
-                    <p className="text-sm text-center text-gray-300 sm:text-1xl xl:text-1xl 3xl:text-3xl 2xl:text-2xl">
-                        "Every vote is a voice, every voice is a choice. Empowering you to shape the future, one vote at a time. <br />
-                        In a world where every voice matters, your vote is more than just a mark on a ballot— <br />
-                        it's a chance to stand for what you believe in and make a lasting impact. Together, we create the change <br />
-                        we wish to see, one decision, one choice, one vote at a time."
-                    </p>
-                    <Link to="/register" >                     <button className="bg-button-c h-12 w-72 text-2xl rounded-md 3xl:w-[40rem]  3xl:h-20  3xl:text-5xl">Get Started</button>
-                    </Link>
+  const { t } = useTranslation();
+  const { theme, toggleTheme } = useTheme();
+
+  const stats = [
+    { label: t('home.stats.0.label'), value: t('home.stats.0.value') },
+    { label: t('home.stats.1.label'), value: t('home.stats.1.value') },
+    { label: t('home.stats.2.label'), value: t('home.stats.2.value') },
+    { label: t('home.stats.3.label'), value: t('home.stats.3.value') },
+  ];
+
+  const features = [
+    {
+      title: t('home.features.items.0.title'),
+      description: t('home.features.items.0.description'),
+      icon: FiShield,
+    },
+    {
+      title: t('home.features.items.1.title'),
+      description: t('home.features.items.1.description'),
+      icon: FiSmartphone,
+    },
+    {
+      title: t('home.features.items.2.title'),
+      description: t('home.features.items.2.description'),
+      icon: FiBarChart,
+    },
+    {
+      title: t('home.features.items.3.title'),
+      description: t('home.features.items.3.description'),
+      icon: FiUsers,
+    },
+  ];
+
+  const categories = [
+    {
+      title: t('home.categories.items.0.title'),
+      description: t('home.categories.items.0.description'),
+      image: studentImage,
+    },
+    {
+      title: t('home.categories.items.1.title'),
+      description: t('home.categories.items.1.description'),
+      image: teacherImage,
+    },
+    {
+      title: t('home.categories.items.2.title'),
+      description: t('home.categories.items.2.description'),
+      image: institutionImage,
+    },
+  ];
+
+  const roadmap = [
+    {
+      icon: FiCalendar,
+      title: t('home.roadmap.items.0.title'),
+      description: t('home.roadmap.items.0.description'),
+    },
+    {
+      icon: FiGlobe,
+      title: t('home.roadmap.items.1.title'),
+      description: t('home.roadmap.items.1.description'),
+    },
+    {
+      icon: FiCheck,
+      title: t('home.roadmap.items.2.title'),
+      description: t('home.roadmap.items.2.description'),
+    },
+    {
+      icon: FiArrowRight,
+      title: t('home.roadmap.items.3.title'),
+      description: t('home.roadmap.items.3.description'),
+    },
+  ];
+
+  const testimonials = [
+    {
+      quote: t('home.testimonials.items.0.quote'),
+      name: t('home.testimonials.items.0.name'),
+      role: t('home.testimonials.items.0.role'),
+    },
+    {
+      quote: t('home.testimonials.items.1.quote'),
+      name: t('home.testimonials.items.1.name'),
+      role: t('home.testimonials.items.1.role'),
+    },
+  ];
+
+  const faqs = [
+    {
+      question: t('home.faq.items.0.question'),
+      answer: t('home.faq.items.0.answer'),
+    },
+    {
+      question: t('home.faq.items.1.question'),
+      answer: t('home.faq.items.1.answer'),
+    },
+    {
+      question: t('home.faq.items.2.question'),
+      answer: t('home.faq.items.2.answer'),
+    },
+  ];
+
+  return (
+    <>
+      <section
+        id="hero"
+        className={`relative overflow-hidden ${
+          theme === 'dark'
+            ? 'bg-slate-950 text-white'
+            : 'bg-gradient-to-br from-blue-50 via-white to-blue-50 text-gray-900'
+        }`}
+      >
+        <div className="absolute inset-0">
+          <img
+            src={heroImage}
+            alt="Professionals collaborating during an election"
+            className="h-full w-full object-cover opacity-35"
+          />
+          <div className={`absolute inset-0 ${
+            theme === 'dark'
+              ? 'bg-gradient-to-br from-slate-950 via-slate-900/90 to-slate-950'
+              : 'bg-gradient-to-br from-blue-50/80 via-white/90 to-blue-50/80'
+          }`} />
+        </div>
+
+        <div className="relative mx-auto flex min-h-[80vh] max-w-6xl flex-col gap-16 px-4 pb-24 pt-32 sm:px-6 md:px-12">
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+            <div className={`inline-flex w-fit items-center gap-2 rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-wide backdrop-blur ${
+              theme === 'dark'
+                ? 'border-white/10 bg-white/5 text-sky-200'
+                : 'border-gray-200 bg-white/80 text-blue-600'
+            }`}>
+              <span className={`inline-flex h-2 w-2 rounded-full ${
+                theme === 'dark' ? 'bg-emerald-400' : 'bg-green-500'
+              }`} />
+              {t('home.hero.badge')}
+            </div>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={toggleTheme}
+                className={`p-2 rounded-full transition ${
+                  theme === 'dark'
+                    ? 'bg-white/10 hover:bg-white/20'
+                    : 'bg-gray-200 hover:bg-gray-300'
+                }`}
+                aria-label="Toggle theme"
+              >
+                {theme === 'dark' ? <FiSun className="text-yellow-400" /> : <FiMoon className="text-gray-600" />}
+              </button>
+              <div className={`flex items-center gap-3 text-xs sm:text-sm ${
+                theme === 'dark' ? 'text-slate-200' : 'text-gray-600'
+              }`}>
+                <div className="flex items-center gap-2">
+                  <FiShield className={`${
+                    theme === 'dark' ? 'text-emerald-400' : 'text-green-500'
+                  }`} />
+                  {t('home.hero.isoCompliant')}
                 </div>
-            </section>
-
-            <section id="about" className="flex items-center justify-center bg-custom-blue h-40 w-full  3xl:h-96">
-                <div className="flex items-center gap-2 justify-center flex-col bg-custom-first w-40 h-40 sm:w-80  3xl:w-[35rem]  3xl:h-96 2xl:w-[28rem]">
-                    <div className="flex items-center justify-center bg-gray-400 w-16 h-16 3xl:w-[16rem]  3xl:h-64 rounded-full">
-                        <MdOutlineEventNote className='h-12 w-12 3xl:w-[14rem]  3xl:h-60' />
-                    </div>
-                    <h3 className='text-white text-xs 3xl:text-4xl'>
-                        100 Events
-                    </h3>
+                <div className={`hidden h-4 w-px sm:block ${
+                  theme === 'dark' ? 'bg-white/20' : 'bg-gray-300'
+                }`} />
+                <div className="flex items-center gap-2">
+                  <FiGlobe className={`${
+                    theme === 'dark' ? 'text-emerald-400' : 'text-green-500'
+                  }`} />
+                  {t('home.hero.globalResidency')}
                 </div>
-                <div className="flex items-center gap-2 justify-center flex-col bg-custom-second w-96 h-40 3xl:w-[35rem]  3xl:h-96 2xl:w-[28rem]">
-                    <div className="flex items-center justify-center bg-button-c w-16 h-16 3xl:w-[16rem]  3xl:h-64 rounded-full">
-                        <IoPersonCircleOutline className='h-12 w-12 3xl:w-[14rem]  3xl:h-60' />
-                    </div>
-                    <h3 className='text-white text-xs 3xl:text-4xl'>
-                        1000 voters
-                    </h3>
-                </div>
-                <div className="flex items-center gap-2 justify-center flex-col bg-custom-third w-96 h-40 3xl:w-[36rem]  3xl:h-96 2xl:w-[27rem]">
-                    <div className="flex items-center justify-center bg-blue-300 w-16 h-16 3xl:w-[16rem]  3xl:h-64 rounded-full">
-                        <TbCategory className='h-12 w-12 3xl:w-[14rem]  3xl:h-60' />
-                    </div>
-                    <h3 className='text-white text-xs 3xl:text-4xl'>
-                        100 Categories
-                    </h3>
-                </div>
-                <div className="flex items-center justify-center gap-2 flex-col bg-custom-fourth w-96 h-40 3xl:w-[36rem]  3xl:h-96 2xl:w-[27rem]">
-                    <div className="flex items-center justify-center bg-button-c w-16 h-16 3xl:w-[16rem]  3xl:h-64 rounded-full">
-                        <LuMapPinned className='h-12 w-12 3xl:w-[14rem]  3xl:h-60' />
-                    </div>
-                    <h3 className='text-white text-xs 3xl:text-4xl'>
-                        1,200 locations
-                    </h3>
-                </div>
-            </section>
+              </div>
+            </div>
+          </div>
 
-            <section id='contacts'>
-                <section id='about' className="bg-white w-full absolute lg:h-[20rem] 3xl:h-[35rem]">
-                    <div className="w-64 h-64 lg:w-80 lg:h-96 3xl:h-[45rem]   bg-button-c rounded-full border-5 border-white relative top-40 lg:top-71 xl:top-96 3xl:top-[45rem] right-14 lg:right-36 2xl:w-[30rem] 2xl:h-[27rem] 2xl:right-80 ">
-                        <div className="w-44 h-44 lg:w-52 lg:h-64 3xl:h-[30rem] 2xl:w-80 2xl:h-80  bg-white rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
-                    </div>
-
-                    <div className='relative bottom-56 lg:bottom-80 lg:flex lg:gap-3 lg:m-2 2xl:ml-30 3xl:gap-ml-44'>
-                        <img src={voteImage} alt="vimage" className='w-74 h-50  top-1 lg:w-[30rem]  xl:h-[38rem] xl:w-[40rem] lg:h-[27rem] 3xl:h-[55rem] 3xl:w-[160rem] 2xl:h-[38rem] 2xl:w-[90rem] rounded-tl-3xl rounded-bl-3xl rounded-br-3xl xl:ml-12 3xl:ml-0 2xl:ml-16' />
-                        <div className='flex items-start justify-start flex-col gap-2 lg:mt-9 3xl:mr-40  '>
-                            <h1 className='text-button-c text-1xl lg:text-2xl 2xl:text-4xl 3xl:text-6xl xl:text-4xl'>About us</h1>
-
-                            <h3 className='text-custom-blue text-2xl lg:text-2xl  xl:text-4xl 2xl:text-6xl 3xl:text-7xl'>   Welcome to VoteHub, a platform designed to empower individuals and organizations to participate in the democratic process.</h3>
-                            <p className='text-sm 2xl:text-xl 3xl:text-4xl xl:text-2xl font-light'>  Our mission is to  provide a modern, reliable, and accessible solution  for voting, ensuring  that every  voice is heard,  every vote is counted, and every election is fair.
-
-                                Whether you are organizing a local election, conducting a poll, or managing a corporate decision -making process, VoteHub offers a seamless experience for both administrators and voters. Our platform uses  authentication protocols to ensure the security, privacy, and integrity of every vote.
-                            </p>
-                            <div className='flex items-center justify-start flex-wrap gap-3 text-white'>
-                                <p className='bg-blue-950 w-42 h-8 text-center rounded-md flex items-center justify-center lg:w-44  xl:w-64  xl:h-12 3xl:w-[16rem]  3xl:h-20 3xl:text-2xl 2xl:w-96'>Institutional Awards</p>
-                                <p className='bg-button-c w-36 h-8 text-center rounded-md flex items-center justify-center lg:w-44  xl:w-64 xl:h-12 3xl:w-[16rem]  3xl:h-20 3xl:text-2xl 2xl:w-96'>Students Awards</p>
-                                <p className='bg-yellow-500 w-36 h-8 text-center rounded-md flex items-center justify-center lg:w-44  xl:w-64 xl:h-12 3xl:w-[16rem]  3xl:h-20 3xl:text-2xl 2xl:w-96'>Teachers Awards</p>
-                                <p className='bg-custom-blue w-36 h-8 text-center rounded-md flex items-center justify-center lg:w-44  xl:w-64 xl:h-12 3xl:w-[16rem]  3xl:h-20 3xl:text-2xl 2xl:w-96'>Special Awards</p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </section>
-
-            <section className='2xl:h-[84rem] 3xl:h-[134rem] xl:h-[140rem] flex items-center justify-center flex-col mt-[62rem] lg:mt-[39rem] xl:mt-[50rem] 2xl:mt-[55rem] 3xl:mt-[90rem] bg-custom-cyan'>
-                <div className='flex items-center justify-center flex-col'>
-                    <div className='text-center mb-12'>
-                        <h1 className='text-3xl font-bold mb-2 md:text-5xl 3xl:text-9xl'>Awards</h1>
-                        <h2 className='text-xl md:text-2xl font-normal 3xl:text-4xl'>Awards Schemes and Categories</h2>
-                    </div>
-                    <div className='flex flex-wrap md:gap-40 md:text-center gap-6 xl:gap-28 px-4  mx-auto items-center justify-center 2xl:gap-7 3xl:gap-20'>
-                        <div className='w-full shadow-button-c shadow-md bg-white h-96 gap-14 rounded-md  text-custom-blue md:w-72 lg:w-96 xl:w-[38rem] xl:h-[35rem] 2xl:w-[35rem] 3xl:w-[45rem] 3xl:h-[49rem]'>
-                            <img src={voteImage} alt="vtimg" className='  w-96 h-40 object-cover rounded-lg xl:w-[35rem] xl:h-[16rem] 3xl:w-[48rem] 3xl:h-[25rem]' />
-                            <h1 className='text-2xl 2xl:text-5xl text-start m-5 xl:text-4xl 3xl:text-7xl'>Students Voting</h1>
-                            <p className='text-start 2xl:text-2xl 2xl:m-5 font-light m-5 xl:text-2xl 3xl:text-4xl'>Your voice, your future—make it count,
-                                Students decide the change they wish to see.
-                                Empowering students, one vote at a time,
-                                The power of youth, the power of choice.</p>
-                        </div>
-                        <div className='w-full shadow-md bg-button-c h-96 gap-7 rounded-md  text-custom-blue lg:w-96 md:w-72 xl:w-[38rem] xl:h-[35rem] 2xl:w-[35rem] 3xl:w-[45rem] 3xl:h-[49rem]'>
-                            <BsBoxArrowUpRight className='w-40 h-40 flex items-center justify-center ml-9 mt-24' />
-
-                            <h1 className='text-2xl 2xl:text-5xl text-start m-5 xl:text-4xl 3xl:text-7xl'>Teachers Voting</h1>
-                            <p className='text-start 2xl:text-2xl 2xl:m-5 font-light m-5 xl:text-2xl 3xl:text-4xl'>
-                                Teachers shape minds, and votes shape change,
-                                A vote for teachers is a vote for education.
-                                In the classroom and at the ballot box, teachers lead.
-                                Every vote from a teacher is a vote for a better tomorrow. </p>
-                        </div>
-                        <div className='w-full shadow-button-c shadow-md bg-white h-96 gap-7 rounded-md  text-custom-blue lg:w-96 md:w-72 xl:w-[38rem] xl:h-[35rem] 2xl:w-[35rem] 3xl:w-[45rem] 3xl:h-[49rem]'>
-                            <img src={voteImage} alt="vtimg" className='w-full h-40 object-cover rounded-lg xl:w-[35rem] xl:h-[16rem] 3xl:w-[48rem] 3xl:h-[25rem]' />
-                            <h1 className='text-2xl 2xl:text-5xl text-start m-5 xl:text-4xl 3xl:text-7xl'>special Voting</h1>
-                            <p className='text-start 2xl:text-2xl 2xl:m-5 font-light m-5 xl:text-2xl 3xl:text-4xl'>
-                                Every voice matters, especially the special ones.
-                                "Honoring diversity through every vote."
-                                Special votes, special voices, special impact.
-                                Inclusion begins with a vote.
-                            </p>
-                        </div>
-                        <div className='w-full shadow-button-c shadow-md bg-white h-96 gap-7 rounded-md text-custom-blue lg:w-96 md:w-72 xl:w-[38rem] xl:h-[35rem] 2xl:w-[35rem] 3xl:w-[45rem] 3xl:h-[49rem]'>
-                            <img src={voteImage} alt="vtimg" className='w-full h-40 object-cover rounded-lg xl:w-[35rem] xl:h-[16rem] 3xl:w-[48rem] 3xl:h-[25rem]' />
-                            <h1 className='text-2xl 2xl:text-5xl text-start m-5 xl:text-4xl 3xl:text-7xl'>instuitions Voting</h1>
-                            <p className='text-start 2xl:text-2xl 2xl:m-5 font-light m-5 xl:text-2xl 3xl:text-4xl'>
-                                Institutions shape society—let their voice be heard.
-                                Strong institutions, stronger communities—one vote at a time.
-                                "When institutions speak, the future listens."
-                                A collective vote for collective progress.
-                            </p>
-
-                        </div>
-
-                        <div className='w-full shadow-button-c shadow-md bg-white h-96 gap-7 rounded-md text-custom-blue lg:w-96 md:w-72 xl:w-[38rem] xl:h-[35rem] 2xl:w-[35rem] 3xl:w-[45rem] 3xl:h-[49rem]'>
-                            <img src={voteImage} alt="vtimg" className='w-full h-40 object-cover rounded-lg xl:w-[35rem] xl:h-[16rem] 3xl:w-[48rem] 3xl:h-[25rem]' />
-                            <h1 className='text-2xl 2xl:text-5xl text-start m-5 xl:text-4xl 3xl:text-7xl'>instuitions Voting</h1>
-                            <p className='text-start 2xl:text-2xl 2xl:m-5 font-light m-5 xl:text-2xl 3xl:text-4xl'>
-                                Institutions shape society—let their voice be heard.
-                                Strong institutions, stronger communities—one vote at a time.
-                                "When institutions speak, the future listens."
-                                A collective vote for collective progress.
-                            </p>
-
-                        </div>
-
-                        <div className='w-full shadow-button-c shadow-md bg-white h-96 gap-7 rounded-md text-custom-blue lg:w-96 md:w-72 xl:w-[38rem] xl:h-[35rem] 2xl:w-[35rem] 3xl:w-[45rem] 3xl:h-[49rem]'>
-                            <img src={voteImage} alt="vtimg" className='w-full h-40 object-cover rounded-lg xl:w-[35rem] xl:h-[16rem] 3xl:w-[48rem] 3xl:h-[25rem]' />
-                            <h1 className='text-2xl 2xl:text-5xl text-start m-5 xl:text-4xl 3xl:text-7xl'>instuitions Voting</h1>
-                            <p className='text-start 2xl:text-2xl 2xl:m-5 font-light m-5 xl:text-2xl 3xl:text-4xl'>
-                                Institutions shape society—let their voice be heard.
-                                Strong institutions, stronger communities—one vote at a time.
-                                "When institutions speak, the future listens."
-                                A collective vote for collective progress.
-                            </p>
-
-                        </div>
-
-
-                    </div>
-                </div>
-            </section>
-
-            <section className='flex items-center justify-center flex-col h-[30rem] gap-5 2xl:h-[40rem] lg:h-[50rem] xl:h-[55rem] 3xl:h-[68rem]'>
-                <h1 className='text-3xl text-custom-blue md:text-5xl lg:text-6xl 2xl:text-7xl 3xl:text-8xl'>What We Provide </h1>
-                <p className='text-sm text-center text-gray-500 lg:text-xl  2xl:text-3xl 3xl:text-4xl'>
-                    Scroll through are various cathegories on choose on what to vote for remember every vote counts
+          <div className="grid gap-12 lg:grid-cols-[1.7fr_1fr] lg:items-center">
+            <div className="space-y-8">
+              <div className="space-y-4">
+                <h1 className={`text-4xl font-semibold leading-tight sm:text-5xl md:text-6xl ${
+                  theme === 'dark' ? 'text-white' : 'text-gray-900'
+                }`}>
+                  {t('home.hero.title')}
+                </h1>
+                <p className={`max-w-2xl text-base sm:text-lg md:text-xl ${
+                  theme === 'dark' ? 'text-slate-200' : 'text-gray-600'
+                }`}>
+                  {t('home.hero.subtitle')}
                 </p>
-                <div className='flex items-center justify-center flex-wrap gap-4 md:gap-12 lg:gap-20  xl:gap-28  2xl:gap-32 3xl:gap-28'>
-                    <div className='flex items-center justify-center flex-col border-8 border-blue-950 rounded-full w-36 h-36 lg:w-44 lg:h-44 xl:w-50 xl:h-50 2xl:w-60 2xl:h-60 3xl:w-96 3xl:h-96'>
-                        <RiGraduationCapFill className='w-20 h-20 lg:w-30 lg:h-30 xl:w-32 xl:h-32 3xl:w-40 3xl:h-40' />
-                        <h1 className='text-sm text-center 2xl:text-2xl 3xl:text-4xl'>All inclusive</h1>
-                    </div>
-                    <div className='flex items-center justify-center flex-col border-8 border-blue-950 rounded-full w-36 h-36  lg:w-44 lg:h-44 xl:w-50 xl:h-50 2xl:w-60 2xl:h-60 3xl:w-96 3xl:h-96'>
-                        <AiFillSafetyCertificate className='w-20 h-20 lg:w-30 lg:h-30 xl:w-32 xl:h-32 text-button-c 3xl:w-40 3xl:h-40' />
-                        <h1 className='text-sm text-center 2xl:text-2xl 3xl:text-4xl'>Safe & secure</h1>
-                    </div>
-                    <div className='flex items-center justify-center flex-col border-8 border-blue-950 rounded-full w-36 h-36  lg:w-44 lg:h-44 xl:w-50 xl:h-50 2xl:w-60 2xl:h-60 3xl:w-96 3xl:h-96'>
-                        <MdOutlineAccessible className='w-20 h-20 lg:w-30 lg:h-30 xl:w-32 xl:h-32 3xl:w-40 3xl:h-40' />
-                        <h1 className='text-sm text-center 2xl:text-2xl 3xl:text-4xl'>Accessible</h1>
-                    </div>
-                    <div className='flex items-center justify-center flex-col border-8 border-blue-950 rounded-full w-36 h-36  lg:w-44 lg:h-44 xl:w-50 xl:h-50 2xl:w-60 2xl:h-60 3xl:w-96 3xl:h-96'>
-                        <BiSupport className='w-20 h-20 lg:w-30 lg:h-30 xl:w-32 xl:h-32 3xl:w-40 3xl:h-40 ' />
-                        <h1 className='text-sm text-center 2xl:text-2xl 3xl:text-4xl'>Full Support</h1>
-                    </div>
-                    <div className='flex items-center justify-center flex-col border-8 border-blue-950 rounded-full w-36 h-36  lg:w-44 lg:h-44 xl:w-50 xl:h-50 2xl:w-60 2xl:h-60 3xl:w-96 3xl:h-96'>
-                        <BiSupport className='w-20 h-20 lg:w-30 lg:h-30 xl:w-32 xl:h-32 3xl:w-40 3xl:h-40' />
-                        <h1 className='text-sm text-center 2xl:text-2xl 3xl:text-4xl'>Full Support</h1>
-                    </div>
+              </div>
+
+              <div className="flex flex-wrap gap-4">
+                <Link
+                  to="/register"
+                  className={`inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-semibold text-white shadow-lg transition ${
+                    theme === 'dark'
+                      ? 'bg-sky-500 shadow-sky-500/30 hover:bg-sky-400'
+                      : 'bg-blue-600 shadow-blue-500/30 hover:bg-blue-700'
+                  }`}
+                >
+                  {t('home.hero.launchElection')}
+                  <FiArrowRight className="ml-2 text-lg" />
+                </Link>
+                <Link
+                  to="/login"
+                  className={`inline-flex items-center justify-center rounded-full border px-6 py-3 text-sm font-semibold transition ${
+                    theme === 'dark'
+                      ? 'border-white/15 text-white hover:bg-white/10'
+                      : 'border-gray-300 text-gray-900 hover:bg-gray-50'
+                  }`}
+                >
+                  {t('home.hero.viewConsole')}
+                </Link>
+              </div>
+
+              <div className={`flex flex-wrap items-center gap-6 text-xs sm:text-sm ${
+                theme === 'dark' ? 'text-slate-300' : 'text-gray-600'
+              }`}>
+                <div className="flex items-center gap-2">
+                  <FiCheck className={`${
+                    theme === 'dark' ? 'text-emerald-400' : 'text-green-500'
+                  }`} />
+                  {t('home.hero.biometric')}
                 </div>
-            </section>
-
-            <section className='flex flex-col items-center justify-center py-10 3xl:h-[68rem]'>
-                <div className='text-center mb-6'>
-                    <h1 className='text-4xl font-bold xl:text-6xl 3xl:text-8xl'>Blog</h1>
-                    <h3 className='text-sm text-gray-600 mt-2 xl:text-xl 3xl:text-3xl'>Our Recent Articles</h3>
-                    <p className='text-sm text-gray-500 mt-2 xl:text-xl 3xl:text-3xl'>Check out the latest news and updates</p>
+                <div className="flex items-center gap-2">
+                  <FiCheck className={`${
+                    theme === 'dark' ? 'text-emerald-400' : 'text-green-500'
+                  }`} />
+                  {t('home.hero.auditable')}
                 </div>
-
-                <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5  3xl:gap-12'>
-                    <div className='relative'>
-                        <img src={image} alt="style" className='w-full h-60 object-cover rounded-md shadow-md brightness-50 xl:w-[27rem] xl:h-[25rem]  3xl:w-[46rem] 3xl:h-[35rem] 2xl:w-[36rem] 2xl:h-[28rem]' />
-                        <div className='absolute bottom-3 left-3 text-white'>
-                            <h1 className='text-xl font-bold text-start 3xl:text-5xl 2xl:text-4xl'>Voting Students Head B. H. S</h1>
-                            <p className='text-sm text-start 3xl:text-2xl font-light 2xl:text-xl'>The voting of the student head of Balingual High School, Yaoundé</p>
-                        </div>
-                    </div>
-
-                    <div className='relative'>
-                        <img src={teacherImage} alt="style" className='w-full h-60 object-cover rounded-md shadow-md brightness-50 xl:w-[27rem] xl:h-[25rem]  3xl:w-[46rem] 3xl:h-[35rem] 2xl:w-[36rem]  2xl:h-[28rem]' />
-                        <div className='absolute bottom-3 left-3 text-white'>
-                            <h1 className='text-xl font-bold text-start 3xl:text-5xl 2xl:text-4xl'>Voting H. O. D</h1>
-                            <p className='text-sm text-start 3xl:text-2xl font-light 2xl:text-xl'>Vote head of department in your school that best uplifts your learning cycle. Remember, every vote counts.</p>
-                        </div>
-                    </div>
-
-                    <div className='relative'>
-                        <img src={instImage} alt="style" className='w-full h-60 object-cover rounded-md shadow-md brightness-50 xl:w-[27rem] xl:h-[25rem] 3xl:w-[46rem] 3xl:h-[35rem] 2xl:w-[36rem]  2xl:h-[28rem]' />
-                        <div className='absolute bottom-3 left-3 text-white'>
-                            <h1 className='text-xl font-bold text-start  3xl:text-5xl  2xl:text-4xl'>Voting Institutions</h1>
-                            <p className='text-sm text-start 3xl:text-2xl font-light 2xl:text-xl'>Vote for that institution that uplifts the status of the community and makes every word from there count.</p>
-                        </div>
-                    </div>
+                <div className="flex items-center gap-2">
+                  <FiCheck className={`${
+                    theme === 'dark' ? 'text-emerald-400' : 'text-green-500'
+                  }`} />
+                  {t('home.hero.sso')}
                 </div>
-            </section>
+              </div>
+            </div>
 
-
-
-            <section className='relative flex flex-col items-center justify-center'>
-                <img src={homePageImage} alt="image" className='w-full h-80 object-cover object-center filter brightness-50  3xl:h-[32rem]' />
-                <div className="absolute w-full h-full bg-[#0a2530] opacity-75"></div>
-                <div className='absolute flex items-center justify-center flex-col text-center text-white'>
-                    <h1 className='text-3xl font-bold mb-2 xl:text-5xl  3xl:text-7xl'>Do You Have Any Contest?</h1>
-                    <p className='text-lg mb-4 font-thin 3xl:text-4xl'>Register with Our Virtual Voting Platform</p>
-                    <a href="https://www.linkedin.com/in/ayuk-giress-077734294/?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base%3BjucQuBkgSmOUVQxCm%2B4d3Q%3D%3D">  <button className='px-4 py-2 bg-custom-blue text-white rounded-md w-36 h-10 3xl:w-[25rem] 3xl:h-16 3xl:text-3xl 2xl:w-[20rem] 2xl:text-2xl 2xl:h-14'>Contact Us</button></a>                    
+            <div className={`hidden h-full rounded-3xl border p-8 shadow-2xl backdrop-blur lg:flex lg:flex-col lg:justify-between ${
+              theme === 'dark'
+                ? 'border-white/10 bg-white/5 shadow-sky-500/5'
+                : 'border-gray-200 bg-white/90 shadow-blue-500/10'
+            }`}>
+              <div className="space-y-3">
+                <p className={`text-xs uppercase tracking-[0.2em] ${
+                  theme === 'dark' ? 'text-sky-200' : 'text-blue-600'
+                }`}>
+                  {t('home.hero.milestone')}
+                </p>
+                <h2 className={`text-2xl font-semibold ${
+                  theme === 'dark' ? 'text-white' : 'text-gray-900'
+                }`}>
+                  {t('home.hero.awards')}
+                </h2>
+                <p className={`text-sm ${
+                  theme === 'dark' ? 'text-slate-200' : 'text-gray-600'
+                }`}>
+                  {t('home.hero.description')}
+                </p>
+              </div>
+              <div className="space-y-4">
+                <div className={`rounded-2xl border p-4 text-sm ${
+                  theme === 'dark'
+                    ? 'border-white/10 bg-white/10'
+                    : 'border-gray-200 bg-gray-50'
+                }`}>
+                  <div className={`flex items-center justify-between text-xs ${
+                    theme === 'dark' ? 'text-slate-200' : 'text-gray-600'
+                  }`}>
+                    <span>{t('home.hero.votingWindow')}</span>
+                    <span className={`${
+                      theme === 'dark' ? 'text-emerald-300' : 'text-green-600'
+                    }`}>{t('home.hero.live')}</span>
+                  </div>
+                  <p className={`mt-2 text-lg font-semibold ${
+                    theme === 'dark' ? 'text-white' : 'text-gray-900'
+                  }`}>
+                    {t('home.hero.dates')}
+                  </p>
+                  <p className={`text-xs ${
+                    theme === 'dark' ? 'text-slate-300' : 'text-gray-500'
+                  }`}>
+                    {t('home.hero.participants')}
+                  </p>
                 </div>
-            </section>
+                <img
+                  src={voteImage}
+                  alt="VoteHub dashboard preview"
+                  className="w-full rounded-2xl object-cover"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-           
-           <Footer/>
-        </>
-    );
+      <section className={`py-16 ${
+        theme === 'dark'
+          ? 'bg-slate-900/95 text-white'
+          : 'bg-gray-100 text-gray-900'
+      }`}>
+        <div className="mx-auto grid max-w-6xl gap-8 px-4 sm:px-6 md:px-12 lg:grid-cols-4">
+          {stats.map((stat) => (
+            <div
+              key={stat.label}
+              className={`rounded-2xl border p-6 text-center shadow-sm ${
+                theme === 'dark'
+                  ? 'border-white/10 bg-white/5'
+                  : 'border-gray-200 bg-white'
+              }`}
+            >
+              <p className="text-3xl font-bold sm:text-4xl">{stat.value}</p>
+              <p className={`mt-3 text-sm ${
+                theme === 'dark' ? 'text-slate-300' : 'text-gray-600'
+              }`}>{stat.label}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section id="features" className={`py-20 ${
+        theme === 'dark' ? 'bg-slate-900' : 'bg-white'
+      }`}>
+        <div className="mx-auto flex max-w-6xl flex-col gap-12 px-4 sm:px-6 md:px-12">
+          <div className="max-w-2xl space-y-3">
+            <span className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide ${
+              theme === 'dark'
+                ? 'bg-sky-900/50 text-sky-300'
+                : 'bg-blue-100 text-blue-600'
+            }`}>
+              {t('home.features.section')}
+            </span>
+            <h2 className={`text-3xl font-bold sm:text-4xl ${
+              theme === 'dark' ? 'text-white' : 'text-gray-900'
+            }`}>
+              {t('home.features.title')}
+            </h2>
+            <p className={`text-base sm:text-lg ${
+              theme === 'dark' ? 'text-slate-300' : 'text-gray-600'
+            }`}>
+              {t('home.features.subtitle')}
+            </p>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2">
+            {features.map((feature) => {
+              const Icon = feature.icon;
+              return (
+                <article
+                  key={feature.title}
+                  className={`group rounded-3xl border p-8 transition hover:-translate-y-1 hover:shadow-xl ${
+                    theme === 'dark'
+                      ? 'border-slate-700 bg-slate-800/60 hover:border-sky-400 hover:bg-slate-800'
+                      : 'border-slate-100 bg-slate-50/60 hover:border-blue-300 hover:bg-white'
+                  }`}
+                >
+                  <div className={`flex h-12 w-12 items-center justify-center rounded-2xl ${
+                    theme === 'dark'
+                      ? 'bg-sky-500/20 text-sky-400'
+                      : 'bg-blue-500/10 text-blue-500'
+                  }`}>
+                    <Icon className="text-2xl" />
+                  </div>
+                  <h3 className={`mt-6 text-xl font-semibold ${
+                    theme === 'dark' ? 'text-white' : 'text-gray-900'
+                  }`}>
+                    {feature.title}
+                  </h3>
+                  <p className={`mt-3 text-sm sm:text-base ${
+                    theme === 'dark' ? 'text-slate-300' : 'text-gray-600'
+                  }`}>
+                    {feature.description}
+                  </p>
+                </article>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section id="categories" className={`py-20 ${
+        theme === 'dark' ? 'bg-slate-900' : 'bg-gray-900'
+      }`}>
+        <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 sm:px-6 md:px-12">
+          <div className={`flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between ${
+            theme === 'dark' ? 'text-white' : 'text-white'
+          }`}>
+            <div>
+              <span className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider ${
+                theme === 'dark'
+                  ? 'bg-white/10 text-sky-200'
+                  : 'bg-white/20 text-blue-200'
+              }`}>
+                {t('home.categories.section')}
+              </span>
+              <h2 className="mt-3 text-3xl font-bold sm:text-4xl">
+                {t('home.categories.title')}
+              </h2>
+            </div>
+            <p className={`max-w-xl text-sm sm:text-base ${
+              theme === 'dark' ? 'text-slate-200' : 'text-gray-200'
+            }`}>
+              {t('home.categories.subtitle')}
+            </p>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-3">
+            {categories.map((category) => (
+              <article
+                key={category.title}
+                className={`group overflow-hidden rounded-3xl border ${
+                  theme === 'dark'
+                    ? 'border-white/5 bg-white/5'
+                    : 'border-white/10 bg-white/10'
+                }`}
+              >
+                <div className="relative h-60 overflow-hidden">
+                  <img
+                    src={category.image}
+                    alt={category.title}
+                    className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                  />
+                  <div className={`absolute inset-0 ${
+                    theme === 'dark'
+                      ? 'bg-gradient-to-t from-slate-950/80 via-slate-900/40'
+                      : 'bg-gradient-to-t from-gray-900/80 via-gray-800/40'
+                  }`} />
+                </div>
+                <div className="space-y-3 p-6">
+                  <h3 className="text-lg font-semibold text-white">
+                    {category.title}
+                  </h3>
+                  <p className="text-sm text-slate-200">
+                    {category.description}
+                  </p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="roadmap" className={`py-20 ${
+        theme === 'dark' ? 'bg-slate-900' : 'bg-white'
+      }`}>
+        <div className="mx-auto flex max-w-6xl flex-col gap-12 px-4 sm:px-6 md:px-12">
+          <div className="max-w-2xl space-y-3">
+            <span className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide ${
+              theme === 'dark'
+                ? 'bg-emerald-900/50 text-emerald-300'
+                : 'bg-green-50 text-green-600'
+            }`}>
+              {t('home.roadmap.section')}
+            </span>
+            <h2 className={`text-3xl font-bold sm:text-4xl ${
+              theme === 'dark' ? 'text-white' : 'text-gray-900'
+            }`}>
+              {t('home.roadmap.title')}
+            </h2>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2">
+            {roadmap.map((step) => {
+              const Icon = step.icon;
+              return (
+                <article
+                  key={step.title}
+                  className={`rounded-3xl border p-8 transition hover:shadow-lg ${
+                    theme === 'dark'
+                      ? 'border-slate-700 bg-slate-800/60 hover:border-emerald-400 hover:bg-slate-800'
+                      : 'border-slate-100 bg-slate-50/60 hover:border-green-300 hover:bg-white'
+                  }`}
+                >
+                  <div className={`flex h-12 w-12 items-center justify-center rounded-2xl ${
+                    theme === 'dark'
+                      ? 'bg-emerald-500/20 text-emerald-400'
+                      : 'bg-green-500/10 text-green-500'
+                  }`}>
+                    <Icon className="text-2xl" />
+                  </div>
+                  <h3 className={`mt-6 text-xl font-semibold ${
+                    theme === 'dark' ? 'text-white' : 'text-gray-900'
+                  }`}>
+                    {step.title}
+                  </h3>
+                  <p className={`mt-3 text-sm sm:text-base ${
+                    theme === 'dark' ? 'text-slate-300' : 'text-gray-600'
+                  }`}>
+                    {step.description}
+                  </p>
+                </article>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section id="testimonials" className={`py-20 ${
+        theme === 'dark' ? 'bg-slate-800' : 'bg-gray-100'
+      }`}>
+        <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 sm:px-6 md:px-12">
+          <div className="max-w-2xl space-y-3">
+            <span className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide ${
+              theme === 'dark'
+                ? 'bg-slate-700 text-slate-300'
+                : 'bg-white text-gray-500'
+            }`}>
+              {t('home.testimonials.section')}
+            </span>
+            <h2 className={`text-3xl font-bold sm:text-4xl ${
+              theme === 'dark' ? 'text-white' : 'text-gray-900'
+            }`}>
+              {t('home.testimonials.title')}
+            </h2>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2">
+            {testimonials.map((testimonial) => (
+              <article
+                key={testimonial.name}
+                className={`rounded-3xl border p-8 shadow-sm ${
+                  theme === 'dark'
+                    ? 'border-slate-700 bg-slate-800'
+                    : 'border-slate-200 bg-white'
+                }`}
+              >
+                <p className={`text-base sm:text-lg ${
+                  theme === 'dark' ? 'text-slate-300' : 'text-slate-700'
+                }`}>
+                  “{testimonial.quote}”
+                </p>
+                <div className="mt-6">
+                  <p className={`font-semibold ${
+                    theme === 'dark' ? 'text-white' : 'text-slate-900'
+                  }`}>{testimonial.name}</p>
+                  <p className={`text-sm ${
+                    theme === 'dark' ? 'text-slate-400' : 'text-slate-500'
+                  }`}>{testimonial.role}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="faq" className={`py-20 ${
+        theme === 'dark' ? 'bg-slate-900' : 'bg-white'
+      }`}>
+        <div className="mx-auto flex max-w-4xl flex-col gap-12 px-4 sm:px-6 md:px-12">
+          <div className="text-center space-y-4">
+            <span className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-tight ${
+              theme === 'dark'
+                ? 'bg-sky-900/50 text-sky-300'
+                : 'bg-sky-100 text-sky-600'
+            }`}>
+              {t('home.faq.section')}
+            </span>
+            <h2 className={`text-3xl font-bold sm:text-4xl ${
+              theme === 'dark' ? 'text-white' : 'text-slate-900'
+            }`}>
+              {t('home.faq.title')}
+            </h2>
+            <p className={`text-sm sm:text-base ${
+              theme === 'dark' ? 'text-slate-300' : 'text-slate-600'
+            }`}>
+              {t('home.faq.subtitle')}
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            {faqs.map((faq) => (
+              <details
+                key={faq.question}
+                className={`group rounded-3xl border p-6 ${
+                  theme === 'dark'
+                    ? 'border-slate-700 bg-slate-800/60'
+                    : 'border-slate-200 bg-slate-50/60'
+                }`}
+              >
+                <summary className={`flex cursor-pointer items-center justify-between text-left text-base font-semibold ${
+                  theme === 'dark' ? 'text-white' : 'text-slate-900'
+                }`}>
+                  {faq.question}
+                  <span className={`ml-4 transition group-open:rotate-45 ${
+                    theme === 'dark' ? 'text-slate-400' : 'text-slate-400'
+                  }`}>
+                    <FiPlusIcon />
+                  </span>
+                </summary>
+                <p className={`mt-4 text-sm sm:text-base ${
+                  theme === 'dark' ? 'text-slate-300' : 'text-slate-600'
+                }`}>{faq.answer}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="cta" className={`relative overflow-hidden py-20 ${
+        theme === 'dark' ? 'bg-slate-900 text-white' : 'bg-slate-900 text-white'
+      }`}>
+        <div className="absolute inset-0">
+          <img
+            src={heroImage}
+            alt="Celebratory voters"
+            className="h-full w-full object-cover opacity-20"
+          />
+          <div className={`absolute inset-0 ${
+            theme === 'dark'
+              ? 'bg-gradient-to-br from-slate-900 via-sky-900/60 to-slate-950'
+              : 'bg-gradient-to-br from-slate-900 via-sky-900/60 to-slate-950'
+          }`} />
+        </div>
+        <div className="relative mx-auto flex max-w-4xl flex-col items-center gap-6 px-4 text-center sm:px-6 md:px-12">
+          <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-sky-200">
+              {t('home.cta.section')}
+          </span>
+          <h2 className="text-3xl font-bold sm:text-4xl">
+            {t('home.cta.title')}
+          </h2>
+          <p className="max-w-2xl text-sm text-slate-200 sm:text-base">
+            {t('home.cta.subtitle')}
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link
+              to="/register"
+              className="inline-flex items-center justify-center rounded-full bg-sky-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-sky-500/30 transition hover:bg-sky-400"
+            >
+              {t('home.cta.createAccount')}
+            </Link>
+            <a
+              href="https://www.linkedin.com/in/ayuk-giress-077734294/?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base%3BjucQuBkgSmOUVQxCm%2B4d3Q%3D%3D"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center justify-center rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+            >
+              {t('home.cta.talkExpert')}
+            </a>
+          </div>
+        </div>
+      </section>
+    </>
+  );
 };
+
+const FiPlusIcon = () => (
+  <svg
+    viewBox="0 0 20 20"
+    fill="currentColor"
+    aria-hidden="true"
+    className="h-5 w-5"
+  >
+    <path
+      fillRule="evenodd"
+      d="M10 3a1 1 0 0 1 1 1v5h5a1 1 0 1 1 0 2h-5v5a1 1 0 1 1-2 0v-5H4a1 1 0 0 1 0-2h5V4a1 1 0 0 1 1-1Z"
+      clipRule="evenodd"
+    />
+  </svg>
+);
 
 export default HomePage;
