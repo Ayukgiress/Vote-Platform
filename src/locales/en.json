@@ -1,0 +1,165 @@
+{
+  "home": {
+    "hero": {
+      "badge": "Enterprise-grade election suite",
+      "isoCompliant": "ISO 27001 compliant",
+      "globalResidency": "Global data residency",
+      "title": "Power every decision with a trusted digital voting experience.",
+      "subtitle": "From campus councils to enterprise-wide recognition, VoteHub blends human-centered design with uncompromising security so every stakeholder can vote with confidence.",
+      "launchElection": "Launch your election",
+      "viewConsole": "View admin console",
+      "biometric": "Biometric-ready verification",
+      "auditable": "Fully auditable journeys",
+      "sso": "Integrates with enterprise SSO",
+      "milestone": "Next milestone",
+      "awards": "Global Innovation Awards",
+      "description": "Streamlined operations, voter engagement automation, and certified tallies in under an hour.",
+      "votingWindow": "Voting window",
+      "live": "Live",
+      "dates": "May 1 – May 5, 2025",
+      "participants": "12,482 registered participants · 54 countries"
+    },
+    "stats": [
+      {
+        "label": "Organizations Trusting VoteHub",
+        "value": "250+"
+      },
+      {
+        "label": "Verified Voters",
+        "value": "120K"
+      },
+      {
+        "label": "Elections Hosted",
+        "value": "5.4K"
+      },
+      {
+        "label": "Uptime Reliability",
+        "value": "99.9%"
+      }
+    ],
+    "features": {
+      "section": "Platform features",
+      "title": "Everything you need to run trusted elections without compromise.",
+      "subtitle": "From identity verification to analytics, VoteHub brings every workflow into a single, intuitive suite.",
+      "items": [
+        {
+          "title": "Secure by Design",
+          "description": "Multi-layer encryption, audit trails, and role-based controls keep every ballot tamper-proof."
+        },
+        {
+          "title": "Mobile Native Experience",
+          "description": "Deliver a seamless voting flow across devices with intuitive UX and instant confirmations."
+        },
+        {
+          "title": "Insightful Analytics",
+          "description": "Visual dashboards surface turnout trends, engagement funnels, and results in real time."
+        },
+        {
+          "title": "Human-Centered Support",
+          "description": "24/7 product specialists assist with onboarding, compliance reviews, and launch ops."
+        }
+      ]
+    },
+    "categories": {
+      "section": "Use cases",
+      "title": "Purpose-built for every kind of contest.",
+      "subtitle": "Tailor the experience to your audience, whether you are championing student leadership, honoring faculty excellence, or recognizing institutional innovation.",
+      "items": [
+        {
+          "title": "Student Leadership",
+          "description": "Empower students to elect prefects, club leaders, and campus ambassadors with full transparency."
+        },
+        {
+          "title": "Faculty & Staff Recognition",
+          "description": "Celebrate educators and support teams through inclusive nominations and merit-based voting."
+        },
+        {
+          "title": "Institutional Awards",
+          "description": "Highlight the organizations creating lasting impact in communities and industries worldwide."
+        }
+      ]
+    },
+    "roadmap": {
+      "section": "How it works",
+      "title": "A guided journey from idea to certified results.",
+      "items": [
+        {
+          "title": "Launch in Minutes",
+          "description": "Create contests, import voters, and customize ballots in a guided setup wizard to go live fast."
+        },
+        {
+          "title": "Engage Every Voice",
+          "description": "Send automated invites, reminders, and multilingual experiences that meet voters where they are."
+        },
+        {
+          "title": "Verify & Certify",
+          "description": "Built-in verification ensures one person, one vote, while generating downloadable certificates."
+        },
+        {
+          "title": "Measure & Improve",
+          "description": "Post-event analytics and feedback loops help you refine engagement strategies each cycle."
+        }
+      ]
+    },
+    "testimonials": {
+      "section": "Social proof",
+      "title": "Trusted by forward-thinking teams worldwide.",
+      "items": [
+        {
+          "quote": "VoteHub helped us run the most inclusive election in our university's history. Turnout jumped by 42% and results were certified in minutes.",
+          "name": "Samantha I.",
+          "role": "Student Affairs Director, BHS University"
+        },
+        {
+          "quote": "From onboarding to launch day, the platform was effortless. Our voters trusted the process and loved the mobile-first experience.",
+          "name": "Lional M.",
+          "role": "Operations Lead, Central Tech Awards"
+        }
+      ]
+    },
+    "faq": {
+      "section": "FAQ",
+      "title": "Answers to common questions.",
+      "subtitle": "Need more details? Our team can walk you through compliance, data residency, and custom integrations.",
+      "items": [
+        {
+          "question": "Is the platform secure enough for official elections?",
+          "answer": "Yes. VoteHub is built with end-to-end encryption, granular access controls, third-party audits, and compliance with GDPR standards."
+        },
+        {
+          "question": "How quickly can we launch our first contest?",
+          "answer": "Most organizations complete setup in under an hour using our step-by-step wizard and ready-to-use templates."
+        },
+        {
+          "question": "Do you support remote and on-site voters?",
+          "answer": "Absolutely. Your voters can cast ballots from any device while in-person polling stations can operate using secure kiosks."
+        }
+      ]
+    },
+    "cta": {
+      "section": "Ready to launch",
+      "title": "Bring your next election online with confidence.",
+      "subtitle": "Join organizations that trust VoteHub to collect, secure, and validate every vote. We will partner with you from onboarding to certification.",
+      "createAccount": "Create free account",
+      "talkExpert": "Talk to an expert"
+    }
+  },
+  "nav": {
+    "features": "Features",
+    "useCases": "Use cases",
+    "howItWorks": "How it works",
+    "logIn": "Log in",
+    "getStarted": "Get started",
+    "home": "Home"
+  },
+  "footer": {
+    "title": "VoteHub",
+    "description": "The only secured, safe, and user-friendly platform that makes your vote count. Remember to vote for your future leader.",
+    "contacts": "Contacts",
+    "location": "VoteHub Jouvence, Yaoundé",
+    "email": "VoteHub@gmail.com",
+    "phone": "+237 676 18 44 40",
+    "followUs": "Follow Us",
+    "copyright": "© 2025 VoteHub. All rights reserved."
+  }
+}

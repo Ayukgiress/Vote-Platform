@@ -73,7 +73,6 @@ const VerifyEmail = () => {
         </>
       )}
     </div>
-    <Footer/>
     </>
   );
 };

@@ -12,7 +12,6 @@ const VerifyEmails = () => {
         Please check your inbox and click the link to verify your email. It expires in an hour.
       </h2>
     </div>
-    <Footer/>
     </>
   );
 };

@@ -10,10 +10,10 @@ const ContestantItem = ({ contestant, handleVote, contest }) => {
 
   const handleVoteClick = async (contestantId) => {
     if (loading || isContestEnded) return;
-    
+
     setLoading(true);
     try {
-      await handleVote(contestant.contestId, contestantId);
+      await handleVote(contest._id, contestantId);
     } catch (error) {
       console.error("Error voting:", error);
     } finally {
@@ -33,7 +33,7 @@ const ContestantItem = ({ contestant, handleVote, contest }) => {
               src={
                 contestant.photoUrl.startsWith("https")
                   ? contestant.photoUrl
-                  : `${API_URL}/${contestant.photoUrl}`
+                  : `${API_URL}/${contestant.photoUrl.replace(/^\//, '')}`
               }
               alt={contestant.name || "Contestant"}
               className="h-24 w-24 object-cover rounded-full"
