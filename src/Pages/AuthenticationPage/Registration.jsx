@@ -91,7 +91,7 @@ const Registration = () => {
               <span className={`text-sm font-semibold uppercase tracking-[0.28em] ${
                 theme === 'dark' ? 'text-slate-300' : 'text-gray-600'
               }`}>
-                VoteHub
+                Choosify
               </span>
             </div>
             <h1 className={`text-3xl font-semibold leading-tight sm:text-4xl md:text-5xl ${

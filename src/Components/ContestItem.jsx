@@ -51,7 +51,7 @@ const ContestItem = ({
   const statusText = getStatusText(status);
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 space-y-4 sm:space-y-6">
+    <div className="bg-gradient-to-br from-white to-slate-50 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-200 p-4 sm:p-6 space-y-4 sm:space-y-6 border border-slate-200/60">
       <div className="flex flex-col sm:flex-row items-center justify-between">
         <div className="space-y-1">
           <div className="flex items-center gap-3">
@@ -101,8 +101,8 @@ const ContestItem = ({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 rounded-lg p-4 sm:p-6">
-        <div className="relative rounded-lg overflow-hidden shadow-lg bg-gray-200">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 bg-gray-50 rounded-lg p-4 sm:p-6">
+        <div className="relative rounded-lg overflow-hidden shadow-lg bg-gray-200 lg:col-span-1">
           <img
             src={
               contest.coverPhotoUrl.startsWith("https")
@@ -119,7 +119,7 @@ const ContestItem = ({
           />
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-4 lg:col-span-2">
           <div className="flex flex-col gap-3">
             <div className="flex items-start gap-3">
               <Info className="h-6 w-6 text-gray-500 mt-1" />
@@ -146,8 +146,8 @@ const ContestItem = ({
             </div>
           </div>
           {isPublished && !hasEnded && (
-            <div className="mt-4 text-center sm:flex-col flex items-start justify-start bg-white border-gray-200 rounded-lg shadow-sm p-4 gap-5 ">
-              <h1>Voting url</h1>
+            <div className="mt-4 bg-white border border-gray-200 rounded-lg shadow-sm p-4">
+              <h4 className="text-gray-900 font-medium mb-2">Voting URL</h4>
               <a
                 href={`/${contest._id}/vote`}
                 target="_blank"
@@ -176,7 +176,7 @@ const ContestItem = ({
             </div>
           )}
 
-          <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {contest.contestants.map((contestant) => (
               <ContestantItem
                 key={contestant._id}

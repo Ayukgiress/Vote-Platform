@@ -305,7 +305,7 @@ const HomePage = () => {
                 </div>
                 <img
                   src={voteImage}
-                  alt="VoteHub dashboard preview"
+                  alt="Choosify dashboard preview"
                   className="w-full rounded-2xl object-cover"
                 />
               </div>
