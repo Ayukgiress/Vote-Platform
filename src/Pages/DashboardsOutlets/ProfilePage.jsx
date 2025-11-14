@@ -116,6 +116,8 @@ const ProfilePage = () => {
     { label: 'Total Votes', value: 'Loading...', icon: User }
   ]);
 
+  const [activities, setActivities] = useState([]);
+
   const fetchStats = async () => {
     try {
       const headers = getAuthHeaders();
@@ -136,6 +138,56 @@ const ProfilePage = () => {
           { label: 'Active Contests', value: activeContests.toString(), icon: Calendar },
           { label: 'Total Votes', value: totalVotes.toString(), icon: User }
         ]);
+
+        // Generate recent activities from contests data
+        const recentActivities = [];
+        contests.forEach(contest => {
+          // Add contest creation activity
+          if (contest.createdAt) {
+            recentActivities.push({
+              action: 'Created contest',
+              item: contest.name,
+              time: new Date(contest.createdAt).toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric'
+              }),
+              timestamp: new Date(contest.createdAt)
+            });
+          }
+
+          // Add contest publication activity
+          if (contest.isPublished && contest.updatedAt) {
+            recentActivities.push({
+              action: 'Published contest',
+              item: contest.name,
+              time: new Date(contest.updatedAt).toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric'
+              }),
+              timestamp: new Date(contest.updatedAt)
+            });
+          }
+
+          // Add contest ended activity
+          if (contest.hasEnded || new Date(contest.endDate) < now) {
+            recentActivities.push({
+              action: 'Contest ended',
+              item: contest.name,
+              time: new Date(contest.endDate).toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric'
+              }),
+              timestamp: new Date(contest.endDate)
+            });
+          }
+        });
+
+        // Sort activities by timestamp (most recent first) and take top 10
+        recentActivities.sort((a, b) => b.timestamp - a.timestamp);
+        setActivities(recentActivities.slice(0, 10));
       }
     } catch (error) {
       console.error("Fetch stats error:", error);
@@ -144,6 +196,7 @@ const ProfilePage = () => {
         { label: 'Active Contests', value: 'Error', icon: Calendar },
         { label: 'Total Votes', value: 'Error', icon: User }
       ]);
+      setActivities([]);
     }
   };
 
@@ -335,7 +388,7 @@ const ProfilePage = () => {
               </div>
 
               {/* Website */}
-              <div>
+              {/* <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">
                   Website
                 </label>
@@ -360,7 +413,7 @@ const ProfilePage = () => {
                     </a>
                   </div>
                 )}
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -370,20 +423,21 @@ const ProfilePage = () => {
       <div className="bg-white rounded-2xl shadow-lg border border-slate-200/60 p-6">
         <h3 className="text-xl font-semibold text-slate-800 mb-6">Recent Activity</h3>
         <div className="space-y-4">
-          {[
-            { action: 'Created new contest', item: 'Summer Music Festival', time: '2 hours ago' },
-            { action: 'Published contest', item: 'Photography Contest', time: '1 day ago' },
-            { action: 'Updated profile', item: 'Changed bio and website', time: '3 days ago' },
-            { action: 'Contest ended', item: 'Best Chef Competition', time: '1 week ago' }
-          ].map((activity, index) => (
-            <div key={index} className="flex items-center justify-between py-3 border-b border-slate-100 last:border-b-0">
-              <div>
-                <p className="text-slate-800 font-medium">{activity.action}</p>
-                <p className="text-slate-600 text-sm">{activity.item}</p>
-              </div>
-              <span className="text-slate-500 text-sm">{activity.time}</span>
+          {activities.length === 0 ? (
+            <div className="text-center py-8">
+              <p className="text-slate-500">No recent activities found</p>
             </div>
-          ))}
+          ) : (
+            activities.map((activity, index) => (
+              <div key={index} className="flex items-center justify-between py-3 border-b border-slate-100 last:border-b-0">
+                <div>
+                  <p className="text-slate-800 font-medium">{activity.action}</p>
+                  <p className="text-slate-600 text-sm">{activity.item}</p>
+                </div>
+                <span className="text-slate-500 text-sm">{activity.time}</span>
+              </div>
+            ))
+          )}
         </div>
       </div>
     </div>

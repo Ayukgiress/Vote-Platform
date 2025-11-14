@@ -153,13 +153,12 @@
     "home": "Accueil"
   },
   "footer": {
-    "title": "VoteHub",
+    "title": "Choosify",
     "description": "La seule plateforme sécurisée, sûre et conviviale qui fait compter votre vote. N'oubliez pas de voter pour votre futur leader.",
     "contacts": "Contacts",
     "location": "VoteHub Jouvence, Yaoundé",
     "email": "VoteHub@gmail.com",
     "phone": "+237 676 18 44 40",
-    "followUs": "Suivez-nous",
-    "copyright": "© 2025 VoteHub. Tous droits réservés."
+    "followUs": "Suivez-nous"
   }
 }

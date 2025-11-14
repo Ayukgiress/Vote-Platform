@@ -69,7 +69,7 @@ const Login = () => {
                 ? 'border-white/10 bg-white/10 text-sky-200'
                 : 'border-gray-200 bg-gray-100 text-blue-600'
             }`}>
-              Welcome back to VoteHub
+              Welcome back to Choosify
             </span>
             <h1 className={`text-3xl font-semibold leading-tight sm:text-4xl md:text-5xl ${
               theme === 'dark' ? 'text-white' : 'text-gray-900'

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { IoSettingsOutline } from "react-icons/io5";
+
 import Profile from './Profile';
 import {
   Home,
@@ -17,11 +19,10 @@ import {
 const NAVIGATION_ITEMS = [
   { path: '/', label: 'Home', icon: <Home className="h-5 w-5" /> },
   { path: '/dashboard', label: 'Overview', icon: <Users className="h-5 w-5" /> },
-  { path: '/dashboard/analytics', label: 'Analytics', icon: <BarChart3 className="h-5 w-5" /> },
-  { path: '/dashboard/contests', label: 'Contests', icon: <Award className="h-5 w-5" /> },
-  { path: '/dashboard/profile', label: 'Profile', icon: <User className="h-5 w-5" /> },
   { path: '/dashboard/notifications', label: 'Notifications', icon: <Bell className="h-5 w-5" /> },
-  { path: '/dashboard/history', label: 'History', icon: <Clock className="h-5 w-5" /> },
+    { path: '/dashboard/history', label: 'History', icon: <Clock className="h-5 w-5" /> },
+ { path: '/dashboard/analytics', label: 'Analytics', icon: <BarChart3 className="h-5 w-5" /> },
+   { path: '/dashboard/profile', label: 'Settings', icon: <IoSettingsOutline className="h-5 w-5" /> },
   { path: '/dashboard/help', label: 'Help', icon: <HelpCircle className="h-5 w-5" /> }
 ];
 
@@ -65,7 +66,7 @@ const Sidebar = () => {
           <div className="p-4 flex items-center justify-between border-b border-slate-700/50">
             {!isCollapsed && (
               <h1 className="text-white text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                VoteHub
+                Choosify
               </h1>
             )}
             <button

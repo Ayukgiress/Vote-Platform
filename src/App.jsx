@@ -76,7 +76,7 @@ const App = () => {
                 <span className={`text-lg font-semibold tracking-wide ${
                   theme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}>
-                  VoteHub
+                  Choosify
                 </span>
               </Link>
 
