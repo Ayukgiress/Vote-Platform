@@ -129,17 +129,6 @@ const Login = () => {
                   </p>
                 </div>
                 <div className="flex items-center gap-4">
-                  <button
-                    onClick={toggleTheme}
-                    className={`p-2 rounded-lg transition ${
-                      theme === 'dark'
-                        ? 'hover:bg-white/10 text-white'
-                        : 'hover:bg-gray-100 text-gray-700'
-                    }`}
-                    aria-label="Toggle theme"
-                  >
-                    {theme === 'dark' ? <FiSun className="h-5 w-5" /> : <FiMoon className="h-5 w-5" />}
-                  </button>
                   <Link
                     to="/register"
                     className={`inline-flex items-center text-sm font-medium transition ${

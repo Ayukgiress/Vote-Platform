@@ -14,6 +14,8 @@ import {
   FiMoon,
 } from "react-icons/fi";
 import { useTheme } from "../Contexts/ThemeContext";
+import Navbar from "../../Components/Navbar";
+import Footer from "../../Components/Footer";
 import heroImage from "/src/assets/images/pexels-steve-29506613.jpg";
 import voteImage from "/src/assets/images/Screen Shot 2024-12-20 at 10.05.41 PM-fotor-202412202369.png";
 import studentImage from "/src/assets/images/pexels-max-fischer-5211432.jpg";
@@ -126,9 +128,10 @@ const HomePage = () => {
 
   return (
     <>
+      <Navbar />
       <section
         id="hero"
-        className={`relative overflow-hidden ${
+        className={`relative overflow-hidden pt-16 ${
           theme === 'dark'
             ? 'bg-slate-950 text-white'
             : 'bg-gradient-to-br from-blue-50 via-white to-blue-50 text-gray-900'
@@ -147,7 +150,7 @@ const HomePage = () => {
           }`} />
         </div>
 
-        <div className="relative mx-auto flex min-h-[80vh] max-w-6xl flex-col gap-16 px-4 pb-24 pt-32 sm:px-6 md:px-12">
+        <div className="relative mx-auto flex min-h-[80vh] max-w-6xl flex-col gap-16 px-4 pb-24 pt-16 sm:px-6 md:px-12">
           <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
             <div className={`inline-flex w-fit items-center gap-2 rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-wide backdrop-blur ${
               theme === 'dark'
@@ -160,17 +163,7 @@ const HomePage = () => {
               {t('home.hero.badge')}
             </div>
             <div className="flex items-center gap-3">
-              <button
-                onClick={toggleTheme}
-                className={`p-2 rounded-full transition ${
-                  theme === 'dark'
-                    ? 'bg-white/10 hover:bg-white/20'
-                    : 'bg-gray-200 hover:bg-gray-300'
-                }`}
-                aria-label="Toggle theme"
-              >
-                {theme === 'dark' ? <FiSun className="text-yellow-400" /> : <FiMoon className="text-gray-600" />}
-              </button>
+               
               <div className={`flex items-center gap-3 text-xs sm:text-sm ${
                 theme === 'dark' ? 'text-slate-200' : 'text-gray-600'
               }`}>
@@ -659,6 +652,7 @@ const HomePage = () => {
           </div>
         </div>
       </section>
+      <Footer />
     </>
   );
 };

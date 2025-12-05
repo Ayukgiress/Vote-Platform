@@ -27,26 +27,18 @@ const ContestantItem = ({ contestant, handleVote, contest }) => {
       ${isWinner ? 'border-2 border-yellow-400 bg-yellow-50' : ''}
     `}>
       <div className="relative mb-4">
-        {contestant.photoUrl ? (
-          <img
-            src={
-              contestant.photoUrl.startsWith("https")
-                ? contestant.photoUrl
-                : `${API_URL}/${contestant.photoUrl.replace(/^\//, '')}`
-            }
-            alt={contestant.name || "Contestant"}
-            className="h-32 w-32 object-cover rounded-full border-4 border-gray-100"
-            onError={(e) => {
-              e.target.onerror = null;
-            }}
-          />
-        ) : (
-          <div className="h-32 w-32 bg-gray-200 flex items-center justify-center rounded-full border-4 border-gray-100">
-            <span className="text-gray-500 text-3xl">
-              {contestant.name?.charAt(0) || "?"}
-            </span>
-          </div>
-        )}
+        <img
+          src={
+            contestant.photoUrl.startsWith("https")
+              ? contestant.photoUrl
+              : `${API_URL}/${contestant.photoUrl.replace(/^\//, '')}`
+          }
+          alt={contestant.name || "Contestant"}
+          className="h-32 w-32 object-cover rounded-full border-4 border-gray-100"
+          onError={(e) => {
+            e.target.style.display = 'none';
+          }}
+        />
         {isWinner && (
           <div className="absolute -top-2 -right-2 bg-yellow-400 rounded-full p-2">
             <Trophy className="h-6 w-6 text-white" />
