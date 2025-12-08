@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { FiMenu, FiX, FiSun, FiMoon } from 'react-icons/fi';
 import { useTheme } from '../Pages/Contexts/ThemeContext';
 
+import logoImage from '../assets/images/2fa8fddc3b07465da808456a6a979854-free.png';
+
 const Navbar = () => {
   const { t } = useTranslation();
   const { theme, toggleTheme } = useTheme();
@@ -14,8 +16,8 @@ const Navbar = () => {
 
   const navItems = [
     { path: '/', label: t('nav.home') },
-    { path: '/about', label: t('nav.about') },
-    { path: '/contact', label: t('nav.contact') },
+    { path: '/#about', label: t('nav.about') },
+    { path: '/#contact', label: t('nav.contact') },
   ];
 
   return (
@@ -29,9 +31,7 @@ const Navbar = () => {
           {/* Logo */}
           <div className="flex items-center">
             <Link to="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                <span className="text-white font-bold text-lg">C</span>
-              </div>
+              <img src={logoImage} alt="Logo" className="w-8 h-8 rounded-lg" />
               <span className={`text-xl font-bold ${
                 theme === 'dark' ? 'text-white' : 'text-gray-900'
               }`}>
@@ -42,23 +42,28 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            {navItems.map((item) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                  location.pathname === item.path
-                    ? theme === 'dark'
-                      ? 'text-blue-400 bg-blue-500/10'
-                      : 'text-blue-600 bg-blue-50'
-                    : theme === 'dark'
-                      ? 'text-gray-300 hover:text-white hover:bg-slate-800/50'
-                      : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
-                }`}
-              >
-                {item.label}
-              </Link>
-            ))}
+            {navItems.map((item) => {
+              const isActive = item.path.startsWith('/#') 
+                ? location.hash === item.path.replace('/', '')
+                : location.pathname === item.path;
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                    isActive
+                      ? theme === 'dark'
+                        ? 'text-blue-400 bg-blue-500/10'
+                        : 'text-blue-600 bg-blue-50'
+                      : theme === 'dark'
+                        ? 'text-gray-300 hover:text-white hover:bg-slate-800/50'
+                        : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
           </div>
 
           {/* Right side actions */}
@@ -121,24 +126,29 @@ const Navbar = () => {
             theme === 'dark' ? 'border-slate-800/50' : 'border-gray-200/50'
           }`}>
             <div className="px-2 pt-2 pb-3 space-y-1">
-              {navItems.map((item) => (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  onClick={() => setIsMenuOpen(false)}
-                  className={`block px-3 py-2 rounded-md text-base font-medium transition-colors ${
-                    location.pathname === item.path
-                      ? theme === 'dark'
-                        ? 'text-blue-400 bg-blue-500/10'
-                        : 'text-blue-600 bg-blue-50'
-                      : theme === 'dark'
-                        ? 'text-gray-300 hover:text-white hover:bg-slate-800/50'
-                        : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              ))}
+              {navItems.map((item) => {
+                const isActive = item.path.startsWith('/#') 
+                  ? location.hash === item.path.replace('/', '')
+                  : location.pathname === item.path;
+                return (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    onClick={() => setIsMenuOpen(false)}
+                    className={`block px-3 py-2 rounded-md text-base font-medium transition-colors ${
+                      isActive
+                        ? theme === 'dark'
+                          ? 'text-blue-400 bg-blue-500/10'
+                          : 'text-blue-600 bg-blue-50'
+                        : theme === 'dark'
+                          ? 'text-gray-300 hover:text-white hover:bg-slate-800/50'
+                          : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
               <div className="border-t pt-3 mt-3 space-y-2">
                 <Link
                   to="/login"
