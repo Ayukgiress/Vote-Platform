@@ -79,7 +79,8 @@ export const AuthProvider = ({ children }) => {
       currentUser,
       setCurrentUser,
       currentUserLoading,
-      setRefetchCurrentUser
+      setRefetchCurrentUser,
+      fetchCurrentUser
     }}>
       {children}
     </AuthContext.Provider>
