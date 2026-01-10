@@ -14,6 +14,8 @@ import {
   FiMoon,
 } from "react-icons/fi";
 import { useTheme } from "../Contexts/ThemeContext";
+import Navbar from "../../Components/Navbar";
+import Footer from "../../Components/Footer";
 import heroImage from "/src/assets/images/pexels-steve-29506613.jpg";
 import voteImage from "/src/assets/images/Screen Shot 2024-12-20 at 10.05.41 PM-fotor-202412202369.png";
 import studentImage from "/src/assets/images/pexels-max-fischer-5211432.jpg";
@@ -126,9 +128,10 @@ const HomePage = () => {
 
   return (
     <>
+      <Navbar />
       <section
         id="hero"
-        className={`relative overflow-hidden ${
+        className={`relative overflow-hidden pt-16 ${
           theme === 'dark'
             ? 'bg-slate-950 text-white'
             : 'bg-gradient-to-br from-blue-50 via-white to-blue-50 text-gray-900'
@@ -147,7 +150,7 @@ const HomePage = () => {
           }`} />
         </div>
 
-        <div className="relative mx-auto flex min-h-[80vh] max-w-6xl flex-col gap-16 px-4 pb-24 pt-32 sm:px-6 md:px-12">
+        <div className="relative mx-auto flex min-h-[80vh] max-w-7xl flex-col gap-16 px-4 pb-24 pt-16 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
             <div className={`inline-flex w-fit items-center gap-2 rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-wide backdrop-blur ${
               theme === 'dark'
@@ -160,17 +163,7 @@ const HomePage = () => {
               {t('home.hero.badge')}
             </div>
             <div className="flex items-center gap-3">
-              <button
-                onClick={toggleTheme}
-                className={`p-2 rounded-full transition ${
-                  theme === 'dark'
-                    ? 'bg-white/10 hover:bg-white/20'
-                    : 'bg-gray-200 hover:bg-gray-300'
-                }`}
-                aria-label="Toggle theme"
-              >
-                {theme === 'dark' ? <FiSun className="text-yellow-400" /> : <FiMoon className="text-gray-600" />}
-              </button>
+               
               <div className={`flex items-center gap-3 text-xs sm:text-sm ${
                 theme === 'dark' ? 'text-slate-200' : 'text-gray-600'
               }`}>
@@ -319,7 +312,7 @@ const HomePage = () => {
           ? 'bg-slate-900/95 text-white'
           : 'bg-gray-100 text-gray-900'
       }`}>
-        <div className="mx-auto grid max-w-6xl gap-8 px-4 sm:px-6 md:px-12 lg:grid-cols-4">
+        <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:px-8 lg:grid-cols-4">
           {stats.map((stat) => (
             <div
               key={stat.label}
@@ -341,7 +334,7 @@ const HomePage = () => {
       <section id="features" className={`py-20 ${
         theme === 'dark' ? 'bg-slate-900' : 'bg-white'
       }`}>
-        <div className="mx-auto flex max-w-6xl flex-col gap-12 px-4 sm:px-6 md:px-12">
+        <div className="mx-auto flex max-w-7xl flex-col gap-12 px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl space-y-3">
             <span className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide ${
               theme === 'dark'
@@ -401,7 +394,7 @@ const HomePage = () => {
       <section id="categories" className={`py-20 ${
         theme === 'dark' ? 'bg-slate-900' : 'bg-gray-900'
       }`}>
-        <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 sm:px-6 md:px-12">
+        <div className="mx-auto flex max-w-7xl flex-col gap-10 px-4 sm:px-6 lg:px-8">
           <div className={`flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between ${
             theme === 'dark' ? 'text-white' : 'text-white'
           }`}>
@@ -463,7 +456,7 @@ const HomePage = () => {
       <section id="roadmap" className={`py-20 ${
         theme === 'dark' ? 'bg-slate-900' : 'bg-white'
       }`}>
-        <div className="mx-auto flex max-w-6xl flex-col gap-12 px-4 sm:px-6 md:px-12">
+        <div className="mx-auto flex max-w-7xl flex-col gap-12 px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl space-y-3">
             <span className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide ${
               theme === 'dark'
@@ -518,7 +511,7 @@ const HomePage = () => {
       <section id="testimonials" className={`py-20 ${
         theme === 'dark' ? 'bg-slate-800' : 'bg-gray-100'
       }`}>
-        <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 sm:px-6 md:px-12">
+        <div className="mx-auto flex max-w-7xl flex-col gap-10 px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl space-y-3">
             <span className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide ${
               theme === 'dark'
@@ -566,7 +559,7 @@ const HomePage = () => {
       <section id="faq" className={`py-20 ${
         theme === 'dark' ? 'bg-slate-900' : 'bg-white'
       }`}>
-        <div className="mx-auto flex max-w-4xl flex-col gap-12 px-4 sm:px-6 md:px-12">
+        <div className="mx-auto flex max-w-7xl flex-col gap-12 px-4 sm:px-6 lg:px-8">
           <div className="text-center space-y-4">
             <span className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-tight ${
               theme === 'dark'
@@ -631,7 +624,7 @@ const HomePage = () => {
               : 'bg-gradient-to-br from-slate-900 via-sky-900/60 to-slate-950'
           }`} />
         </div>
-        <div className="relative mx-auto flex max-w-4xl flex-col items-center gap-6 px-4 text-center sm:px-6 md:px-12">
+        <div className="relative mx-auto flex max-w-7xl flex-col items-center gap-6 px-4 text-center sm:px-6 lg:px-8">
           <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-sky-200">
               {t('home.cta.section')}
           </span>
@@ -659,6 +652,171 @@ const HomePage = () => {
           </div>
         </div>
       </section>
+
+      <section id="about" className={`py-20 ${
+        theme === 'dark' ? 'bg-slate-900' : 'bg-white'
+      }`}>
+        <div className="mx-auto flex max-w-7xl flex-col gap-12 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-2xl space-y-3">
+            <span className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide ${
+              theme === 'dark'
+                ? 'bg-blue-900/50 text-blue-300'
+                : 'bg-blue-100 text-blue-600'
+            }`}>
+              {t('nav.about')}
+            </span>
+            <h2 className={`text-3xl font-bold sm:text-4xl ${
+              theme === 'dark' ? 'text-white' : 'text-gray-900'
+            }`}>
+              About Choosify
+            </h2>
+            <p className={`text-base sm:text-lg ${
+              theme === 'dark' ? 'text-slate-300' : 'text-gray-600'
+            }`}>
+              Choosify is a secure, transparent, and innovative voting platform designed to make democratic participation accessible to everyone.
+            </p>
+          </div>
+
+          <div className="grid gap-8 md:grid-cols-2">
+            <div className={`rounded-2xl border p-8 ${
+              theme === 'dark'
+                ? 'border-slate-700 bg-slate-800/60'
+                : 'border-slate-100 bg-slate-50/60'
+            }`}>
+              <h3 className={`text-xl font-semibold ${
+                theme === 'dark' ? 'text-white' : 'text-gray-900'
+              }`}>Our Mission</h3>
+              <p className={`mt-4 text-sm sm:text-base ${
+                theme === 'dark' ? 'text-slate-300' : 'text-gray-600'
+              }`}>
+                To revolutionize voting systems by providing a secure, transparent, and accessible platform that empowers individuals and organizations to make informed decisions together.
+              </p>
+            </div>
+
+            <div className={`rounded-2xl border p-8 ${
+              theme === 'dark'
+                ? 'border-slate-700 bg-slate-800/60'
+                : 'border-slate-100 bg-slate-50/60'
+            }`}>
+              <h3 className={`text-xl font-semibold ${
+                theme === 'dark' ? 'text-white' : 'text-gray-900'
+              }`}>Our Vision</h3>
+              <p className={`mt-4 text-sm sm:text-base ${
+                theme === 'dark' ? 'text-slate-300' : 'text-gray-600'
+              }`}>
+                A world where every voice matters, every vote counts, and democratic processes are transparent, secure, and inclusive for all.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" className={`py-20 ${
+        theme === 'dark' ? 'bg-slate-800' : 'bg-gray-100'
+      }`}>
+        <div className="mx-auto flex max-w-7xl flex-col gap-12 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-2xl space-y-3">
+            <span className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide ${
+              theme === 'dark'
+                ? 'bg-emerald-900/50 text-emerald-300'
+                : 'bg-green-100 text-green-600'
+            }`}>
+              {t('nav.contact')}
+            </span>
+            <h2 className={`text-3xl font-bold sm:text-4xl ${
+              theme === 'dark' ? 'text-white' : 'text-gray-900'
+            }`}>
+              Get in Touch
+            </h2>
+            <p className={`text-base sm:text-lg ${
+              theme === 'dark' ? 'text-slate-300' : 'text-gray-600'
+            }`}>
+              Have questions? We'd love to hear from you. Reach out to us and we'll respond as soon as possible.
+            </p>
+          </div>
+
+          <div className="grid gap-8 md:grid-cols-3">
+            <div className={`rounded-2xl border p-8 text-center ${
+              theme === 'dark'
+                ? 'border-slate-700 bg-slate-800/60'
+                : 'border-slate-100 bg-white'
+            }`}>
+              <div className={`mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full ${
+                theme === 'dark'
+                  ? 'bg-blue-500/20 text-blue-400'
+                  : 'bg-blue-100 text-blue-600'
+              }`}>
+                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                  <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                </svg>
+              </div>
+              <h3 className={`text-lg font-semibold ${
+                theme === 'dark' ? 'text-white' : 'text-gray-900'
+              }`}>Email</h3>
+              <p className={`mt-2 text-sm ${
+                theme === 'dark' ? 'text-slate-300' : 'text-gray-600'
+              }`}>
+                <a href="mailto:Choosify@gmail.com" className="hover:underline">
+                  Choosify@gmail.com
+                </a>
+              </p>
+            </div>
+
+            <div className={`rounded-2xl border p-8 text-center ${
+              theme === 'dark'
+                ? 'border-slate-700 bg-slate-800/60'
+                : 'border-slate-100 bg-white'
+            }`}>
+              <div className={`mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full ${
+                theme === 'dark'
+                  ? 'bg-green-500/20 text-green-400'
+                  : 'bg-green-100 text-green-600'
+              }`}>
+                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773c.483 1.079 1.86 2.998 4.307 5.445 2.447 2.447 4.366 3.824 5.445 4.307l.773-1.548a1 1 0 011.06-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                </svg>
+              </div>
+              <h3 className={`text-lg font-semibold ${
+                theme === 'dark' ? 'text-white' : 'text-gray-900'
+              }`}>Phone</h3>
+              <p className={`mt-2 text-sm ${
+                theme === 'dark' ? 'text-slate-300' : 'text-gray-600'
+              }`}>
+                <a href="tel:+237676184440" className="hover:underline">
+                  +237 676 184 440
+                </a>
+              </p>
+            </div>
+
+            <div className={`rounded-2xl border p-8 text-center ${
+              theme === 'dark'
+                ? 'border-slate-700 bg-slate-800/60'
+                : 'border-slate-100 bg-white'
+            }`}>
+              <div className={`mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full ${
+                theme === 'dark'
+                  ? 'bg-purple-500/20 text-purple-400'
+                  : 'bg-purple-100 text-purple-600'
+              }`}>
+                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <h3 className={`text-lg font-semibold ${
+                theme === 'dark' ? 'text-white' : 'text-gray-900'
+              }`}>Location</h3>
+              <p className={`mt-2 text-sm ${
+                theme === 'dark' ? 'text-slate-300' : 'text-gray-600'
+              }`}>
+                Cameroon
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <Footer />
     </>
   );
 };

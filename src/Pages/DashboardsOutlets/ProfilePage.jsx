@@ -1,17 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { User, Mail, Calendar, Award, Edit3, Save, X, Camera, Loader2 } from 'lucide-react';
+import { User, Mail, Calendar, Award, Edit3, Save, X, Camera, Loader2, Sun, Moon, Languages } from 'lucide-react';
 import { toast } from 'sonner';
 import axios from 'axios';
 import { useAuth } from '../Contexts/AuthContext';
+import { useTheme } from '../Contexts/ThemeContext';
+import { useTranslation } from 'react-i18next';
 import API_URL from '../Constants/Constants';
 
 const ProfilePage = () => {
   const { currentUser, isAuthenticated } = useAuth();
+  const { theme, toggleTheme } = useTheme();
+  const { i18n } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [profileData, setProfileData] = useState(null);
   const [editData, setEditData] = useState(null);
+  const [language, setLanguage] = useState(localStorage.getItem('language') || 'en');
 
   const getAuthHeaders = () => {
     const token = localStorage.getItem("token");
@@ -226,23 +231,45 @@ const ProfilePage = () => {
 
   return (
     <div className="space-y-8">
-      {/* Header */}
-      <div className="bg-white rounded-2xl shadow-lg border border-slate-200/60 p-6">
-        <h1 className="text-3xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent">
-          Profile Settings
-        </h1>
-        <p className="text-slate-600 mt-2">Manage your personal information and account details</p>
+      {/* Header Section - Now matches card design */}
+      <div className={`rounded-2xl shadow-lg border p-6 ${
+        theme === 'dark'
+          ? 'bg-white/5 border-white/10'
+          : 'bg-white border-slate-200/60'
+      }`}>
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+          <div>
+            <h1 className={`text-3xl font-bold ${
+              theme === 'dark'
+                ? 'bg-gradient-to-r from-sky-400 to-purple-400 bg-clip-text text-transparent'
+                : 'bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent'
+            }`}>
+              Profile Settings
+            </h1>
+            <p className={`mt-2 ${
+              theme === 'dark' ? 'text-slate-300' : 'text-slate-600'
+            }`}>
+              Manage your personal information and account details
+            </p>
+          </div>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
         {/* Profile Card */}
         <div className="lg:col-span-1">
-          <div className="bg-white rounded-2xl shadow-lg border border-slate-200/60 p-6">
+          <div className={`rounded-2xl shadow-lg border p-6 transition hover:-translate-y-1 hover:shadow-xl ${
+            theme === 'dark'
+              ? 'bg-white/5 border-white/10 hover:border-sky-400/50'
+              : 'bg-white border-slate-200/60 hover:border-blue-300'
+          }`}>
             <div className="text-center">
               <div className="relative inline-block">
-                <div className="w-32 h-32 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-4xl font-bold mx-auto mb-4">
-                  {profileData.name.split(' ').map(n => n[0]).join('')}
-                </div>
+              <div className={`w-32 h-32 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-4xl font-bold mx-auto mb-4 ${
+                theme === 'dark' ? 'from-sky-500 to-purple-600' : 'from-blue-500 to-purple-600'
+              }`}>
+                {profileData.name.split(' ').map(n => n[0]).join('')}
+              </div>
                 {isEditing && (
                   <button className="absolute bottom-2 right-2 bg-white rounded-full p-2 shadow-lg border border-slate-200 hover:bg-slate-50 transition-colors">
                     <Camera className="h-4 w-4 text-slate-600" />
@@ -257,12 +284,22 @@ const ProfilePage = () => {
             {/* Stats */}
             <div className="mt-6 space-y-4">
               {stats.map((stat, index) => (
-                <div key={index} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                <div key={index} className={`flex items-center justify-between p-3 rounded-lg transition-colors ${
+                  theme === 'dark'
+                    ? 'bg-slate-700/50 hover:bg-slate-600/50'
+                    : 'bg-slate-50 hover:bg-slate-100'
+                }`}>
                   <div className="flex items-center gap-3">
-                    <stat.icon className="h-5 w-5 text-blue-600" />
-                    <span className="text-slate-700 font-medium">{stat.label}</span>
+                    <stat.icon className={`h-5 w-5 ${
+                      theme === 'dark' ? 'text-sky-400' : 'text-blue-600'
+                    }`} />
+                    <span className={`font-medium ${
+                      theme === 'dark' ? 'text-slate-300' : 'text-slate-700'
+                    }`}>{stat.label}</span>
                   </div>
-                  <span className="text-slate-800 font-bold">{stat.value}</span>
+                  <span className={`font-bold ${
+                    theme === 'dark' ? 'text-white' : 'text-slate-800'
+                  }`}>{stat.value}</span>
                 </div>
               ))}
             </div>
@@ -271,9 +308,15 @@ const ProfilePage = () => {
 
         {/* Profile Details */}
         <div className="lg:col-span-2">
-          <div className="bg-white rounded-2xl shadow-lg border border-slate-200/60 p-6">
+          <div className={`rounded-2xl shadow-lg border p-6 transition hover:-translate-y-1 hover:shadow-xl ${
+            theme === 'dark'
+              ? 'bg-white/5 border-white/10 hover:border-sky-400/50'
+              : 'bg-white border-slate-200/60 hover:border-blue-300'
+          }`}>
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-slate-800">Personal Information</h3>
+              <h3 className={`text-xl font-semibold ${
+                theme === 'dark' ? 'text-white' : 'text-slate-800'
+              }`}>Personal Information</h3>
               {!isEditing ? (
               <button
                 onClick={() => setIsEditing(true)}
@@ -308,7 +351,9 @@ const ProfilePage = () => {
             <div className="space-y-6">
               {/* Name */}
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
+                <label className={`block text-sm font-medium mb-2 ${
+                  theme === 'dark' ? 'text-slate-300' : 'text-slate-700'
+                }`}>
                   Full Name
                 </label>
                 {isEditing ? (
@@ -316,19 +361,33 @@ const ProfilePage = () => {
                     type="text"
                     value={editData.name}
                     onChange={(e) => handleInputChange('name', e.target.value)}
-                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
+                      theme === 'dark'
+                        ? 'border-slate-600 bg-slate-700/50 text-white focus:ring-sky-500'
+                        : 'border-slate-300 bg-white text-slate-800'
+                    }`}
                   />
                 ) : (
-                  <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
-                    <User className="h-5 w-5 text-slate-500" />
-                    <span className="text-slate-800">{profileData.name}</span>
+                  <div className={`flex items-center gap-3 p-3 rounded-lg ${
+                    theme === 'dark'
+                      ? 'bg-slate-700/50'
+                      : 'bg-slate-50'
+                  }`}>
+                    <User className={`h-5 w-5 ${
+                      theme === 'dark' ? 'text-slate-400' : 'text-slate-500'
+                    }`} />
+                    <span className={`${
+                      theme === 'dark' ? 'text-white' : 'text-slate-800'
+                    }`}>{profileData.name}</span>
                   </div>
                 )}
               </div>
 
               {/* Email */}
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
+                <label className={`block text-sm font-medium mb-2 ${
+                  theme === 'dark' ? 'text-slate-300' : 'text-slate-700'
+                }`}>
                   Email Address
                 </label>
                 {isEditing ? (
@@ -336,19 +395,33 @@ const ProfilePage = () => {
                     type="email"
                     value={editData.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
-                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
+                      theme === 'dark'
+                        ? 'border-slate-600 bg-slate-700/50 text-white focus:ring-sky-500'
+                        : 'border-slate-300 bg-white text-slate-800'
+                    }`}
                   />
                 ) : (
-                  <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
-                    <Mail className="h-5 w-5 text-slate-500" />
-                    <span className="text-slate-800">{profileData.email}</span>
+                  <div className={`flex items-center gap-3 p-3 rounded-lg ${
+                    theme === 'dark'
+                      ? 'bg-slate-700/50'
+                      : 'bg-slate-50'
+                  }`}>
+                    <Mail className={`h-5 w-5 ${
+                      theme === 'dark' ? 'text-slate-400' : 'text-slate-500'
+                    }`} />
+                    <span className={`${
+                      theme === 'dark' ? 'text-white' : 'text-slate-800'
+                    }`}>{profileData.email}</span>
                   </div>
                 )}
               </div>
 
               {/* Bio */}
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
+                <label className={`block text-sm font-medium mb-2 ${
+                  theme === 'dark' ? 'text-slate-300' : 'text-slate-700'
+                }`}>
                   Bio
                 </label>
                 {isEditing ? (
@@ -356,12 +429,22 @@ const ProfilePage = () => {
                     value={editData.bio}
                     onChange={(e) => handleInputChange('bio', e.target.value)}
                     rows={4}
-                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors resize-none"
+                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors resize-none ${
+                      theme === 'dark'
+                        ? 'border-slate-600 bg-slate-700/50 text-white focus:ring-sky-500'
+                        : 'border-slate-300 bg-white text-slate-800'
+                    }`}
                     placeholder="Tell us about yourself..."
                   />
                 ) : (
-                  <div className="p-3 bg-slate-50 rounded-lg">
-                    <p className="text-slate-800">{profileData.bio}</p>
+                  <div className={`p-3 rounded-lg ${
+                    theme === 'dark'
+                      ? 'bg-slate-700/50'
+                      : 'bg-slate-50'
+                  }`}>
+                    <p className={`${
+                      theme === 'dark' ? 'text-white' : 'text-slate-800'
+                    }`}>{profileData.bio}</p>
                   </div>
                 )}
               </div>
@@ -419,27 +502,92 @@ const ProfilePage = () => {
         </div>
       </div>
 
-      {/* Account Activity */}
-      <div className="bg-white rounded-2xl shadow-lg border border-slate-200/60 p-6">
-        <h3 className="text-xl font-semibold text-slate-800 mb-6">Recent Activity</h3>
+      {/* Theme Settings */}
+      <div className={`rounded-2xl shadow-lg border p-6 transition hover:-translate-y-1 hover:shadow-xl ${
+        theme === 'dark'
+          ? 'bg-white/5 border-white/10 hover:border-sky-400/50'
+          : 'bg-white border-slate-200/60 hover:border-blue-300'
+      }`}>
+        <h3 className={`text-xl font-semibold mb-6 ${
+          theme === 'dark' ? 'text-white' : 'text-slate-800'
+        }`}>Appearance Settings</h3>
         <div className="space-y-4">
-          {activities.length === 0 ? (
-            <div className="text-center py-8">
-              <p className="text-slate-500">No recent activities found</p>
-            </div>
-          ) : (
-            activities.map((activity, index) => (
-              <div key={index} className="flex items-center justify-between py-3 border-b border-slate-100 last:border-b-0">
-                <div>
-                  <p className="text-slate-800 font-medium">{activity.action}</p>
-                  <p className="text-slate-600 text-sm">{activity.item}</p>
-                </div>
-                <span className="text-slate-500 text-sm">{activity.time}</span>
+          <div className={`flex items-center justify-between p-4 rounded-lg transition-colors ${
+            theme === 'dark'
+              ? 'bg-slate-700/50 hover:bg-slate-600/50'
+              : 'bg-slate-50 hover:bg-slate-100'
+          }`}>
+            <div className="flex items-center gap-3">
+              {theme === 'dark' ? (
+                <Sun className={`h-5 w-5 ${
+                  theme === 'dark' ? 'text-yellow-400' : 'text-yellow-600'
+                }`} />
+              ) : (
+                <Moon className={`h-5 w-5 ${
+                  theme === 'dark' ? 'text-slate-400' : 'text-slate-600'
+                }`} />
+              )}
+              <div>
+                <p className={`font-medium ${
+                  theme === 'dark' ? 'text-white' : 'text-slate-800'
+                }`}>Theme Mode</p>
+                <p className={`text-sm ${
+                  theme === 'dark' ? 'text-slate-300' : 'text-slate-600'
+                }`}>Switch between light and dark themes</p>
               </div>
-            ))
-          )}
+            </div>
+            <button
+              onClick={toggleTheme}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                theme === 'dark' ? 'bg-sky-500' : 'bg-slate-200'
+              }`}
+            >
+              <span
+                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                  theme === 'dark' ? 'translate-x-6' : 'translate-x-1'
+                }`}
+              />
+            </button>
+          </div>
+
+          <div className={`flex items-center justify-between p-4 rounded-lg transition-colors ${
+            theme === 'dark'
+              ? 'bg-slate-700/50 hover:bg-slate-600/50'
+              : 'bg-slate-50 hover:bg-slate-100'
+          }`}>
+            <div className="flex items-center gap-3">
+              <Languages className={`h-5 w-5 ${
+                theme === 'dark' ? 'text-blue-400' : 'text-blue-600'
+              }`} />
+              <div>
+                <p className={`font-medium ${
+                  theme === 'dark' ? 'text-white' : 'text-slate-800'
+                }`}>Language</p>
+                <p className={`text-sm ${
+                  theme === 'dark' ? 'text-slate-300' : 'text-slate-600'
+                }`}>Choose your preferred language</p>
+              </div>
+            </div>
+            <select
+              value={i18n.language}
+              onChange={(e) => {
+                const newLang = e.target.value;
+                i18n.changeLanguage(newLang);
+                toast.success(`Language changed to ${newLang === 'en' ? 'English' : 'Français'}`);
+              }}
+              className={`px-3 py-2 rounded-lg border focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
+                theme === 'dark'
+                  ? 'border-slate-600 bg-slate-700/50 text-white focus:ring-sky-500'
+                  : 'border-slate-300 bg-white text-slate-800'
+              }`}
+            >
+              <option value="en">English</option>
+              <option value="fr">Français</option>
+            </select>
+          </div>
         </div>
       </div>
+
     </div>
   );
 };

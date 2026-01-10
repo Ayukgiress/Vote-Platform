@@ -150,7 +150,11 @@
     "howItWorks": "Comment ça marche",
     "logIn": "Se connecter",
     "getStarted": "Commencer",
-    "home": "Accueil"
+    "home": "Accueil",
+    "about": "À propos",
+    "contact": "Contact",
+    "login": "Se connecter",
+    "register": "S'inscrire"
   },
   "footer": {
     "title": "Choosify",
@@ -159,6 +163,7 @@
     "location": "VoteHub Jouvence, Yaoundé",
     "email": "VoteHub@gmail.com",
     "phone": "+237 676 18 44 40",
-    "followUs": "Suivez-nous"
+    "followUs": "Suivez-nous",
+    "copyright": "Tous droits réservés."
   }
 }

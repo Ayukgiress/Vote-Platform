@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useParams } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
 import axios from 'axios';
 import { toast } from 'sonner';
@@ -12,7 +13,7 @@ const Vote = () => {
   const [votingInProgress, setVotingInProgress] = useState(false);
   const [userIP, setUserIP] = useState(null);
 
-  const contestId = window.location.pathname.split('/')[1];
+  const { contestId } = useParams();
 
   // Function to get user's IP address
   const getUserIP = useCallback(async () => {
@@ -223,24 +224,16 @@ const Vote = () => {
                 >
                   <div className="flex items-center space-x-4">
                     <div className="h-20 w-20 rounded-full overflow-hidden bg-slate-700 border-2 border-white/20">
-                      {contestant.photoUrl ? (
-                        <img
-                          src={contestant.photoUrl.startsWith('http')
-                            ? contestant.photoUrl
-                            : `${API_URL}/${contestant.photoUrl.replace(/^\//, '')}`}
-                          alt={contestant.name}
-                          className="h-full w-full object-cover"
-                          onError={(e) => {
-                            e.target.onerror = null;
-                          }}
-                        />
-                      ) : (
-                        <div className="h-full w-full flex items-center justify-center">
-                          <span className="text-3xl text-slate-400">
-                            {contestant.name?.charAt(0) || '?'}
-                          </span>
-                        </div>
-                      )}
+                      <img
+                        src={contestant.photoUrl.startsWith('http')
+                          ? contestant.photoUrl
+                          : `${API_URL}/${contestant.photoUrl.replace(/^\//, '')}`}
+                        alt={contestant.name}
+                        className="h-full w-full object-cover"
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                        }}
+                      />
                     </div>
                     <div className="flex-1">
                       <h3 className="font-semibold text-white text-xl">{contestant.name}</h3>

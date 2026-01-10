@@ -3,10 +3,12 @@ import { Clock, Trophy, Calendar, Users, Loader2, BarChart3, CheckCircle, XCircl
 import { toast } from 'sonner';
 import axios from 'axios';
 import { useAuth } from '../Contexts/AuthContext';
+import { useTheme } from '../Contexts/ThemeContext';
 import API_URL from '../Constants/Constants';
 
 const History = () => {
   const { currentUser, isAuthenticated } = useAuth();
+  const { theme } = useTheme();
   const [loading, setLoading] = useState(true);
   const [contestData, setContestData] = useState([]);
   const [stats, setStats] = useState({
@@ -78,36 +80,35 @@ const History = () => {
   };
 
   const StatCard = ({ title, value, icon: Icon, color, trend, delay }) => (
-    <div 
-      className="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 p-6 relative overflow-hidden"
+    <div
+      className={`rounded-2xl shadow-lg border p-6 transition hover:-translate-y-1 hover:shadow-xl ${
+        theme === 'dark'
+          ? 'bg-white/5 border-white/10 hover:border-sky-400/50'
+          : 'bg-white border-slate-200/60 hover:border-blue-300'
+      }`}
       style={{
         animationDelay: `${delay}ms`,
         animation: 'fadeInUp 0.6s ease-out forwards',
         opacity: 0
       }}
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-transparent to-gray-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-      
-      <div className="relative z-10">
-        <div className="flex items-center justify-between mb-4">
-          <div className={`p-3 rounded-xl ${color} shadow-lg transform group-hover:scale-110 transition-transform duration-300`}>
-            <Icon className="h-6 w-6 text-white" />
-          </div>
-          {trend && (
-            <div className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium ${
-              trend > 0 
-                ? 'bg-green-50 text-green-700' 
-                : 'bg-red-50 text-red-700'
-            }`}>
-              <TrendingUp className={`h-4 w-4 ${trend < 0 ? 'rotate-180' : ''}`} />
-              {trend > 0 ? '+' : ''}{trend}%
-            </div>
-          )}
+      <div className="flex items-center justify-between">
+        <div>
+          <p className={`text-sm font-medium ${
+            theme === 'dark' ? 'text-slate-300' : 'text-slate-600'
+          }`}>{title}</p>
+          <p className={`text-3xl font-bold ${
+            theme === 'dark' ? 'text-white' : 'text-slate-800'
+          }`}>{value.toLocaleString()}</p>
         </div>
-        
-        <div className="space-y-2">
-          <p className="text-gray-600 text-sm font-medium uppercase tracking-wide">{title}</p>
-          <p className="text-3xl font-bold text-gray-900">{value.toLocaleString()}</p>
+        <div className={`p-3 rounded-xl ${
+          theme === 'dark'
+            ? 'bg-sky-500/20'
+            : 'bg-blue-100'
+        }`}>
+          <Icon className={`h-6 w-6 ${
+            theme === 'dark' ? 'text-sky-400' : 'text-blue-600'
+          }`} />
         </div>
       </div>
     </div>
@@ -115,14 +116,8 @@ const History = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen bg-gradient-to-br from-gray-50 to-blue-50/30">
-        <div className="text-center">
-          <div className="relative">
-            <Loader2 className="h-12 w-12 animate-spin text-blue-600 mx-auto mb-4" />
-            <Sparkles className="h-6 w-6 text-blue-400 absolute -top-1 -right-1 animate-pulse" />
-          </div>
-          <p className="text-gray-600 text-lg">Loading contest history...</p>
-        </div>
+      <div className="flex items-center justify-center h-screen">
+        <Loader2 className="h-8 w-8 animate-spin text-custom-blue" />
       </div>
     );
   }
@@ -150,7 +145,7 @@ const History = () => {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50/30 p-6">
+    <div className="space-y-8">
       <style jsx>{`
         @keyframes fadeInUp {
           from {
@@ -165,22 +160,29 @@ const History = () => {
       `}</style>
 
       <div className="w-full mx-auto space-y-8">
-        {/* Header */}
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-          <div className="space-y-3">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-white rounded-xl shadow-lg">
-                <Trophy className="h-6 w-6 text-blue-600" />
-              </div>
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 to-blue-800 bg-clip-text text-transparent">
+        {/* Header Section - Now matches card design */}
+        {/* <div className={`rounded-2xl shadow-lg border p-6 ${
+          theme === 'dark'
+            ? 'bg-white/5 border-white/10'
+            : 'bg-white border-slate-200/60'
+        }`}>
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+            <div>
+              <h1 className={`text-3xl font-bold ${
+                theme === 'dark'
+                  ? 'bg-gradient-to-r from-sky-400 to-purple-400 bg-clip-text text-transparent'
+                  : 'bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent'
+              }`}>
                 Contest History
               </h1>
+              <p className={`mt-2 ${
+                theme === 'dark' ? 'text-slate-300' : 'text-slate-600'
+              }`}>
+                Review your contest performance, winners, and comprehensive results
+              </p>
             </div>
-            <p className="text-gray-600 text-lg max-w-2xl">
-              Review your contest performance, winners, and comprehensive results
-            </p>
           </div>
-        </div>
+        </div> */}
 
         {/* Statistics Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -214,37 +216,55 @@ const History = () => {
           />
         </div>
 
-        {/* Ended Contests with Results */}
-        <div className="space-y-6">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-white rounded-xl shadow-sm">
-              <Award className="h-5 w-5 text-gray-700" />
-            </div>
-            <h2 className="text-2xl font-bold text-gray-900">Contest Results</h2>
+        {/* Contest Results Section - Now matches card design */}
+        <div className={`rounded-2xl shadow-lg border p-6 ${
+          theme === 'dark'
+            ? 'bg-white/5 border-white/10'
+            : 'bg-white border-slate-200/60'
+        }`}>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className={`text-2xl font-bold ${
+              theme === 'dark' ? 'text-white' : 'text-slate-800'
+            }`}>
+              Contest Results
+            </h2>
           </div>
 
           {endedContests.length === 0 ? (
-            <div className="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 p-12 text-center group">
-              <div className="relative inline-block mb-4">
-                <Clock className="h-20 w-20 text-gray-300 group-hover:text-gray-400 transition-colors duration-300" />
-                <div className="absolute inset-0 bg-gradient-to-br from-transparent to-white opacity-60" />
+            <div className="text-center py-12">
+              <div className={`rounded-full w-24 h-24 mx-auto flex items-center justify-center mb-4 ${
+                theme === 'dark'
+                  ? 'bg-sky-500/20'
+                  : 'bg-gradient-to-br from-blue-50 to-purple-50'
+              }`}>
+                <Clock className={`h-12 w-12 ${
+                  theme === 'dark' ? 'text-sky-400' : 'text-blue-600'
+                }`} />
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">No Ended Contests Yet</h3>
-              <p className="text-gray-600 max-w-md mx-auto text-lg">
+              <h3 className={`text-xl font-semibold mb-2 ${
+                theme === 'dark' ? 'text-white' : 'text-slate-800'
+              }`}>No Ended Contests Yet</h3>
+              <p className={`mb-6 ${
+                theme === 'dark' ? 'text-slate-300' : 'text-slate-600'
+              }`}>
                 Your completed contests and their results will appear here once contests have ended.
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {endedContests.map((contest, index) => {
                 const winners = getWinners(contest);
                 const totalVotes = contest.contestants?.reduce((sum, c) => sum + (c.votes || 0), 0) || 0;
                 const isTie = winners.length > 1;
 
                 return (
-                  <div 
-                    key={contest._id} 
-                    className="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 p-6 group"
+                  <div
+                    key={contest._id}
+                    className={`rounded-2xl shadow-lg border p-6 transition hover:-translate-y-1 hover:shadow-xl ${
+                      theme === 'dark'
+                        ? 'bg-white/5 border-white/10 hover:border-sky-400/50'
+                        : 'bg-white border-slate-200/60 hover:border-blue-300'
+                    }`}
                     style={{
                       animationDelay: `${index * 100}ms`,
                       animation: 'fadeInUp 0.6s ease-out forwards',
@@ -252,33 +272,113 @@ const History = () => {
                     }}
                   >
                     {/* Contest Header */}
-                    <div className="flex items-start justify-between mb-6">
-                      <div className="flex items-start gap-4">
-                        <div className="bg-gradient-to-br from-blue-500 to-purple-600 p-3 rounded-xl shadow-lg">
-                          <Trophy className="h-6 w-6 text-white" />
-                        </div>
-                        <div className="space-y-2">
-                          <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors duration-300">
-                            {contest.name}
-                          </h3>
-                          <p className="text-gray-600 text-sm leading-relaxed max-w-md">
-                            {contest.description}
-                          </p>
-                          <div className="flex items-center gap-4 text-sm text-gray-500">
-                            <div className="flex items-center gap-1">
-                              <Calendar className="h-4 w-4" />
-                              Ended {formatDate(contest.endDate)}
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <Users className="h-4 w-4" />
-                              {totalVotes.toLocaleString()} votes
-                            </div>
+                    <div className="mb-6">
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex items-start gap-4 flex-1">
+                          <div className="bg-gradient-to-br from-blue-500 to-purple-600 p-3 rounded-xl shadow-lg">
+                            <Trophy className="h-6 w-6 text-white" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h3 className={`text-xl font-bold mb-2 ${
+                              theme === 'dark' ? 'text-white' : 'text-slate-800'
+                            }`}>
+                              {contest.name}
+                            </h3>
+                            <p className={`text-sm leading-relaxed mb-3 ${
+                              theme === 'dark' ? 'text-slate-300' : 'text-slate-600'
+                            }`}>
+                              {contest.description}
+                            </p>
                           </div>
                         </div>
+                        <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-700 border border-red-200 ml-4">
+                          Ended
+                        </span>
                       </div>
-                      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-700 border border-red-200">
-                        Ended
-                      </span>
+
+                      {/* Date Information */}
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        {/* Start Date Card */}
+                        <div className={`p-4 rounded-xl border-2 transition-all duration-200 ${
+                          theme === 'dark'
+                            ? 'bg-blue-500/10 border-blue-500/30 hover:bg-blue-500/20'
+                            : 'bg-blue-50 border-blue-200 hover:bg-blue-100'
+                        }`}>
+                          <div className="flex items-center gap-3 mb-2">
+                            <div className={`p-2 rounded-lg ${
+                              theme === 'dark' ? 'bg-blue-500/20' : 'bg-blue-100'
+                            }`}>
+                              <Calendar className={`h-5 w-5 ${
+                                theme === 'dark' ? 'text-blue-400' : 'text-blue-600'
+                              }`} />
+                            </div>
+                            <span className={`text-sm font-bold uppercase tracking-wide ${
+                              theme === 'dark' ? 'text-blue-300' : 'text-blue-700'
+                            }`}>
+                              Start Date
+                            </span>
+                          </div>
+                          <p className={`text-lg font-bold ${
+                            theme === 'dark' ? 'text-white' : 'text-slate-800'
+                          }`}>
+                            {formatDate(contest.startDate)}
+                          </p>
+                        </div>
+
+                        {/* End Date Card */}
+                        <div className={`p-4 rounded-xl border-2 transition-all duration-200 ${
+                          theme === 'dark'
+                            ? 'bg-red-500/10 border-red-500/30 hover:bg-red-500/20'
+                            : 'bg-red-50 border-red-200 hover:bg-red-100'
+                        }`}>
+                          <div className="flex items-center gap-3 mb-2">
+                            <div className={`p-2 rounded-lg ${
+                              theme === 'dark' ? 'bg-red-500/20' : 'bg-red-100'
+                            }`}>
+                              <Calendar className={`h-5 w-5 ${
+                                theme === 'dark' ? 'text-red-400' : 'text-red-600'
+                              }`} />
+                            </div>
+                            <span className={`text-sm font-bold uppercase tracking-wide ${
+                              theme === 'dark' ? 'text-red-300' : 'text-red-700'
+                            }`}>
+                              End Date
+                            </span>
+                          </div>
+                          <p className={`text-lg font-bold ${
+                            theme === 'dark' ? 'text-white' : 'text-slate-800'
+                          }`}>
+                            {formatDate(contest.endDate)}
+                          </p>
+                        </div>
+
+                        {/* Total Votes Card */}
+                        <div className={`p-4 rounded-xl border-2 transition-all duration-200 ${
+                          theme === 'dark'
+                            ? 'bg-purple-500/10 border-purple-500/30 hover:bg-purple-500/20'
+                            : 'bg-purple-50 border-purple-200 hover:bg-purple-100'
+                        }`}>
+                          <div className="flex items-center gap-3 mb-2">
+                            <div className={`p-2 rounded-lg ${
+                              theme === 'dark' ? 'bg-purple-500/20' : 'bg-purple-100'
+                            }`}>
+                              <Users className={`h-5 w-5 ${
+                                theme === 'dark' ? 'text-purple-400' : 'text-purple-600'
+                              }`} />
+                            </div>
+                            <span className={`text-sm font-bold uppercase tracking-wide ${
+                              theme === 'dark' ? 'text-purple-300' : 'text-purple-700'
+                            }`}>
+                              Total Votes
+                            </span>
+                          </div>
+                          <p className={`text-lg font-bold ${
+                            theme === 'dark' ? 'text-white' : 'text-slate-800'
+                          }`}>
+                            {totalVotes.toLocaleString()}
+                          </p>
+                        </div>
+                      </div>
                     </div>
 
                     {/* Winners Section */}
@@ -321,8 +421,12 @@ const History = () => {
                     {contest.contestants && contest.contestants.length > 0 && (
                       <div>
                         <div className="flex items-center gap-2 mb-3">
-                          <Users className="h-4 w-4 text-gray-600" />
-                          <span className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
+                          <Users className={`h-4 w-4 ${
+                            theme === 'dark' ? 'text-slate-400' : 'text-slate-600'
+                          }`} />
+                          <span className={`text-sm font-semibold uppercase tracking-wide ${
+                            theme === 'dark' ? 'text-slate-300' : 'text-slate-700'
+                          }`}>
                             All Contestants ({contest.contestants.length})
                           </span>
                         </div>
