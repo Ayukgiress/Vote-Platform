@@ -72,13 +72,32 @@ const Registration = () => {
 
   return (
     <>
+      <div className={`fixed top-0 left-0 right-0 z-40 border-b ${
+        theme === 'dark'
+          ? 'border-slate-800/50 bg-slate-950/80'
+          : 'border-gray-200/50 bg-white/80'
+      } backdrop-blur-md`}>
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+          <Link to="/" className="flex items-center gap-2 transition hover:opacity-80">
+            <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+              <span className="text-white font-bold text-lg">C</span>
+            </div>
+            <span className={`text-lg font-bold ${
+              theme === 'dark' ? 'text-white' : 'text-gray-900'
+            }`}>
+              Choosify
+            </span>
+          </Link>
+        </div>
+      </div>
+
       <section className={`relative flex min-h-screen items-center justify-center text-white ${
         theme === 'dark'
           ? 'bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950'
           : 'bg-gradient-to-br from-blue-50 via-white to-blue-50'
       }`}>
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.18),_transparent_45%),_radial-gradient(circle_at_bottom,_rgba(129,140,248,0.14),_transparent_40%)]" />
-        <div className="relative mx-auto flex w-full max-w-6xl flex-col gap-12 px-4 py-20 sm:px-6 md:flex-row md:px-12">
+        <div className="relative mx-auto flex w-full max-w-6xl flex-col gap-12 px-4 py-20 sm:px-6 md:flex-row md:px-12 pt-32">
           <div className="flex w-full flex-col justify-center gap-6 md:w-2/5">
             <div className="flex items-center gap-3">
               <img
@@ -160,17 +179,6 @@ const Registration = () => {
                   </p>
                 </div>
                 <div className="flex items-center gap-4">
-                  <button
-                    onClick={toggleTheme}
-                    className={`p-2 rounded-lg transition ${
-                      theme === 'dark'
-                        ? 'hover:bg-white/10 text-white'
-                        : 'hover:bg-gray-100 text-gray-700'
-                    }`}
-                    aria-label="Toggle theme"
-                  >
-                    {theme === 'dark' ? <FiSun className="h-5 w-5" /> : <FiMoon className="h-5 w-5" />}
-                  </button>
                   <Link
                     to="/login"
                     className={`inline-flex items-center text-sm font-medium transition ${

@@ -25,7 +25,7 @@ const Footer = () => {
         <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-600/5"></div>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-400/10 via-transparent to-transparent"></div>
         
-        <div className="relative max-w-5xl mx-auto px-5 py-16">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-8">
             {/* Brand & Description */}
             <div className="space-y-6">
@@ -150,7 +150,7 @@ const Footer = () => {
 
       {/* Copyright Section */}
       <section className="bg-gradient-to-br from-gray-950 to-slate-900 border-t border-white/10">
-        <div className="max-w-7xl mx-auto px-6 py-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-2 text-gray-400">
               <span>© {currentYear} Choosify. {t('footer.copyright')}</span>

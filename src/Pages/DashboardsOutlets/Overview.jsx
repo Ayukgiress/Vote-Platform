@@ -5,11 +5,13 @@ import { Plus, Loader2, Award, Users, BarChart3, Trophy } from "lucide-react";
 import axios from "axios";
 import { toast } from "sonner";
 import { useAuth } from "../Contexts/AuthContext";
+import { useTheme } from "../Contexts/ThemeContext";
 import ContestItem from "../../Components/ContestItem";
 import API_URL from "../../Pages/Constants/Constants";
 
 const Overview = () => {
   const { currentUser, currentUserLoading, isAuthenticated } = useAuth();
+  const { theme } = useTheme();
   const [contests, setContests] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isContestantModalOpen, setIsContestantModalOpen] = useState(false);
@@ -275,21 +277,37 @@ const Overview = () => {
 
   return (
     <div className="space-y-8">
-      {/* Header Section */}
-      <div className="bg-white rounded-2xl shadow-lg border border-slate-200/60 p-6">
+      {/* Header Section - Now matches card design */}
+      <div className={`rounded-2xl shadow-lg border p-6 ${
+        theme === 'dark'
+          ? 'bg-white/5 border-white/10'
+          : 'bg-white border-slate-200/60'
+      }`}>
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent">
+            <h1 className={`text-3xl font-bold ${
+              theme === 'dark'
+                ? 'bg-gradient-to-r from-sky-400 to-purple-400 bg-clip-text text-transparent'
+                : 'bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent'
+            }`}>
               Dashboard Overview
             </h1>
-            <p className="text-slate-600 mt-2">Manage your contests and track performance</p>
+            <p className={`mt-2 ${
+              theme === 'dark' ? 'text-slate-300' : 'text-slate-600'
+            }`}>
+              Manage your contests and track performance
+            </p>
           </div>
           <button
             onClick={() => {
               setEditingContest(null);
               setIsModalOpen(true);
             }}
-            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-xl flex items-center gap-3 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+            className={`px-6 py-3 rounded-xl flex items-center gap-3 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 ${
+              theme === 'dark'
+                ? 'bg-gradient-to-r from-sky-500 to-purple-600 hover:from-sky-400 hover:to-purple-500 text-white'
+                : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white'
+            }`}
           >
             <Plus className="h-5 w-5" />
             Create Contest
@@ -299,82 +317,160 @@ const Overview = () => {
 
       {/* Statistics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-white rounded-xl shadow-lg border border-slate-200/60 p-6">
+        <div className={`rounded-2xl shadow-lg border p-6 transition hover:-translate-y-1 hover:shadow-xl ${
+          theme === 'dark'
+            ? 'bg-white/5 border-white/10 hover:border-sky-400/50'
+            : 'bg-white border-slate-200/60 hover:border-blue-300'
+        }`}>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-slate-600 text-sm font-medium">Total Contests</p>
-              <p className="text-3xl font-bold text-slate-800">{contests.length}</p>
+              <p className={`text-sm font-medium ${
+                theme === 'dark' ? 'text-slate-300' : 'text-slate-600'
+              }`}>Total Contests</p>
+              <p className={`text-3xl font-bold ${
+                theme === 'dark' ? 'text-white' : 'text-slate-800'
+              }`}>{contests.length}</p>
             </div>
-            <div className="bg-blue-100 p-3 rounded-lg">
-              <Award className="h-6 w-6 text-blue-600" />
+            <div className={`p-3 rounded-xl ${
+              theme === 'dark'
+                ? 'bg-sky-500/20'
+                : 'bg-blue-100'
+            }`}>
+              <Award className={`h-6 w-6 ${
+                theme === 'dark' ? 'text-sky-400' : 'text-blue-600'
+              }`} />
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-lg border border-slate-200/60 p-6">
+        <div className={`rounded-2xl shadow-lg border p-6 transition hover:-translate-y-1 hover:shadow-xl ${
+          theme === 'dark'
+            ? 'bg-white/5 border-white/10 hover:border-emerald-400/50'
+            : 'bg-white border-slate-200/60 hover:border-green-300'
+        }`}>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-slate-600 text-sm font-medium">Active Contests</p>
-              <p className="text-3xl font-bold text-slate-800">
+              <p className={`text-sm font-medium ${
+                theme === 'dark' ? 'text-slate-300' : 'text-slate-600'
+              }`}>Active Contests</p>
+              <p className={`text-3xl font-bold ${
+                theme === 'dark' ? 'text-white' : 'text-slate-800'
+              }`}>
                 {contests.filter(c => !c.hasEnded && c.isPublished).length}
               </p>
             </div>
-            <div className="bg-green-100 p-3 rounded-lg">
-              <Users className="h-6 w-6 text-green-600" />
+            <div className={`p-3 rounded-xl ${
+              theme === 'dark'
+                ? 'bg-emerald-500/20'
+                : 'bg-green-100'
+            }`}>
+              <Users className={`h-6 w-6 ${
+                theme === 'dark' ? 'text-emerald-400' : 'text-green-600'
+              }`} />
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-lg border border-slate-200/60 p-6">
+        <div className={`rounded-2xl shadow-lg border p-6 transition hover:-translate-y-1 hover:shadow-xl ${
+          theme === 'dark'
+            ? 'bg-white/5 border-white/10 hover:border-purple-400/50'
+            : 'bg-white border-slate-200/60 hover:border-purple-300'
+        }`}>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-slate-600 text-sm font-medium">Total Votes</p>
-              <p className="text-3xl font-bold text-slate-800">
+              <p className={`text-sm font-medium ${
+                theme === 'dark' ? 'text-slate-300' : 'text-slate-600'
+              }`}>Total Votes</p>
+              <p className={`text-3xl font-bold ${
+                theme === 'dark' ? 'text-white' : 'text-slate-800'
+              }`}>
                 {contests.reduce((total, contest) =>
                   total + (contest.contestants?.reduce((sum, c) => sum + (c.votes || 0), 0) || 0), 0
                 )}
               </p>
             </div>
-            <div className="bg-purple-100 p-3 rounded-lg">
-              <BarChart3 className="h-6 w-6 text-purple-600" />
+            <div className={`p-3 rounded-xl ${
+              theme === 'dark'
+                ? 'bg-purple-500/20'
+                : 'bg-purple-100'
+            }`}>
+              <BarChart3 className={`h-6 w-6 ${
+                theme === 'dark' ? 'text-purple-400' : 'text-purple-600'
+              }`} />
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-lg border border-slate-200/60 p-6">
+        <div className={`rounded-2xl shadow-lg border p-6 transition hover:-translate-y-1 hover:shadow-xl ${
+          theme === 'dark'
+            ? 'bg-white/5 border-white/10 hover:border-orange-400/50'
+            : 'bg-white border-slate-200/60 hover:border-orange-300'
+        }`}>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-slate-600 text-sm font-medium">Ended Contests</p>
-              <p className="text-3xl font-bold text-slate-800">
+              <p className={`text-sm font-medium ${
+                theme === 'dark' ? 'text-slate-300' : 'text-slate-600'
+              }`}>Ended Contests</p>
+              <p className={`text-3xl font-bold ${
+                theme === 'dark' ? 'text-white' : 'text-slate-800'
+              }`}>
                 {contests.filter(c => c.hasEnded).length}
               </p>
             </div>
-            <div className="bg-orange-100 p-3 rounded-lg">
-              <Trophy className="h-6 w-6 text-orange-600" />
+            <div className={`p-3 rounded-xl ${
+              theme === 'dark'
+                ? 'bg-orange-500/20'
+                : 'bg-orange-100'
+            }`}>
+              <Trophy className={`h-6 w-6 ${
+                theme === 'dark' ? 'text-orange-400' : 'text-orange-600'
+              }`} />
             </div>
           </div>
         </div>
       </div>
 
-      {/* Contests Section */}
-      <div className="bg-white rounded-2xl shadow-lg border border-slate-200/60 p-6">
+      {/* Contests Section - Now matches card design */}
+      <div className={`rounded-2xl shadow-lg border p-6 ${
+        theme === 'dark'
+          ? 'bg-white/5 border-white/10'
+          : 'bg-white border-slate-200/60'
+      }`}>
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-slate-800">Your Contests</h2>
+          <h2 className={`text-2xl font-bold ${
+            theme === 'dark' ? 'text-white' : 'text-slate-800'
+          }`}>
+            Your Contests
+          </h2>
         </div>
 
         {contests.length === 0 ? (
           <div className="text-center py-12">
-            <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-full w-24 h-24 mx-auto flex items-center justify-center mb-4">
-              <Award className="h-12 w-12 text-blue-600" />
+            <div className={`rounded-full w-24 h-24 mx-auto flex items-center justify-center mb-4 ${
+              theme === 'dark'
+                ? 'bg-sky-500/20'
+                : 'bg-gradient-to-br from-blue-50 to-purple-50'
+            }`}>
+              <Award className={`h-12 w-12 ${
+                theme === 'dark' ? 'text-sky-400' : 'text-blue-600'
+              }`} />
             </div>
-            <h3 className="text-xl font-semibold text-slate-800 mb-2">No contests yet</h3>
-            <p className="text-slate-600 mb-6">Create your first contest to get started with voting</p>
+            <h3 className={`text-xl font-semibold mb-2 ${
+              theme === 'dark' ? 'text-white' : 'text-slate-800'
+            }`}>No contests yet</h3>
+            <p className={`mb-6 ${
+              theme === 'dark' ? 'text-slate-300' : 'text-slate-600'
+            }`}>Create your first contest to get started with voting</p>
             <button
               onClick={() => {
                 setEditingContest(null);
                 setIsModalOpen(true);
               }}
-              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl"
+              className={`px-6 py-3 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 ${
+                theme === 'dark'
+                  ? 'bg-gradient-to-r from-sky-500 to-purple-600 hover:from-sky-400 hover:to-purple-500 text-white'
+                  : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white'
+              }`}
             >
               Create Your First Contest
             </button>
@@ -397,8 +493,6 @@ const Overview = () => {
           </div>
         )}
       </div>
-
-
 
       <ContestModal
         isOpen={isModalOpen}

@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { HelpCircle, ChevronDown, ChevronUp, Search, MessageCircle, Book, Video, Mail, Sparkles, Zap, LifeBuoy, ExternalLink, Star } from 'lucide-react';
+import { useTheme } from '../Contexts/ThemeContext';
 
 const Help = () => {
+  const { theme } = useTheme();
   const [searchTerm, setSearchTerm] = useState('');
   const [expandedFAQ, setExpandedFAQ] = useState(null);
 
@@ -96,8 +98,7 @@ const Help = () => {
   const categories = [...new Set(faqs.map(faq => faq.category))];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50/30 p-6">
-      <div className="w-full mx-auto space-y-8">
+    <div className="space-y-8">
         {/* Header */}
         {/* <div className="text-center space-y-6">
           <div className="relative inline-block">
@@ -122,25 +123,37 @@ const Help = () => {
             <div
               key={index}
               onClick={action.action}
-              className="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 p-6 cursor-pointer hover:-translate-y-2 relative overflow-hidden"
+              className={`rounded-2xl shadow-lg border p-6 cursor-pointer transition hover:-translate-y-1 hover:shadow-xl ${
+                theme === 'dark'
+                  ? 'bg-white/5 border-white/10 hover:border-sky-400/50'
+                  : 'bg-white border-slate-200/60 hover:border-blue-300'
+              }`}
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-transparent to-gray-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              
-              <div className="relative z-10">
-                <div className={`p-3 rounded-xl ${action.bgColor} w-fit mb-4 transform group-hover:scale-110 transition-transform duration-300`}>
+              <div className="flex items-start gap-4">
+                <div className={`p-3 rounded-xl ${
+                  theme === 'dark' ? 'bg-sky-500/20' : 'bg-blue-100'
+                }`}>
                   <div className={`text-white bg-gradient-to-br ${action.color} rounded-lg p-2`}>
                     {action.icon}
                   </div>
                 </div>
-                <h3 className="font-bold text-gray-900 text-lg mb-2 group-hover:text-gray-800 transition-colors">
-                  {action.title}
-                </h3>
-                <p className="text-gray-600 text-sm leading-relaxed mb-3">
-                  {action.description}
-                </p>
-                <div className="flex items-center gap-1 text-sm text-gray-500 group-hover:text-gray-700 transition-colors">
-                  <span>Learn more</span>
-                  <ExternalLink className="h-4 w-4" />
+                <div className="flex-1">
+                  <h3 className={`font-bold text-lg mb-2 ${
+                    theme === 'dark' ? 'text-white' : 'text-slate-800'
+                  }`}>
+                    {action.title}
+                  </h3>
+                  <p className={`text-sm leading-relaxed mb-3 ${
+                    theme === 'dark' ? 'text-slate-300' : 'text-slate-600'
+                  }`}>
+                    {action.description}
+                  </p>
+                  <div className={`flex items-center gap-1 text-sm ${
+                    theme === 'dark' ? 'text-slate-400' : 'text-slate-500'
+                  }`}>
+                    <span>Learn more</span>
+                    <ExternalLink className="h-4 w-4" />
+                  </div>
                 </div>
               </div>
             </div>
@@ -148,24 +161,40 @@ const Help = () => {
         </div>
 
         {/* Search Section */}
-        <div className="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 p-8">
+        <div className={`rounded-2xl shadow-lg border p-8 transition hover:-translate-y-1 hover:shadow-xl ${
+          theme === 'dark'
+            ? 'bg-white/5 border-white/10 hover:border-sky-400/50'
+            : 'bg-white border-slate-200/60 hover:border-blue-300'
+        }`}>
           <div className="max-w-2xl mx-auto text-center space-y-4">
-            <div className="flex items-center justify-center gap-2 text-gray-600 mb-4">
-              <Zap className="h-5 w-5 text-yellow-500" />
+            <div className={`flex items-center justify-center gap-2 mb-4 ${
+              theme === 'dark' ? 'text-slate-300' : 'text-slate-600'
+            }`}>
+              <Zap className={`h-5 w-5 ${
+                theme === 'dark' ? 'text-yellow-400' : 'text-yellow-500'
+              }`} />
               <span className="text-sm font-medium">Popular: Contest Creation, Voting Setup, Results</span>
             </div>
             <div className="relative">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+              <Search className={`absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 ${
+                theme === 'dark' ? 'text-slate-400' : 'text-gray-400'
+              }`} />
               <input
                 type="text"
                 placeholder="Search help articles, FAQs, and guides..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg shadow-sm hover:shadow-md transition-shadow duration-200"
+                className={`w-full pl-12 pr-4 py-4 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg shadow-sm hover:shadow-md transition-shadow duration-200 ${
+                  theme === 'dark'
+                    ? 'bg-slate-800/50 border-slate-600 text-white placeholder-slate-400'
+                    : 'bg-white border-gray-200 text-gray-900'
+                }`}
               />
             </div>
             {searchTerm && (
-              <p className="text-sm text-gray-500">
+              <p className={`text-sm ${
+                theme === 'dark' ? 'text-slate-400' : 'text-gray-500'
+              }`}>
                 {filteredFAQs.length} result{filteredFAQs.length !== 1 ? 's' : ''} found
               </p>
             )}
@@ -173,14 +202,26 @@ const Help = () => {
         </div>
 
         {/* FAQ Section */}
-        <div className="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 p-8">
+        <div className={`rounded-2xl shadow-lg border p-8 transition hover:-translate-y-1 hover:shadow-xl ${
+          theme === 'dark'
+            ? 'bg-white/5 border-white/10 hover:border-sky-400/50'
+            : 'bg-white border-slate-200/60 hover:border-blue-300'
+        }`}>
           <div className="flex items-center gap-3 mb-8">
-            <div className="p-2 bg-blue-50 rounded-lg">
-              <LifeBuoy className="h-6 w-6 text-blue-600" />
+            <div className={`p-2 rounded-lg ${
+              theme === 'dark' ? 'bg-sky-500/20' : 'bg-blue-50'
+            }`}>
+              <LifeBuoy className={`h-6 w-6 ${
+                theme === 'dark' ? 'text-sky-400' : 'text-blue-600'
+              }`} />
             </div>
             <div>
-              <h2 className="text-3xl font-bold text-gray-900">Frequently Asked Questions</h2>
-              <p className="text-gray-600 mt-1">Quick answers to common questions</p>
+              <h2 className={`text-3xl font-bold ${
+                theme === 'dark' ? 'text-white' : 'text-slate-800'
+              }`}>Frequently Asked Questions</h2>
+              <p className={`mt-1 ${
+                theme === 'dark' ? 'text-slate-300' : 'text-slate-600'
+              }`}>Quick answers to common questions</p>
             </div>
           </div>
 
@@ -189,9 +230,11 @@ const Help = () => {
             <button
               onClick={() => setSearchTerm('')}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                searchTerm === '' 
-                  ? 'bg-blue-500 text-white shadow-lg' 
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                searchTerm === ''
+                  ? 'bg-blue-500 text-white shadow-lg'
+                  : theme === 'dark'
+                    ? 'bg-slate-700 text-slate-200 hover:bg-slate-600'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
               All Categories
@@ -203,7 +246,9 @@ const Help = () => {
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                   searchTerm === category
                     ? 'bg-blue-500 text-white shadow-lg'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    : theme === 'dark'
+                      ? 'bg-slate-700 text-slate-200 hover:bg-slate-600'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
                 {category}
@@ -214,29 +259,53 @@ const Help = () => {
           {/* FAQ List */}
           <div className="space-y-4">
             {filteredFAQs.map((faq, index) => (
-              <div 
-                key={index} 
-                className="border border-gray-200 rounded-xl hover:border-gray-300 transition-all duration-200 overflow-hidden group"
+              <div
+                key={index}
+                className={`border rounded-xl transition-all duration-200 overflow-hidden group ${
+                  theme === 'dark'
+                    ? 'border-slate-600 hover:border-slate-500'
+                    : 'border-gray-200 hover:border-gray-300'
+                }`}
               >
                 <button
                   onClick={() => toggleFAQ(index)}
-                  className="w-full px-6 py-5 text-left flex items-center justify-between hover:bg-gray-50 transition-colors duration-200 group"
+                  className={`w-full px-6 py-5 text-left flex items-center justify-between transition-colors duration-200 group ${
+                    theme === 'dark'
+                      ? 'hover:bg-slate-700'
+                      : 'hover:bg-gray-50'
+                  }`}
                 >
                   <div className="flex items-start gap-4 flex-1">
-                    <div className="bg-blue-50 p-2 rounded-lg mt-1 group-hover:bg-blue-100 transition-colors">
-                      <HelpCircle className="h-4 w-4 text-blue-600" />
+                    <div className={`p-2 rounded-lg mt-1 transition-colors ${
+                      theme === 'dark'
+                        ? 'bg-sky-500/20 group-hover:bg-sky-500/30'
+                        : 'bg-blue-50 group-hover:bg-blue-100'
+                    }`}>
+                      <HelpCircle className={`h-4 w-4 ${
+                        theme === 'dark' ? 'text-sky-400' : 'text-blue-600'
+                      }`} />
                     </div>
                     <div className="text-left flex-1">
                       <div className="flex items-center gap-3 mb-1">
-                        <span className="font-semibold text-gray-900 text-lg group-hover:text-blue-600 transition-colors">
+                        <span className={`font-semibold text-lg transition-colors ${
+                          theme === 'dark'
+                            ? 'text-white group-hover:text-sky-400'
+                            : 'text-gray-900 group-hover:text-blue-600'
+                        }`}>
                           {faq.question}
                         </span>
-                        <span className="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-full font-medium">
+                        <span className={`text-xs px-2 py-1 rounded-full font-medium ${
+                          theme === 'dark'
+                            ? 'bg-slate-600 text-slate-300'
+                            : 'bg-gray-100 text-gray-600'
+                        }`}>
                           {faq.category}
                         </span>
                       </div>
                       {expandedFAQ !== index && (
-                        <p className="text-gray-600 text-sm line-clamp-1">
+                        <p className={`text-sm line-clamp-1 ${
+                          theme === 'dark' ? 'text-slate-400' : 'text-gray-600'
+                        }`}>
                           {faq.answer}
                         </p>
                       )}
@@ -244,15 +313,25 @@ const Help = () => {
                   </div>
                   <div className="ml-4 flex-shrink-0">
                     {expandedFAQ === index ? (
-                      <ChevronUp className="h-5 w-5 text-gray-500 transform group-hover:scale-110 transition-transform" />
+                      <ChevronUp className={`h-5 w-5 transform group-hover:scale-110 transition-transform ${
+                        theme === 'dark' ? 'text-slate-400' : 'text-gray-500'
+                      }`} />
                     ) : (
-                      <ChevronDown className="h-5 w-5 text-gray-500 transform group-hover:scale-110 transition-transform" />
+                      <ChevronDown className={`h-5 w-5 transform group-hover:scale-110 transition-transform ${
+                        theme === 'dark' ? 'text-slate-400' : 'text-gray-500'
+                      }`} />
                     )}
                   </div>
                 </button>
                 {expandedFAQ === index && (
-                  <div className="px-6 pb-5 ml-12 border-t border-gray-100 pt-4">
-                    <p className="text-gray-700 leading-relaxed">{faq.answer}</p>
+                  <div className={`px-6 pb-5 ml-12 border-t pt-4 ${
+                    theme === 'dark'
+                      ? 'border-slate-600'
+                      : 'border-gray-100'
+                  }`}>
+                    <p className={`leading-relaxed ${
+                      theme === 'dark' ? 'text-slate-300' : 'text-gray-700'
+                    }`}>{faq.answer}</p>
                   </div>
                 )}
               </div>
@@ -261,10 +340,20 @@ const Help = () => {
 
           {filteredFAQs.length === 0 && (
             <div className="text-center py-12">
-              <div className="bg-gray-50 rounded-2xl p-8 max-w-md mx-auto">
-                <Search className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">No results found</h3>
-                <p className="text-gray-600">
+              <div className={`rounded-2xl p-8 max-w-md mx-auto ${
+                theme === 'dark'
+                  ? 'bg-slate-700/50'
+                  : 'bg-gray-50'
+              }`}>
+                <Search className={`h-12 w-12 mx-auto mb-4 ${
+                  theme === 'dark' ? 'text-slate-400' : 'text-gray-400'
+                }`} />
+                <h3 className={`text-lg font-semibold mb-2 ${
+                  theme === 'dark' ? 'text-white' : 'text-gray-900'
+                }`}>No results found</h3>
+                <p className={`${
+                  theme === 'dark' ? 'text-slate-300' : 'text-gray-600'
+                }`}>
                   Try adjusting your search terms or browse the categories above.
                 </p>
               </div>
@@ -273,35 +362,57 @@ const Help = () => {
         </div>
 
         {/* Contact Support */}
-        <div className="bg-gradient-to-br from-blue-600 via-purple-600 to-blue-800 rounded-2xl p-10 text-white text-center relative overflow-hidden">
+        <div className={`rounded-2xl p-10 text-center relative overflow-hidden ${
+          theme === 'dark'
+            ? 'bg-gradient-to-br from-slate-800 to-slate-900'
+            : 'bg-gradient-to-br from-blue-600 via-purple-600 to-blue-800'
+        }`}>
           <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent" />
           <div className="relative z-10">
             <div className="flex justify-center mb-4">
-              <div className="bg-white/20 backdrop-blur-sm rounded-full p-4">
-                <MessageCircle className="h-8 w-8 text-white" />
+              <div className={`backdrop-blur-sm rounded-full p-4 ${
+                theme === 'dark' ? 'bg-slate-700/50' : 'bg-white/20'
+              }`}>
+                <MessageCircle className={`h-8 w-8 ${
+                  theme === 'dark' ? 'text-slate-200' : 'text-white'
+                }`} />
               </div>
             </div>
-            <h2 className="text-3xl font-bold mb-4">Still need help?</h2>
-            <p className="text-blue-100 text-lg mb-8 max-w-2xl mx-auto leading-relaxed">
+            <h2 className={`text-3xl font-bold mb-4 ${
+              theme === 'dark' ? 'text-white' : 'text-white'
+            }`}>Still need help?</h2>
+            <p className={`text-lg mb-8 max-w-2xl mx-auto leading-relaxed ${
+              theme === 'dark' ? 'text-slate-300' : 'text-blue-100'
+            }`}>
               Our support team is ready to assist you with any questions or issues you might have.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <button
                 onClick={() => window.location.href = 'mailto:support@Choosify.com'}
-                className="bg-white text-blue-600 px-8 py-4 rounded-xl font-semibold hover:bg-gray-100 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center gap-3"
+                className={`px-8 py-4 rounded-xl font-semibold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center gap-3 ${
+                  theme === 'dark'
+                    ? 'bg-slate-700 text-slate-200 hover:bg-slate-600'
+                    : 'bg-white text-blue-600 hover:bg-gray-100'
+                }`}
               >
                 <Mail className="h-5 w-5" />
                 Email Support Team
               </button>
               <button
                 onClick={() => window.open('https://community.Choosify.com', '_blank')}
-                className="bg-blue-500 hover:bg-blue-400 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center gap-3 border border-blue-400"
+                className={`px-8 py-4 rounded-xl font-semibold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center gap-3 border ${
+                  theme === 'dark'
+                    ? 'bg-slate-600 hover:bg-slate-500 text-slate-200 border-slate-500'
+                    : 'bg-blue-500 hover:bg-blue-400 text-white border-blue-400'
+                }`}
               >
                 <MessageCircle className="h-5 w-5" />
                 Ask Community
               </button>
             </div>
-            <div className="flex items-center justify-center gap-6 mt-8 text-blue-200 text-sm">
+            <div className={`flex items-center justify-center gap-6 mt-8 text-sm ${
+              theme === 'dark' ? 'text-slate-400' : 'text-blue-200'
+            }`}>
               <div className="flex items-center gap-2">
                 <Star className="h-4 w-4 fill-current" />
                 <span>24/7 Support</span>
@@ -317,7 +428,6 @@ const Help = () => {
             </div>
           </div>
         </div>
-      </div>
     </div>
   );
 };
